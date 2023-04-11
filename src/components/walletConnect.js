@@ -31,27 +31,26 @@ const wagmiClient = createClient({
   provider,
 });
 
+
 const WalletConnect = () => {
   return (
     <div>
       <WagmiConfig client={wagmiClient}>
         <RainbowKitProvider
+          coolMode
           chains={chains}
           theme={lightTheme({
             accentColor: "#E5DCD0",
             accentColorForeground: "#BC563B",
-            connectButtonBackground: "#000000",
-            connectButtonInnerBackground: "#000000",
-            connectButtonText: "#000000",
-            generalBorder: "#000000",
-            shadows: {
-              connectButton: "",
-            },
+            connectButtonBackground: "#BC563B",
+            connectButtonInnerBackground: "#BC563B",
+            connectButtonText: "#BC563B",
+            generalBorder: "#BC563B",
+            modalBackground: "#BC563B",
           })}
         >
           <ConnectButton
-          chainStatus="none"
-       
+            chainStatus="none"
             showBalance={{
               smallScreen: false,
               largeScreen: false,

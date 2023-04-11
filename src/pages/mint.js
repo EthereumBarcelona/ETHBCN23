@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import WalletConnect from "../components/walletConnect";
 import Logo from "../assets/logo.svg";
@@ -138,6 +138,8 @@ const FiatText = styled.div`
 
 const TicketInfoContainer = styled.div`
   margin: 50px 0 20px 0;
+  align-items: left;
+  text-align: left;
 `;
 
 const HeadingSmall = styled.div`
@@ -160,11 +162,10 @@ const TicketPrice = styled.div`
   font-weight: 700;
   font-size: 16px;
   line-height: 19px;
-  margin: 0;
-  position: relative;
   text-decoration-line: line-through;
   display: inline-block;
   color: #424242;
+  text-align: left;
 `;
 
 const TicketPriceOrange = styled(TicketPrice)`
@@ -174,6 +175,36 @@ const TicketPriceOrange = styled(TicketPrice)`
   margin: 20px 10px;
 `;
 
+export const CounterWrapper = styled.div`
+  font-family: "Dahlia-Bold";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 19px;
+  display: inline-block;
+  color: #424242;
+  text-align: left;
+`;
+
+const Counter = () => {
+  const [count, setCount] = useState(1);
+
+  const incrementCount = () => {
+    setCount(count + 1);
+  };
+
+  const decrementCount = () => {
+    setCount(count - 1);
+  };
+
+  return (
+    <div>
+      <img src={Minus} className="minus" onClick={decrementCount} />
+      {count}
+      <img src={Plus} className="add" onClick={incrementCount} />
+    </div>
+  );
+};
 const Mint = () => {
   return (
     <div>
@@ -212,11 +243,9 @@ const Mint = () => {
               <TicketPrice>
                 $ 500 <TicketPriceOrange>$399</TicketPriceOrange>
               </TicketPrice>
-              <TicketPrice>
-                <img src={Minus} />
-                4
-                <img src={Plus} />
-              </TicketPrice>
+              <CounterWrapper>
+                <Counter />
+              </CounterWrapper>
             </TicketInfoContainer>
             <MintButton>Mint</MintButton>
             <Line></Line>
