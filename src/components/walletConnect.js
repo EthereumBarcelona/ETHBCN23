@@ -7,6 +7,7 @@ import {
   getDefaultWallets,
   RainbowKitProvider,
   darkTheme,
+  lightTheme,
   Theme,
 } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
@@ -30,13 +31,36 @@ const wagmiClient = createClient({
   provider,
 });
 
-
 const WalletConnect = () => {
   return (
     <div>
       <WagmiConfig client={wagmiClient}>
-        <RainbowKitProvider chains={chains}>
-        <ConnectButton className="custom-connect-button" />
+        <RainbowKitProvider
+          chains={chains}
+          theme={lightTheme({
+            accentColor: "#E5DCD0",
+            accentColorForeground: "#BC563B",
+            connectButtonBackground: "#000000",
+            connectButtonInnerBackground: "#000000",
+            connectButtonText: "#000000",
+            generalBorder: "#000000",
+            shadows: {
+              connectButton: "",
+            },
+          })}
+        >
+          <ConnectButton
+          chainStatus="none"
+       
+            showBalance={{
+              smallScreen: false,
+              largeScreen: false,
+            }}
+            accountStatus={{
+              smallScreen: "avatar",
+              largeScreen: "full",
+            }}
+          />
         </RainbowKitProvider>
       </WagmiConfig>
     </div>

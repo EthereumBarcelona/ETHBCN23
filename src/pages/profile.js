@@ -20,33 +20,34 @@ export const Navbar = styled.div`
   justify-content: space-between;
 `;
 
-export const TicketDisplayContainer = styled.div`
-`;
+export const TicketDisplayContainer = styled.div``;
 
 export const Footer = styled.div`
   margin-top: auto;
   text-align: left;
 `;
-
 export const ProfileContainer = styled.div`
   width: 80px;
+  margin: 0 50px;
   height: 80px;
   border-radius: 100px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
   border: 1px solid #bc563c;
   :hover {
     background: #bc563c;
     .smile {
       content: url(${whiteSmile});
     }
+  }
 `;
 
 export const FooterDescriptionTitle = styled.div`
   font-family: "Dahlia-RC";
   font-style: normal;
   font-weight: 400;
-  margin-right:10px;
+  margin-right: 10px;
   font-size: 40px;
   line-height: 48px;
   display: inline-block;
@@ -73,6 +74,24 @@ export const FooterDescription = styled.div`
   color: #bc563c;
 `;
 
+const YY = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const TT = styled.div`
+border: 1px solid #bc563c;
+border-radius: 100px;
+width:200px;
+height:80px;
+display: flex;
+align-items: center;
+justify-content: center;
+
+`
+
 const Profile = () => {
   return (
     <div>
@@ -82,11 +101,16 @@ const Profile = () => {
             {" "}
             <img src={Logo} />
           </a>
-          <WalletConnect></WalletConnect>
+          <YY>
+            <TT>
+            <WalletConnect></WalletConnect>
+            </TT>
+   
 
-          <ProfileContainer>
-            <img src={OrangeSmile} className="smile" />
-          </ProfileContainer>
+            <ProfileContainer>
+              <img src={OrangeSmile} className="smile" />
+            </ProfileContainer>
+          </YY>
         </Navbar>
         <TicketDisplayContainer>
           <img src={TicketPlaceholder} />

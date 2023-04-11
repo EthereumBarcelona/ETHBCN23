@@ -30,12 +30,20 @@ export const Footer = styled.div`
   margin-top: auto;
 `;
 
+const YY = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+`;
 export const ProfileContainer = styled.div`
   width: 80px;
+  margin: 0 50px;
   height: 80px;
   border-radius: 100px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
   border: 1px solid #bc563c;
   :hover {
     background: #bc563c;
@@ -175,11 +183,13 @@ const Mint = () => {
             {" "}
             <img src={Logo} />
           </a>
-          <WalletConnect></WalletConnect>
+          <YY>
+            <WalletConnect></WalletConnect>
 
-          <ProfileContainer>
-            <img src={OrangeSmile} className="smile" />
-          </ProfileContainer>
+            <ProfileContainer>
+              <img src={OrangeSmile} className="smile" />
+            </ProfileContainer>
+          </YY>
         </Navbar>
 
         <MintContainer>
