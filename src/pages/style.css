@@ -13,3 +13,8 @@
 .add{
     margin: 0 0 0 10px;
 }
+
+.ticket{
+    margin: 5px;
+    align-items:left;
+}

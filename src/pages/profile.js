@@ -13,14 +13,24 @@ export const Container = styled.div`
   padding: 2vw 10vw;
   min-height: 100vh;
   background: #e5dcd0;
+
+  @media screen and (max-width: 768px) {
+    padding: 0 20px 50px 20px;
+  }
 `;
 
 export const Navbar = styled.div`
   display: flex;
   justify-content: space-between;
+
+  @media screen and (max-width: 768px) {
+    padding: 20px 0;
+  }
 `;
 
-export const TicketDisplayContainer = styled.div``;
+
+export const TicketDisplayContainer = styled.div`
+`;
 
 export const Footer = styled.div`
   margin-top: auto;
@@ -40,6 +50,12 @@ export const ProfileContainer = styled.div`
     .smile {
       content: url(${whiteSmile});
     }
+  }
+
+  @media screen and (max-width: 768px) {
+    width:60px;
+    height:60px;
+    margin: 0 0 0 0px;
   }
 `;
 
@@ -90,6 +106,12 @@ display: flex;
 align-items: center;
 justify-content: center;
 
+@media screen and (max-width: 768px) {
+  width:00px;
+  height:00px;
+  margin: 0 90px 15px 90px;;
+}
+
 `
 
 const Profile = () => {
@@ -105,15 +127,15 @@ const Profile = () => {
             <TT>
             <WalletConnect></WalletConnect>
             </TT>
-   
-
             <ProfileContainer>
               <img src={OrangeSmile} className="smile" />
             </ProfileContainer>
           </YY>
         </Navbar>
         <TicketDisplayContainer>
-          <img src={TicketPlaceholder} />
+          <img src={TicketPlaceholder} className="ticket"/>
+          <img src={TicketPlaceholder} className="ticket"/>
+          <img src={TicketPlaceholder} className="ticket"/>
         </TicketDisplayContainer>
         <Footer>
           <FooterDescriptionTitle>Redeem your NFTicket</FooterDescriptionTitle>
