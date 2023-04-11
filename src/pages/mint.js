@@ -117,7 +117,7 @@ export const TicketInfoWrapper = styled.div`
   }
 `;
 
-const MintButton = styled.div`
+export const MintButton = styled.div`
   border: 1px solid #bc563c;
   font-family: "Dahlia-Bold";
   font-size: 24px;
