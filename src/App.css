@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+@font-face {
+  font-family: "Dahlia";
+  src: url("../src/fonts/dahlia-regular.otf");
+}
+
+@font-face {
+  font-family: "Dahlia-Bold";
+  src: url("../src/fonts/dahlia-bold.woff");
+}
+
+@font-face {
+  font-family: "Dahlia-RC";
+  src: url("../src/fonts/dahlia-regularcondensed.woff");
+}

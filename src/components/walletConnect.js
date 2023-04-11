@@ -1,6 +1,7 @@
 import React from "react";
 import "@rainbow-me/rainbowkit/styles.css";
-import merge from 'lodash.merge';
+import merge from "lodash.merge";
+import "./WalletConnect.css";
 import {
   ConnectButton,
   getDefaultWallets,
@@ -12,8 +13,6 @@ import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { mainnet, polygon, optimism, arbitrum } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
-
-
 
 const { chains, provider } = configureChains(
   [mainnet, optimism],
@@ -32,13 +31,12 @@ const wagmiClient = createClient({
 });
 
 
-
 const WalletConnect = () => {
   return (
     <div>
       <WagmiConfig client={wagmiClient}>
-        <RainbowKitProvider chains={chains}  >
-          <ConnectButton />
+        <RainbowKitProvider chains={chains}>
+        <ConnectButton className="custom-connect-button" />
         </RainbowKitProvider>
       </WagmiConfig>
     </div>

@@ -20,10 +20,12 @@ export const Navbar = styled.div`
   justify-content: space-between;
 `;
 
-export const TicketDisplayContainer = styled.div``;
+export const TicketDisplayContainer = styled.div`
+`;
 
 export const Footer = styled.div`
   margin-top: auto;
+  text-align: left;
 `;
 
 export const ProfileContainer = styled.div`
@@ -41,9 +43,21 @@ export const ProfileContainer = styled.div`
 `;
 
 export const FooterDescriptionTitle = styled.div`
-  font-family: "Dahlia";
+  font-family: "Dahlia-RC";
   font-style: normal;
   font-weight: 400;
+  margin-right:10px;
+  font-size: 40px;
+  line-height: 48px;
+  display: inline-block;
+  color: #bc563c;
+`;
+
+export const FooterDescriptionTitleBold = styled.div`
+  font-family: "Dahlia-Bold";
+  font-style: normal;
+  font-weight: 400;
+  display: inline-block;
   font-size: 40px;
   line-height: 48px;
   color: #bc563c;
@@ -52,8 +66,9 @@ export const FooterDescriptionTitle = styled.div`
 export const FooterDescription = styled.div`
   font-family: "Montserrat";
   font-style: normal;
+  margin-top: 16px;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 18px;
   line-height: 17px;
   color: #bc563c;
 `;
@@ -77,9 +92,16 @@ const Profile = () => {
           <img src={TicketPlaceholder} />
         </TicketDisplayContainer>
         <Footer>
-          <FooterDescriptionTitle>
-            Redeem your NFTicket to get a QR <br /> code to enter the event
-          </FooterDescriptionTitle>
+          <FooterDescriptionTitle>Redeem your NFTicket</FooterDescriptionTitle>
+          <FooterDescriptionTitleBold>
+            {" "}
+            to get a QR <br />
+            {/* code to enter the event */}
+          </FooterDescriptionTitleBold>
+          <br />
+          <FooterDescriptionTitleBold>
+            code to enter the event
+          </FooterDescriptionTitleBold>
           <FooterDescription>
             You’ll be able to redeem 2 weeks before the event!
           </FooterDescription>
