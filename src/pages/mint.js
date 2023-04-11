@@ -85,7 +85,7 @@ const Mint = () => {
         <Navbar>
           <a href="/">
             {" "}
-            <img src={Logo} />
+            <img src={Logo}/>
           </a>
           <WalletConnect></WalletConnect>
 
