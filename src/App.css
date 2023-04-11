@@ -51,3 +51,8 @@
   font-family: "Dahlia-RC";
   src: url("../src/fonts/dahlia-regularcondensed.woff");
 }
+
+@font-face {
+  font-family: "Dahlia-BC";
+  src: url("../src/fonts/dahlia-boldcondensed.woff");
+}

@@ -7,6 +7,9 @@ import OrangeSmile from "../assets/orangeSmile.svg";
 import whiteSmile from "../assets/whiteSmile.svg";
 import Ticket from "../assets/TicketMint.svg";
 import "./style.css";
+import Arrow from "../assets/Icon.png";
+import Minus from "../assets/Minus.png";
+import Plus from "../assets/Plus.png";
 
 export const Container = styled.div`
   display: flex;
@@ -39,24 +42,28 @@ export const ProfileContainer = styled.div`
     .smile {
       content: url(${whiteSmile});
     }
+  }
 `;
 
 export const FooterDescriptionTitle = styled.div`
-  font-family: "Dahlia";
+  font-family: "Dahlia-Bold";
   font-style: normal;
   font-weight: 400;
-  font-size: 40px;
+  text-transform: uppercase;
+  font-size: 48px;
   line-height: 48px;
-  color: #bc563c;
+  text-align: left;
+  color: #424242;
 `;
 
 export const FooterDescription = styled.div`
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 17px;
-  color: #bc563c;
+  color: #424242;
+  margin-bottom: 8px;
 `;
 
 export const MintContainer = styled.div`
@@ -76,6 +83,87 @@ export const TicketInfoWrapper = styled.div`
   align-items: flex-start;
   width: 50%;
   padding: 16px;
+  position: relative; /* added this */
+`;
+
+const MintButton = styled.div`
+  border: 1px solid #bc563c;
+  font-family: "Dahlia-Bold";
+  font-size: 24px;
+  color: #bc563c;
+  border-radius: 100px;
+  width: 350px;
+  height: 80px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  :hover {
+    cursor: pointer;
+    background: #bc563c;
+    color: #e5dcd0;
+  }
+`;
+
+const Line = styled.div`
+  border-bottom: 1px solid #bc563c;
+  width: 350px;
+  margin-top: 40px;
+`;
+
+const FiatText = styled.div`
+  font-family: "Dahlia-Bold";
+  font-style: normal;
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 20px;
+  text-align: left;
+  color: #424242;
+  position: absolute;
+  bottom: 0;
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+const TicketInfoContainer = styled.div`
+  margin: 50px 0 20px 0;
+`;
+
+const HeadingSmall = styled.div`
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  color: #424242;
+  display: inline;
+  margin: 0 100px 0 0;
+`;
+
+const HeadingSmallOrange = styled(HeadingSmall)`
+  color: #bc563c;
+`;
+
+const TicketPrice = styled.div`
+  font-family: "Dahlia-Bold";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  margin: 0;
+  position: relative;
+  text-decoration-line: line-through;
+  display: inline-block;
+  color: #424242;
+`;
+
+const TicketPriceOrange = styled(TicketPrice)`
+  color: #bc563c;
+  font-size: 24px;
+  text-decoration-line: none;
+  margin: 20px 10px;
 `;
 
 const Mint = () => {
@@ -85,7 +173,7 @@ const Mint = () => {
         <Navbar>
           <a href="/">
             {" "}
-            <img src={Logo}/>
+            <img src={Logo} />
           </a>
           <WalletConnect></WalletConnect>
 
@@ -103,17 +191,30 @@ const Mint = () => {
             <FooterDescriptionTitle>
               Early-Bird <br /> Ticket
             </FooterDescriptionTitle>
+            <TicketInfoContainer>
+              <HeadingSmall>
+                Price <HeadingSmallOrange>-50 %</HeadingSmallOrange>
+              </HeadingSmall>
+
+              <HeadingSmall>23/500</HeadingSmall>
+
+              <br />
+              <TicketPrice>
+                $ 500 <TicketPriceOrange>$399</TicketPriceOrange>
+              </TicketPrice>
+              <TicketPrice>
+                <img src={Minus} />
+                4
+                <img src={Plus} />
+              </TicketPrice>
+            </TicketInfoContainer>
+            <MintButton>Mint</MintButton>
+            <Line></Line>
+            <FiatText>
+              Buy with <img src={Arrow} className="arrow" /> <br /> CRedit Card
+            </FiatText>
           </TicketInfoWrapper>
         </MintContainer>
-
-        <Footer>
-          <FooterDescriptionTitle>
-            Redeem your NFTicket to get a QR <br /> code to enter the event
-          </FooterDescriptionTitle>
-          <FooterDescription>
-            You’ll be able to redeem 2 weeks before the event!
-          </FooterDescription>
-        </Footer>
       </Container>
     </div>
   );
