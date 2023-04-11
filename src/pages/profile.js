@@ -90,14 +90,14 @@ export const FooterDescription = styled.div`
   color: #bc563c;
 `;
 
-const YY = styled.div`
+export const YY = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
 `;
 
-const TT = styled.div`
+export const TT = styled.div`
 border: 1px solid #bc563c;
 border-radius: 100px;
 width:200px;

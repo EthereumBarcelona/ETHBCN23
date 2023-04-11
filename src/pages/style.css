@@ -18,3 +18,13 @@
     margin: 5px;
     align-items:left;
 }
+
+.mintTicket{
+    width: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+.minus{
+    margin: 0 10px 0 60px;
+}
+  }
