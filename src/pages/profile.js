@@ -6,6 +6,10 @@ import TicketPlaceholder from "../assets/Ticket.png";
 import OrangeSmile from "../assets/orangeSmile.svg";
 import whiteSmile from "../assets/whiteSmile.svg";
 import "./style.css";
+import { useAccount, useContractReads } from "wagmi";
+import { getConfig } from "../config/config";
+import ticketAbi from "../ethereum/build/TicketAbi.json";
+import { sepolia } from "wagmi/chains";
 
 export const Container = styled.div`
   display: flex;
@@ -28,9 +32,7 @@ export const Navbar = styled.div`
   }
 `;
 
-
-export const TicketDisplayContainer = styled.div`
-`;
+export const TicketDisplayContainer = styled.div``;
 
 export const Footer = styled.div`
   margin-top: auto;
@@ -53,8 +55,8 @@ export const ProfileContainer = styled.div`
   }
 
   @media screen and (max-width: 768px) {
-    width:60px;
-    height:60px;
+    width: 60px;
+    height: 60px;
     margin: 0 0 0 0px;
   }
 `;
@@ -98,34 +100,47 @@ export const YY = styled.div`
 `;
 
 export const TT = styled.div`
-border: 1px solid #bc563c;
-border-radius: 100px;
-width:200px;
-height:80px;
-display: flex;
-align-items: center;
-justify-content: center;
+  border: 1px solid #bc563c;
+  border-radius: 100px;
+  width: 200px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-@media screen and (max-width: 768px) {
-  width:00px;
-  height:00px;
-  margin: 0 90px 15px 90px;;
-}
-
-`
+  @media screen and (max-width: 768px) {
+    width: 00px;
+    height: 00px;
+    margin: 0 90px 15px 90px;
+  }
+`;
 
 const Profile = () => {
+  const { address } = useAccount();
+  const { data, isError, isLoading } = useContractReads({
+    contracts: [
+      {
+        address: getConfig.ticketContractAddress,
+        abi: ticketAbi,
+        functionName: "walletQuery",
+        args: [address],
+        chainId: sepolia.id,
+      },
+    ],
+  });
+
+  console.log("Wallet query: ", data);
+
   return (
     <div>
       <Container>
         <Navbar>
           <a href="/">
-            {" "}
             <img src={Logo} />
           </a>
           <YY>
             <TT>
-            <WalletConnect></WalletConnect>
+              <WalletConnect></WalletConnect>
             </TT>
             <ProfileContainer>
               <img src={OrangeSmile} className="smile" />
@@ -133,14 +148,21 @@ const Profile = () => {
           </YY>
         </Navbar>
         <TicketDisplayContainer>
-          <img src={TicketPlaceholder} className="ticket"/>
-          <img src={TicketPlaceholder} className="ticket"/>
-          <img src={TicketPlaceholder} className="ticket"/>
+          {data[0]?.map((tokenId) => {
+            return (
+              <div key={tokenId}>
+                <img src={TicketPlaceholder} className="ticket" />
+                <div>#{tokenId.toString()}</div>
+              </div>
+            );
+          })}
+          {/* <img src={TicketPlaceholder} className="ticket" />
+          <img src={TicketPlaceholder} className="ticket" />
+          <img src={TicketPlaceholder} className="ticket" /> */}
         </TicketDisplayContainer>
         <Footer>
           <FooterDescriptionTitle>Redeem your NFTicket</FooterDescriptionTitle>
           <FooterDescriptionTitleBold>
-            {" "}
             to get a QR <br />
             {/* code to enter the event */}
           </FooterDescriptionTitleBold>

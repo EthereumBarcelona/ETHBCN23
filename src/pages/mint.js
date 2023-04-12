@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import WalletConnect from "../components/walletConnect";
 import Logo from "../assets/logo.svg";
@@ -10,12 +10,14 @@ import "./style.css";
 import Arrow from "../assets/Icon.png";
 import Minus from "../assets/Minus.png";
 import Plus from "../assets/Plus.png";
-import {
-  TT, 
-  Navbar, 
-  ProfileContainer, 
-  YY
-} from "./profile"
+import { TT, Navbar, ProfileContainer, YY } from "./profile";
+import { getConfig } from "../config/config";
+import { erc20ABI, useAccount, useContractReads } from "wagmi";
+import { ethers } from "ethers";
+import ApproveUsdc from "../components/ApproveUsdc";
+import MintTicket from "../components/MintTicket";
+import { sepolia } from "wagmi/chains";
+import ticketAbi from "../ethereum/build/TicketAbi.json";
 
 export const Container = styled.div`
   display: flex;
@@ -117,31 +119,6 @@ export const TicketInfoWrapper = styled.div`
   }
 `;
 
-const MintButton = styled.div`
-  border: 1px solid #bc563c;
-  font-family: "Dahlia-Bold";
-  font-size: 24px;
-  color: #bc563c;
-  border-radius: 100px;
-  width: 350px;
-  height: 80px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  :hover {
-    cursor: pointer;
-    background: #bc563c;
-    color: #e5dcd0;
-  }
-
-  @media screen and (max-width: 767px) {
-    margin: 0;
-    width: 300px;
-  }
-`;
-
 const Line = styled.div`
   border-bottom: 1px solid #bc563c;
   width: 350px;
@@ -196,7 +173,7 @@ const HeadingSmall = styled.div`
   margin: 0 100px 0 0;
 
   @media screen and (max-width: 767px) {
-    margin: 0 50px 0 0 ;
+    margin: 0 50px 0 0;
   }
 `;
 
@@ -214,7 +191,6 @@ const TicketPrice = styled.div`
   display: inline-block;
   color: #424242;
   text-align: left;
-
 `;
 
 const TicketPriceOrange = styled(TicketPrice)`
@@ -224,7 +200,7 @@ const TicketPriceOrange = styled(TicketPrice)`
   margin: 20px 10px;
 
   @media screen and (max-width: 767px) {
-    margin: 10px 5px 0 0 ;
+    margin: 10px 5px 0 0;
   }
 `;
 
@@ -239,37 +215,66 @@ export const CounterWrapper = styled.div`
   text-align: left;
 `;
 
-const Counter = () => {
-  const [count, setCount] = useState(1);
-
+const Counter = ({ numberOfTokens, setNumberOfTokens }) => {
   const incrementCount = () => {
-    setCount(count + 1);
+    setNumberOfTokens(numberOfTokens + 1);
   };
 
   const decrementCount = () => {
-    setCount(count - 1);
+    setNumberOfTokens(numberOfTokens - 1 > 0 ? numberOfTokens - 1 : 0);
   };
 
   return (
     <div>
       <img src={Minus} className="minus" onClick={decrementCount} />
-      {count}
+      {numberOfTokens}
       <img src={Plus} className="add" onClick={incrementCount} />
     </div>
   );
 };
+
 const Mint = () => {
+  const { address } = useAccount();
+  const [numberOfTokens, setNumberOfTokens] = useState(1);
+
+  const { data, isError, isLoading } = useContractReads({
+    contracts: [
+      {
+        address: getConfig.usdcAddress,
+        abi: erc20ABI,
+        functionName: "allowance",
+        args: [address, getConfig.ticketContractAddress],
+        chainId: sepolia.id,
+      },
+      {
+        address: getConfig.ticketContractAddress,
+        abi: ticketAbi,
+        functionName: "waves",
+        args: [0],
+        chainId: sepolia.id,
+      },
+    ],
+  });
+
+  console.log(data);
+
+  const [approved, setApproved] = useState();
+
+  useEffect(() => {
+    setApproved(parseInt(data[0]) >= parseInt(data[1].price));
+  }, [data]);
+
   return (
     <div>
       <Container>
-      <Navbar>
+        <Navbar>
           <a href="/">
             {" "}
             <img src={Logo} />
           </a>
           <YY>
             <TT>
-            <WalletConnect></WalletConnect>
+              <WalletConnect></WalletConnect>
             </TT>
             <ProfileContainer>
               <img src={OrangeSmile} className="smile" />
@@ -295,16 +300,27 @@ const Mint = () => {
 
               <br />
               <TicketPrice>
-                $ 500 <TicketPriceOrange> $399</TicketPriceOrange>
+                $ 500{" "}
+                <TicketPriceOrange>
+                  {" "}
+                  ${ethers.utils.formatEther(data[1]?.price.toString())}
+                </TicketPriceOrange>
               </TicketPrice>
               <CounterWrapper>
-                <Counter />
+                <Counter
+                  numberOfTokens={numberOfTokens}
+                  setNumberOfTokens={setNumberOfTokens}
+                />
               </CounterWrapper>
             </TicketInfoContainer>
-            <MintButton>Mint</MintButton>
+            {!approved ? (
+              <ApproveUsdc approved={approved} setApproved={setApproved} />
+            ) : (
+              <MintTicket waveRead={data[1]} numberOfTokens={numberOfTokens} />
+            )}
             <Line></Line>
             <FiatText>
-              Buy with <img src={Arrow} className="arrow" /> <br /> CRedit Card
+              Buy with <img src={Arrow} className="arrow" /> <br /> Credit Card
             </FiatText>
           </TicketInfoWrapper>
         </MintContainer>
