@@ -148,7 +148,7 @@ const Profile = () => {
           </YY>
         </Navbar>
         <TicketDisplayContainer>
-          {data[0]?.map((tokenId) => {
+          {data?.[0]?.map((tokenId) => {
             return (
               <div key={tokenId}>
                 <img src={TicketPlaceholder} className="ticket" />

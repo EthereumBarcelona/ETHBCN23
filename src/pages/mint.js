@@ -236,6 +236,7 @@ const Counter = ({ numberOfTokens, setNumberOfTokens }) => {
 const Mint = () => {
   const { address } = useAccount();
   const [numberOfTokens, setNumberOfTokens] = useState(1);
+  const [approved, setApproved] = useState();
 
   const { data, isError, isLoading } = useContractReads({
     contracts: [
@@ -258,11 +259,9 @@ const Mint = () => {
 
   console.log(data);
 
-  const [approved, setApproved] = useState();
-
   useEffect(() => {
-    setApproved(parseInt(data[0]) >= parseInt(data[1].price));
-  }, [data]);
+    setApproved(data?.[0] >= data?.[1].price.mul(numberOfTokens));
+  }, [data, numberOfTokens]);
 
   return (
     <div>
@@ -300,23 +299,35 @@ const Mint = () => {
 
               <br />
               <TicketPrice>
-                $ 500{" "}
+                $ 500
                 <TicketPriceOrange>
-                  {" "}
-                  ${ethers.utils.formatEther(data[1]?.price.toString())}
+                  {/* $ 399 */}${ethers.utils.formatEther(data?.[1]?.price)}
                 </TicketPriceOrange>
               </TicketPrice>
+
               <CounterWrapper>
                 <Counter
                   numberOfTokens={numberOfTokens}
                   setNumberOfTokens={setNumberOfTokens}
                 />
               </CounterWrapper>
+              <div>
+                total cost: $
+                {ethers.utils.formatEther(data?.[1]?.price.mul(numberOfTokens))}
+              </div>
             </TicketInfoContainer>
             {!approved ? (
-              <ApproveUsdc approved={approved} setApproved={setApproved} />
+              <ApproveUsdc
+                ticketPrice={data?.[1]?.price}
+                numberOfTokens={numberOfTokens}
+                setApproved={setApproved}
+              />
             ) : (
-              <MintTicket waveRead={data[1]} numberOfTokens={numberOfTokens} />
+              // <div>Approve USDC</div>
+              <MintTicket
+                waveRead={data?.[1]}
+                numberOfTokens={numberOfTokens}
+              />
             )}
             <Line></Line>
             <FiatText>

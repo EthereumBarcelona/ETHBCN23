@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   erc20ABI,
   useAccount,
@@ -7,16 +7,26 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 import { getConfig } from "../config/config";
-import { ethers } from "ethers";
+// import erc20ABI from "../ethereum/build/ERC20Abi.json";
 
-const ApproveUsdc = ({ approved, setApproved }) => {
+const ApproveUsdc = ({ ticketPrice, numberOfTokens, setApproved }) => {
   const { address } = useAccount();
+
+  // console.log(
+  //   "tokens to approve: ",
+  //   ticketPrice.mul(numberOfTokens).toString()
+  // );
+
   const { config } = usePrepareContractWrite({
     address: getConfig.usdcAddress,
     abi: erc20ABI,
     functionName: "approve",
-    args: [getConfig.ticketContractAddress, ethers.utils.parseEther("10")],
-    // enabled: true,
+    args: [
+      getConfig.ticketContractAddress,
+      // "10000000000000000000"
+      ticketPrice?.mul(numberOfTokens),
+    ],
+    enabled: false, // parseInt(numberOfTokens) > 0,
     overrides: {
       from: address,
     },
@@ -25,7 +35,7 @@ const ApproveUsdc = ({ approved, setApproved }) => {
       console.log("usdc approved");
     },
     onError(data) {
-      console.log("Some error");
+      console.log("Usdc approval error");
     },
   });
   const { data, write } = useContractWrite(config);
@@ -33,11 +43,16 @@ const ApproveUsdc = ({ approved, setApproved }) => {
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
   });
+
+  useEffect(() => {
+    setApproved(isSuccess);
+  }, [isSuccess]);
+
   return (
     <button
       disabled={isLoading || isSuccess}
       onClick={() => {
-        console.log("approving...");
+        console.log("approving..");
         write?.();
       }}
     >

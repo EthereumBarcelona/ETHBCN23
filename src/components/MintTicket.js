@@ -42,7 +42,7 @@ const MintTicket = ({ waveRead, numberOfTokens }) => {
     abi: ticketAbi,
     functionName: "mintTicket",
     args: [0, parseInt(numberOfTokens)], // wave num = 0
-    enabled: parseInt(numberOfTokens) > 0,
+    enabled: false, // parseInt(numberOfTokens) > 0,
     overrides: {
       from: address,
       //   value: ethers.utils.parseEther(
