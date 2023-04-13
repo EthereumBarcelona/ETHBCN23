@@ -12,7 +12,7 @@ import Minus from "../assets/Minus.png";
 import Plus from "../assets/Plus.png";
 import { TT, Navbar, ProfileContainer, YY } from "./profile";
 import { getConfig } from "../config/config";
-import { erc20ABI, useAccount, useContractReads } from "wagmi";
+import { erc20ABI, useAccount, useContractRead } from "wagmi";
 import { ethers } from "ethers";
 import ApproveUsdc from "../components/ApproveUsdc";
 import MintTicket from "../components/MintTicket";
@@ -238,30 +238,35 @@ const Mint = () => {
   const [numberOfTokens, setNumberOfTokens] = useState(1);
   const [approved, setApproved] = useState();
 
-  const { data, isError, isLoading } = useContractReads({
-    contracts: [
-      {
-        address: getConfig.usdcAddress,
-        abi: erc20ABI,
-        functionName: "allowance",
-        args: [address, getConfig.ticketContractAddress],
-        chainId: sepolia.id,
-      },
-      {
-        address: getConfig.ticketContractAddress,
-        abi: ticketAbi,
-        functionName: "waves",
-        args: [0],
-        chainId: sepolia.id,
-      },
-    ],
+  const { data: waveRead } = useContractRead({
+    address: getConfig.ticketContractAddress,
+    abi: ticketAbi,
+    functionName: "waves",
+    args: [ethers.BigNumber.from(0)],
+    chainId: sepolia.id,
   });
 
-  console.log(data);
+  const { data: allowance } = useContractRead({
+    address: getConfig.usdcAddress,
+    abi: erc20ABI,
+    functionName: "allowance",
+    args: [address, getConfig.ticketContractAddress],
+    chainId: sepolia.id,
+  });
+
+  // console.log("wave read: ", waveRead);
+  // console.log("allowance: ", allowance);
+
+  // const data = [allowance, waveRead];
+
+  // let bignumber = ethers.BigNumber.from(0);
+  // const data = [bignumber, { price: bignumber }];
+
+  // console.log(" contract read: ", data);
 
   useEffect(() => {
-    setApproved(data?.[0] >= data?.[1].price.mul(numberOfTokens));
-  }, [data, numberOfTokens]);
+    setApproved(allowance >= waveRead?.price?.mul(numberOfTokens));
+  }, [waveRead, allowance, numberOfTokens]);
 
   return (
     <div>
@@ -301,7 +306,7 @@ const Mint = () => {
               <TicketPrice>
                 $ 500
                 <TicketPriceOrange>
-                  {/* $ 399 */}${ethers.utils.formatEther(data?.[1]?.price)}
+                  {/* $ 399  */}${ethers.utils.formatEther(waveRead?.price)}
                 </TicketPriceOrange>
               </TicketPrice>
 
@@ -313,21 +318,18 @@ const Mint = () => {
               </CounterWrapper>
               <div>
                 total cost: $
-                {ethers.utils.formatEther(data?.[1]?.price.mul(numberOfTokens))}
+                {ethers.utils.formatEther(waveRead?.price?.mul(numberOfTokens))}
               </div>
             </TicketInfoContainer>
             {!approved ? (
               <ApproveUsdc
-                ticketPrice={data?.[1]?.price}
+                ticketPrice={waveRead?.price}
                 numberOfTokens={numberOfTokens}
                 setApproved={setApproved}
               />
             ) : (
               // <div>Approve USDC</div>
-              <MintTicket
-                waveRead={data?.[1]}
-                numberOfTokens={numberOfTokens}
-              />
+              <MintTicket waveRead numberOfTokens={numberOfTokens} />
             )}
             <Line></Line>
             <FiatText>
