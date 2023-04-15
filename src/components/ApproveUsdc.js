@@ -23,22 +23,23 @@ const ApproveUsdc = ({ ticketPrice, numberOfTokens, setApproved }) => {
     functionName: "approve",
     args: [
       getConfig.ticketContractAddress,
-      // "10000000000000000000"
+      // "10000000000000000000",
       ticketPrice?.mul(numberOfTokens),
     ],
-    enabled: false, // parseInt(numberOfTokens) > 0,
+    // enabled: false, // parseInt(numberOfTokens) > 0,
     overrides: {
       from: address,
     },
-    onSuccess(data) {
-      setApproved(true);
-      console.log("usdc approved");
-    },
-    onError(data) {
-      console.log("Usdc approval error");
-    },
+    // onSuccess(data) {
+    //   setApproved(true);
+    //   console.log("usdc approved");
+    // },
+    // onError(data) {
+    //   console.log("Usdc approval error");
+    // },
   });
   const { data, write } = useContractWrite(config);
+  console.log("approval write: ", write);
 
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
@@ -50,7 +51,7 @@ const ApproveUsdc = ({ ticketPrice, numberOfTokens, setApproved }) => {
 
   return (
     <button
-      disabled={isLoading || isSuccess}
+      disabled={!write || isLoading || isSuccess}
       onClick={() => {
         console.log("approving..");
         write?.();

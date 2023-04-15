@@ -12,7 +12,7 @@ import Minus from "../assets/Minus.png";
 import Plus from "../assets/Plus.png";
 import { TT, Navbar, ProfileContainer, YY } from "./profile";
 import { getConfig } from "../config/config";
-import { erc20ABI, useAccount, useContractRead } from "wagmi";
+import { erc20ABI, useAccount, useContractRead, useContractReads } from "wagmi";
 import { ethers } from "ethers";
 import ApproveUsdc from "../components/ApproveUsdc";
 import MintTicket from "../components/MintTicket";
@@ -238,15 +238,39 @@ const Mint = () => {
   const [numberOfTokens, setNumberOfTokens] = useState(1);
   const [approved, setApproved] = useState();
 
-  const { data: waveRead } = useContractRead({
+  let bignumber = ethers.BigNumber.from(0);
+
+  let waveRead = { price: bignumber }; //contractRead?.[0]; //
+  let allowance = bignumber; //contractRead?.[1]; // ;
+
+  const { data: contractRead } = useContractReads({
+    contracts: [
+      {
+        address: getConfig.ticketContractAddress,
+        abi: ticketAbi,
+        functionName: "waves",
+        args: [ethers.BigNumber.from("0")],
+        chainId: sepolia.id,
+      },
+      {
+        address: getConfig.usdcAddress,
+        abi: erc20ABI,
+        functionName: "allowance",
+        args: [address, getConfig.ticketContractAddress],
+        chainId: sepolia.id,
+      },
+    ],
+  });
+
+  const { data: waveRead1 } = useContractRead({
     address: getConfig.ticketContractAddress,
     abi: ticketAbi,
     functionName: "waves",
-    args: [ethers.BigNumber.from(0)],
+    args: [ethers.BigNumber.from("0")],
     chainId: sepolia.id,
   });
 
-  const { data: allowance } = useContractRead({
+  const { data: allowance1 } = useContractRead({
     address: getConfig.usdcAddress,
     abi: erc20ABI,
     functionName: "allowance",
@@ -254,15 +278,17 @@ const Mint = () => {
     chainId: sepolia.id,
   });
 
-  // console.log("wave read: ", waveRead);
-  // console.log("allowance: ", allowance);
+  waveRead = waveRead1 ? waveRead1 : waveRead;
+  allowance = allowance1 ? allowance1 : allowance;
+
+  console.log(" contract read: ", contractRead);
+
+  console.log("wave read: ", waveRead1);
+  console.log("allowance: ", allowance1);
 
   // const data = [allowance, waveRead];
 
-  // let bignumber = ethers.BigNumber.from(0);
   // const data = [bignumber, { price: bignumber }];
-
-  // console.log(" contract read: ", data);
 
   useEffect(() => {
     setApproved(allowance >= waveRead?.price?.mul(numberOfTokens));
@@ -328,8 +354,7 @@ const Mint = () => {
                 setApproved={setApproved}
               />
             ) : (
-              // <div>Approve USDC</div>
-              <MintTicket waveRead numberOfTokens={numberOfTokens} />
+              <MintTicket numberOfTokens={numberOfTokens} />
             )}
             <Line></Line>
             <FiatText>

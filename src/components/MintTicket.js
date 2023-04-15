@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import {
+  sepolia,
   useAccount,
   useContractWrite,
   usePrepareContractWrite,
@@ -35,28 +36,37 @@ const MintButton = styled.button`
   }
 `;
 
-const MintTicket = ({ waveRead, numberOfTokens }) => {
+const MintTicket = ({ numberOfTokens }) => {
   const { address } = useAccount();
   const { config } = usePrepareContractWrite({
     address: getConfig.ticketContractAddress,
     abi: ticketAbi,
     functionName: "mintTicket",
-    args: [0, parseInt(numberOfTokens)], // wave num = 0
-    enabled: false, // parseInt(numberOfTokens) > 0,
+    args: [
+      0,
+      parseInt(numberOfTokens),
+      // {
+      //   gasLimit: "1000000",
+      // },
+    ], // wave num = 0
+    chainId: sepolia.id,
+    // enabled: false, // parseInt(numberOfTokens) > 0,
     overrides: {
       from: address,
-      //   value: ethers.utils.parseEther(
-      //     `${parseInt(waveRead?.price.toString()) * parseInt(numberOfTokens)}`
-      //   ),
     },
-    onSuccess(data) {
-      console.log(`Minted ${numberOfTokens} tickets`);
-    },
-    onError(data) {
-      console.log("Some error");
-    },
+    // onSuccess(data) {
+    //   console.log(`Minted ${numberOfTokens} tickets`);
+    // },
+    // onError(data) {
+    //   console.log("Some error");
+    // },
   });
+
+  console.log(config);
+
   const { data, write } = useContractWrite(config);
+
+  console.log(data, write);
 
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
@@ -65,7 +75,7 @@ const MintTicket = ({ waveRead, numberOfTokens }) => {
   return (
     <>
       <MintButton
-        disabled={parseInt(numberOfTokens) <= 0 || isLoading}
+        disabled={!write || parseInt(numberOfTokens) <= 0 || isLoading}
         onClick={() => {
           console.log(`Minting ${numberOfTokens} tickets for ${address}`);
           write?.();
