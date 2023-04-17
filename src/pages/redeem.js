@@ -150,7 +150,7 @@ const Redeem = () => {
 
   const { data: burnData, write: burn } = useContractWrite(config);
 
-  console.log("BURN: ", burnData, burn);
+  // console.log("BURN: ", burnData, burn);
 
   const { isLoading, isSuccess, isError } = useWaitForTransaction({
     hash: burnData?.hash,
@@ -159,7 +159,7 @@ const Redeem = () => {
   useEffect(() => {
     const run = async () => {
       if (burnData?.hash) {
-        while (isLoading) {
+        if (isSuccess && !isError) {
           const url = `${getConfig.apiBaseUrl}/qrcode`;
           const tkt_data = {
             walletAddress: address,
@@ -179,7 +179,7 @@ const Redeem = () => {
       }
     };
     run();
-  }, [burnData, isSuccess, isError, id, navigate]);
+  }, [burnData, isSuccess, isError, id, navigate, isLoading, address]);
 
   const onBurn = async (e) => {
     e.preventDefault();

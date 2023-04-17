@@ -25,5 +25,5 @@ export const getConfig =
 
         apiBaseUrl: "http://localhost:3456",
         mainApiBaseUrl: "https://eth-bcn-2023.herokuapp.com",
-        appBaseUrl: "http://localhost:3000",
+        appBaseUrl: "http://localhost:3000", // "https://eth-bcn-2023.web.app"
       };
