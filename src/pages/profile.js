@@ -145,7 +145,9 @@ const Profile = () => {
               <WalletConnect></WalletConnect>
             </TT>
             <ProfileContainer>
+            <a href="/">
               <img src={OrangeSmile} className="smile" />
+              </a>
             </ProfileContainer>
           </YY>
         </Navbar>

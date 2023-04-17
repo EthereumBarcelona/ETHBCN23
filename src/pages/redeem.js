@@ -3,6 +3,10 @@ import { Container } from "./mint";
 import { FooterDescriptionTitleBold, FooterDescription } from "./profile";
 import styled from "styled-components";
 import TicketPlaceholder from "../assets/Ticket.png";
+import {Navbar, YY,TT, ProfileContainer} from "./profile";
+import WalletConnect from "../components/walletConnect";
+import Logo from "../assets/logo.svg";
+import OrangeSmile from "../assets/orangeSmile.svg";
 
 export const RedeemContainer = styled.div`
   border: 1px solid #bc563c;
@@ -87,6 +91,21 @@ const Redeem = () => {
   return (
     <div>
       <Container>
+      <Navbar>
+          <a href="/">
+            <img src={Logo} />
+          </a>
+          <YY>
+            <TT>
+              <WalletConnect></WalletConnect>
+            </TT>
+            <ProfileContainer>
+            <a href="/">
+              <img src={OrangeSmile} className="smile" />
+              </a>
+            </ProfileContainer>
+          </YY>
+        </Navbar>
         <RedeemContainer>
           <FooterDescriptionTitleBold>
             Redeem NFTicket

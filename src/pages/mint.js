@@ -215,7 +215,7 @@ export const TicketPriceBlack = styled.div`
   }
 
   a {
-    text-decoration:none;
+    text-decoration: none;
   }
 `;
 
@@ -322,7 +322,10 @@ const Mint = () => {
               <WalletConnect></WalletConnect>
             </TT>
             <ProfileContainer>
-              <img src={OrangeSmile} className="smile" />
+              {" "}
+              <a href="/">
+                <img src={OrangeSmile} className="smile" />
+              </a>
             </ProfileContainer>
           </YY>
         </Navbar>
@@ -370,7 +373,6 @@ const Mint = () => {
               </TicketPriceBlack>
             </TicketInfoContainer>
             {!approved ? (
-
               <ApproveUsdc
                 ticketPrice={waveRead?.price}
                 numberOfTokens={numberOfTokens}
