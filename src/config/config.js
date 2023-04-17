@@ -25,7 +25,6 @@ export const getConfig =
         apiBaseUrl: "http://localhost:3456",
         mainApiBaseUrl: "https://eth-bcn-2023.herokuapp.com",
         appBaseUrl: "http://localhost:3000",
-        // waveNum: waveNum.mainnet,
         /*mainnet*/ 1: {
           network: mainnet,
           waveNum: waveNum.mainnet,
@@ -36,9 +35,6 @@ export const getConfig =
           },
           explorerUrl: "https://etherscan.io",
           ticketAbi: ethTicketAbi,
-          // mintArgs: {
-          //   usdc: [waveNum.testnet],
-          // },
         },
         /*optimism*/ 10: {
           network: optimism,
@@ -50,10 +46,6 @@ export const getConfig =
           },
           explorerUrl: "https://optimism.etherscan.io",
           ticketAbi: optimismTicketAbi,
-          // mintArgs: {
-          //   usdc: [waveNum.testnet, usdcAddress.optimismGoerli],
-          //   dai: [waveNum.testnet, daiAddress.optimismGoerli],
-          // },
         },
       }
     : {
@@ -62,8 +54,7 @@ export const getConfig =
         alchemyKey: process.env.REACT_APP_ALCHEMY_API_KEY,
         apiBaseUrl: "http://localhost:3456",
         mainApiBaseUrl: "https://eth-bcn-2023.herokuapp.com",
-        appBaseUrl: "http://localhost:3000",
-        // waveNum: waveNum.testnet,
+        appBaseUrl: "http://localhost:3000", // "https://eth-bcn-2023.web.app"
         /*sepolia*/ 11155111 /*chainId*/: {
           network: sepolia,
           waveNum: waveNum.sepolia,
@@ -74,9 +65,6 @@ export const getConfig =
           },
           explorerUrl: "https://sepolia.etherscan.io",
           ticketAbi: ethTicketAbi,
-          // mintArgs: {
-          //   usdc: [waveNum.testnet],
-          // },
         },
         /*optimismGoerli*/ 420: {
           network: optimismGoerli,
@@ -88,9 +76,5 @@ export const getConfig =
           },
           explorerUrl: "https://goerli-optimism.etherscan.io",
           ticketAbi: optimismTicketAbi,
-          // mintArgs: {
-          //   usdc: [waveNum.testnet, usdcAddress.optimismGoerli],
-          //   dai: [waveNum.testnet, daiAddress.optimismGoerli],
-          // },
         },
       };
