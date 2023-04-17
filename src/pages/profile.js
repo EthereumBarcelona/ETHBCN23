@@ -9,6 +9,7 @@ import "./style.css";
 import { useAccount, useContractReads } from "wagmi";
 import { getConfig } from "../config/config";
 import ticketAbi from "../ethereum/build/TicketAbi.json";
+import { Link } from "react-router-dom";
 
 const { network } = getConfig;
 
@@ -175,10 +176,10 @@ const Profile = () => {
         <TicketDisplayContainer>
           {data?.[0]?.map((tokenId) => {
             return (
-              <div key={tokenId}>
+              <Link to={`/redeem/${tokenId}`} key={tokenId}>
                 <img src={TicketPlaceholder} className="ticket" />
                 <div>#{tokenId.toString()}</div>
-              </div>
+              </Link>
             );
           })}
           {/* <img src={TicketPlaceholder} className="ticket" />
