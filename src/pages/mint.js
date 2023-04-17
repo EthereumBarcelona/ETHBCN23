@@ -204,6 +204,17 @@ const TicketPriceOrange = styled(TicketPrice)`
   }
 `;
 
+const TicketPriceBlack = styled.div`
+  color: #bc563c;
+  font-size: 24px;
+  color: #424242;
+  font-family: "Dahlia-Bold";
+
+  @media screen and (max-width: 767px) {
+    margin: 10px 5px 0 0;
+  }
+`;
+
 export const CounterWrapper = styled.div`
   font-family: "Dahlia-Bold";
   font-style: normal;
@@ -344,12 +355,18 @@ const Mint = () => {
                   setNumberOfTokens={setNumberOfTokens}
                 />
               </CounterWrapper>
-              <div>
-                total cost: $
-                {ethers.utils.formatEther(waveRead?.price?.mul(numberOfTokens))}
-              </div>
+              <TicketPriceBlack>
+                Total cost:
+                <TicketPriceOrange>
+                  $
+                  {ethers.utils.formatEther(
+                    waveRead?.price?.mul(numberOfTokens)
+                  )}
+                </TicketPriceOrange>{" "}
+              </TicketPriceBlack>
             </TicketInfoContainer>
             {!approved ? (
+
               <ApproveUsdc
                 ticketPrice={waveRead?.price}
                 numberOfTokens={numberOfTokens}
@@ -359,9 +376,12 @@ const Mint = () => {
               <MintTicket numberOfTokens={numberOfTokens} />
             )}
             <Line></Line>
-            <FiatText>
-              Buy with <img src={Arrow} className="arrow" /> <br /> Credit Card
-            </FiatText>
+            <a href="https://ethbarcelona.myshopify.com/">
+              <FiatText>
+                Buy with <img src={Arrow} className="arrow" /> <br /> Credit
+                Card
+              </FiatText>
+            </a>
           </TicketInfoWrapper>
         </MintContainer>
       </Container>

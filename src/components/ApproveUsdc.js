@@ -8,6 +8,32 @@ import {
 } from "wagmi";
 import { getConfig } from "../config/config";
 // import erc20ABI from "../ethereum/build/ERC20Abi.json";
+import styled from "styled-components";
+
+const Button = styled.button`
+  border: 1px solid #bc563c;
+  font-family: "Dahlia-Bold";
+  font-size: 24px;
+  color: #bc563c;
+  border-radius: 100px;
+  width: 350px;
+  height: 80px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  :hover {
+    cursor: pointer;
+    background: #bc563c;
+    color: #e5dcd0;
+  }
+
+  @media screen and (max-width: 767px) {
+    margin: 0;
+    width: 300px;
+  }
+`;
 
 const ApproveUsdc = ({ ticketPrice, numberOfTokens, setApproved }) => {
   const { address } = useAccount();
@@ -50,7 +76,7 @@ const ApproveUsdc = ({ ticketPrice, numberOfTokens, setApproved }) => {
   }, [isSuccess]);
 
   return (
-    <button
+    <Button
       disabled={!write || isLoading || isSuccess}
       onClick={() => {
         console.log("approving..");
@@ -58,7 +84,7 @@ const ApproveUsdc = ({ ticketPrice, numberOfTokens, setApproved }) => {
       }}
     >
       {isLoading ? <span>Approving...</span> : <span>Approve USDC</span>}
-    </button>
+    </Button>
   );
 };
 
