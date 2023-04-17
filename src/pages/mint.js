@@ -326,7 +326,9 @@ const Mint = () => {
                 Price <HeadingSmallOrange>-50 %</HeadingSmallOrange>
               </HeadingSmall>
 
-              <HeadingSmall>23/500</HeadingSmall>
+              <HeadingSmall>
+                {waveRead?.minted?.toString()}/{waveRead?.supply?.toString()}
+              </HeadingSmall>
 
               <br />
               <TicketPrice>
