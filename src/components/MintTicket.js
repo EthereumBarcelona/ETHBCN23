@@ -36,6 +36,27 @@ const MintButton = styled.button`
   }
 `;
 
+export const TicketPriceBlack = styled.div`
+  color: #bc563c;
+  font-size: 24px;
+  color: #424242;
+  font-family: "Dahlia-Bold";
+
+`;
+export const TicketPriceBlack2 = styled.div`
+  color: #bc563c;
+  font-size: 24px;
+  color: #424242;
+  font-family: "Dahlia-Bold";
+  margin: 20px auto 0 auto;
+  text-decoration: none; /* add this line */
+  a {
+    text-decoration:none;
+  }
+`;
+
+
+
 const MintTicket = ({ numberOfTokens }) => {
   const { address } = useAccount();
   const { config } = usePrepareContractWrite({
@@ -81,18 +102,28 @@ const MintTicket = ({ numberOfTokens }) => {
           write?.();
         }}
       >
-        {isLoading ? <span>Minting..</span> : <span>Mint</span>}
+        {isLoading ? (
+          <TicketPriceBlack>Minting..</TicketPriceBlack>
+        ) : (
+          <TicketPriceBlack>Mint</TicketPriceBlack>
+        )}
       </MintButton>
 
       <a
         href={`${getConfig.explorerUrl}/tx/${data?.hash}`}
         target={"_blank"}
         rel="noreferrer"
+      
       >
         {isSuccess ? (
-          <span>Successfully minted {numberOfTokens} tickets</span>
+          <TicketPriceBlack2>
+            Successfully minted {numberOfTokens} ticket
+          </TicketPriceBlack2>
         ) : isLoading ? (
-          <span>Pending txn {data?.hash}</span>
+          <TicketPriceBlack2>
+         Pending txn {data?.hash.substring(0, 4)}...
+            {data?.hash.substring(data?.hash.length - 2)}
+          </TicketPriceBlack2>
         ) : null}
       </a>
     </>

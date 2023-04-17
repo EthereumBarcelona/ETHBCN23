@@ -31,8 +31,10 @@ export const Navbar = styled.div`
     padding: 20px 0;
   }
 `;
-
-export const TicketDisplayContainer = styled.div``;
+export const TicketDisplayContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
 export const Footer = styled.div`
   margin-top: auto;

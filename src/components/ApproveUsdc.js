@@ -9,6 +9,7 @@ import {
 import { getConfig } from "../config/config";
 // import erc20ABI from "../ethereum/build/ERC20Abi.json";
 import styled from "styled-components";
+import {TicketPriceBlack} from "../pages/mint";
 
 const Button = styled.button`
   border: 1px solid #bc563c;
@@ -83,7 +84,7 @@ const ApproveUsdc = ({ ticketPrice, numberOfTokens, setApproved }) => {
         write?.();
       }}
     >
-      {isLoading ? <span>Approving...</span> : <span>Approve USDC</span>}
+      {isLoading ? <TicketPriceBlack>Approving...</TicketPriceBlack> : <TicketPriceBlack>Approve USDC</TicketPriceBlack>}
     </Button>
   );
 };

@@ -204,7 +204,7 @@ const TicketPriceOrange = styled(TicketPrice)`
   }
 `;
 
-const TicketPriceBlack = styled.div`
+export const TicketPriceBlack = styled.div`
   color: #bc563c;
   font-size: 24px;
   color: #424242;
@@ -212,6 +212,10 @@ const TicketPriceBlack = styled.div`
 
   @media screen and (max-width: 767px) {
     margin: 10px 5px 0 0;
+  }
+
+  a {
+    text-decoration:none;
   }
 `;
 
