@@ -134,7 +134,7 @@ const Redeem = () => {
 
   useEffect(() => {
     if (address) checkIfTokenOwned();
-  }, [address]);
+  }, [owner, error, address]);
 
   const { config } = usePrepareContractWrite({
     address: getConfig?.ticketContractAddress,
