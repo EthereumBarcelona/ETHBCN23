@@ -41,7 +41,6 @@ export const TicketPriceBlack = styled.div`
   font-size: 24px;
   color: #424242;
   font-family: "Dahlia-Bold";
-
 `;
 export const TicketPriceBlack2 = styled.div`
   color: #bc563c;
@@ -51,13 +50,11 @@ export const TicketPriceBlack2 = styled.div`
   margin: 20px auto 0 auto;
   text-decoration: none; /* add this line */
   a {
-    text-decoration:none;
+    text-decoration: none;
   }
 `;
 
-
-
-const MintTicket = ({ numberOfTokens }) => {
+const MintTicket = ({ lowBalance, numberOfTokens }) => {
   const { address } = useAccount();
   const { config } = usePrepareContractWrite({
     address: getConfig.ticketContractAddress,
@@ -96,7 +93,9 @@ const MintTicket = ({ numberOfTokens }) => {
   return (
     <>
       <MintButton
-        disabled={!write || parseInt(numberOfTokens) <= 0 || isLoading}
+        disabled={
+          lowBalance || !write || parseInt(numberOfTokens) <= 0 || isLoading
+        }
         onClick={() => {
           console.log(`Minting ${numberOfTokens} tickets for ${address}`);
           write?.();
@@ -113,7 +112,6 @@ const MintTicket = ({ numberOfTokens }) => {
         href={`${getConfig.explorerUrl}/tx/${data?.hash}`}
         target={"_blank"}
         rel="noreferrer"
-      
       >
         {isSuccess ? (
           <TicketPriceBlack2>
@@ -121,7 +119,7 @@ const MintTicket = ({ numberOfTokens }) => {
           </TicketPriceBlack2>
         ) : isLoading ? (
           <TicketPriceBlack2>
-         Pending txn {data?.hash.substring(0, 4)}...
+            Pending txn {data?.hash.substring(0, 4)}...
             {data?.hash.substring(data?.hash.length - 2)}
           </TicketPriceBlack2>
         ) : null}

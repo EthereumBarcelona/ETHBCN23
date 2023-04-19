@@ -9,7 +9,7 @@ import {
 import { getConfig } from "../config/config";
 // import erc20ABI from "../ethereum/build/ERC20Abi.json";
 import styled from "styled-components";
-import {TicketPriceBlack} from "../pages/mint";
+import { TicketPriceBlack } from "../pages/mint";
 
 const Button = styled.button`
   border: 1px solid #bc563c;
@@ -36,7 +36,12 @@ const Button = styled.button`
   }
 `;
 
-const ApproveUsdc = ({ ticketPrice, numberOfTokens, setApproved }) => {
+const ApproveUsdc = ({
+  lowBalance,
+  ticketPrice,
+  numberOfTokens,
+  setApproved,
+}) => {
   const { address } = useAccount();
 
   // console.log(
@@ -68,23 +73,27 @@ const ApproveUsdc = ({ ticketPrice, numberOfTokens, setApproved }) => {
   const { data, write } = useContractWrite(config);
   console.log("approval write: ", write);
 
-  const { isLoading, isSuccess } = useWaitForTransaction({
+  const { isLoading, isSuccess, isError } = useWaitForTransaction({
     hash: data?.hash,
   });
 
   useEffect(() => {
-    setApproved(isSuccess);
-  }, [isSuccess]);
+    setApproved(isSuccess || !isError);
+  }, [isSuccess, isError]);
 
   return (
     <Button
-      disabled={!write || isLoading || isSuccess}
+      disabled={!write || isLoading || isSuccess || lowBalance}
       onClick={() => {
         console.log("approving..");
         write?.();
       }}
     >
-      {isLoading ? <TicketPriceBlack>Approving...</TicketPriceBlack> : <TicketPriceBlack>Approve USDC</TicketPriceBlack>}
+      {isLoading ? (
+        <TicketPriceBlack>Approving...</TicketPriceBlack>
+      ) : (
+        <TicketPriceBlack>Approve USDC</TicketPriceBlack>
+      )}
     </Button>
   );
 };

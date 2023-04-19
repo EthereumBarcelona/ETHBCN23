@@ -249,35 +249,45 @@ const Counter = ({ numberOfTokens, setNumberOfTokens }) => {
 };
 
 const Mint = () => {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const [numberOfTokens, setNumberOfTokens] = useState(1);
   const [approved, setApproved] = useState();
+  const [lowBalance, setLowBalance] = useState(false);
 
   let bignumber = ethers.BigNumber.from(0);
 
-  let waveRead = { price: bignumber }; //contractRead?.[0]; //
-  let allowance = bignumber; //contractRead?.[1]; // ;
+  // let waveRead = { price: bignumber }; //contractRead?.[0]; //
+  // let allowance = bignumber; //contractRead?.[1]; // ;
+  // let usdcBalance = bignumber;
 
-  const { data: contractRead } = useContractReads({
-    contracts: [
-      {
-        address: getConfig.ticketContractAddress,
-        abi: ticketAbi,
-        functionName: "waves",
-        args: [ethers.BigNumber.from("0")],
-        chainId: sepolia.id,
-      },
-      {
-        address: getConfig.usdcAddress,
-        abi: erc20ABI,
-        functionName: "allowance",
-        args: [address, getConfig.ticketContractAddress],
-        chainId: sepolia.id,
-      },
-    ],
+  // const { data: contractRead } = useContractReads({
+  //   contracts: [
+  //     {
+  //       address: getConfig.ticketContractAddress,
+  //       abi: ticketAbi,
+  //       functionName: "waves",
+  //       args: [ethers.BigNumber.from("0")],
+  //       chainId: sepolia.id,
+  //     },
+  //     {
+  //       address: getConfig.usdcAddress,
+  //       abi: erc20ABI,
+  //       functionName: "allowance",
+  //       args: [address, getConfig.ticketContractAddress],
+  //       chainId: sepolia.id,
+  //     },
+  //   ],
+  // });
+
+  const { data: usdcBalance = bignumber } = useContractRead({
+    address: getConfig.usdcAddress,
+    abi: erc20ABI,
+    functionName: "balanceOf",
+    args: [address],
+    chainId: sepolia.id,
   });
 
-  const { data: waveRead1 } = useContractRead({
+  const { data: waveRead = { price: bignumber } } = useContractRead({
     address: getConfig.ticketContractAddress,
     abi: ticketAbi,
     functionName: "waves",
@@ -285,7 +295,7 @@ const Mint = () => {
     chainId: sepolia.id,
   });
 
-  const { data: allowance1 } = useContractRead({
+  const { data: allowance = bignumber } = useContractRead({
     address: getConfig.usdcAddress,
     abi: erc20ABI,
     functionName: "allowance",
@@ -293,21 +303,23 @@ const Mint = () => {
     chainId: sepolia.id,
   });
 
-  waveRead = waveRead1 ? waveRead1 : waveRead;
-  allowance = allowance1 ? allowance1 : allowance;
+  // waveRead = waveRead1 ? waveRead1 : waveRead;
+  // allowance = allowance1 ? allowance1 : allowance;
 
-  console.log(" contract read: ", contractRead);
+  // console.log(" contract read: ", contractRead);
 
-  console.log("wave read: ", waveRead1);
-  console.log("allowance: ", allowance1);
+  console.log("wave read: ", waveRead);
+  console.log("allowance: ", allowance);
+  console.log(`USDC balance of ${address}: `, usdcBalance);
 
   // const data = [allowance, waveRead];
 
   // const data = [bignumber, { price: bignumber }];
 
   useEffect(() => {
+    setLowBalance(usdcBalance < waveRead?.price?.mul(numberOfTokens));
     setApproved(allowance >= waveRead?.price?.mul(numberOfTokens));
-  }, [waveRead, allowance, numberOfTokens]);
+  }, [waveRead, allowance, numberOfTokens, isConnected, address]);
 
   return (
     <div>
@@ -371,15 +383,31 @@ const Mint = () => {
                   )}
                 </TicketPriceOrange>{" "}
               </TicketPriceBlack>
+
+              <TicketPriceBlack>
+                USDC balance:
+                <TicketPriceOrange>
+                  ${ethers.utils.formatEther(usdcBalance)}
+                </TicketPriceOrange>{" "}
+              </TicketPriceBlack>
             </TicketInfoContainer>
-            {!approved ? (
+
+            {!isConnected ? (
+              <WalletConnect />
+            ) : lowBalance ? (
+              <div>balance is low</div>
+            ) : !approved ? (
               <ApproveUsdc
+                lowBalance={lowBalance}
                 ticketPrice={waveRead?.price}
                 numberOfTokens={numberOfTokens}
                 setApproved={setApproved}
               />
             ) : (
-              <MintTicket numberOfTokens={numberOfTokens} />
+              <MintTicket
+                lowBalance={lowBalance}
+                numberOfTokens={numberOfTokens}
+              />
             )}
             <Line></Line>
             <a href="https://ethbarcelona.myshopify.com/">
