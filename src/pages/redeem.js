@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "./mint";
 import { FooterDescriptionTitleBold, FooterDescription } from "./profile";
 import styled from "styled-components";
 import TicketPlaceholder from "../assets/Ticket.png";
-import {Navbar, YY,TT, ProfileContainer} from "./profile";
+import { Navbar, YY, TT, ProfileContainer } from "./profile";
 import WalletConnect from "../components/walletConnect";
 import Logo from "../assets/logo.svg";
 import OrangeSmile from "../assets/orangeSmile.svg";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  sepolia,
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
+import { getConfig } from "../config/config";
+import ticketAbi from "../ethereum/build/TicketAbi.json";
+import axios from "axios";
+import ErrorPage from "../components/ErrorPage";
 
 export const RedeemContainer = styled.div`
   border: 1px solid #bc563c;
@@ -61,7 +74,7 @@ const TicketImageWrapper = styled.div`
   padding: 20px 0;
 `;
 
-const MintButton = styled.div`
+const MintButton = styled.button`
   border: 1px solid #bc563c;
   font-family: "Dahlia-Bold";
   font-size: 24px;
@@ -88,62 +101,225 @@ const MintButton = styled.div`
 `;
 
 const Redeem = () => {
-  return (
-    <div>
-      <Container>
-      <Navbar>
-          <a href="/">
-            <img src={Logo} />
-          </a>
-          <YY>
-            <TT>
-              <WalletConnect></WalletConnect>
-            </TT>
-            <ProfileContainer>
-            <a href="/">
-              <img src={OrangeSmile} className="smile" />
-              </a>
-            </ProfileContainer>
-          </YY>
-        </Navbar>
-        <RedeemContainer>
-          <FooterDescriptionTitleBold>
-            Redeem NFTicket
-          </FooterDescriptionTitleBold>
-          <FooterDescription>
-            Redeem your NFTicket to get a QR code to
-            <br /> enter the event
-          </FooterDescription>
-          <TicketImageWrapper>
-            <img src={TicketPlaceholder} />
-            <FooterDescription>#126</FooterDescription>
-          </TicketImageWrapper>
+  const { address } = useAccount();
+  const [user, setUser] = useState({
+    fullName: "",
+    displayName: "",
+    email: "",
+  });
 
-          <Title>Full Name</Title>
-          <Input
-            type="text"
-            placeholder="Enter your name"
-            name="name"
-            id="name"
-          />
-          <Title>Email</Title>
-          <Input
-            type="text"
-            placeholder="Enter your email"
-            name="name"
-            id="name"
-          />
-          <Title>Display Name</Title>
-          <Input
-            type="text"
-            placeholder="Enter your display name"
-            name="name"
-            id="name"
-          />
-          <MintButton>Redeem Now</MintButton>
-        </RedeemContainer>
-      </Container>
-    </div>
+  const [tokenOwned, setTokenOwned] = useState(false);
+  const [redeeming, setRedeeming] = useState(false);
+
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const { data: owner, error } = useContractRead({
+    address: getConfig.ticketContractAddress,
+    abi: ticketAbi,
+    functionName: "ownerOf",
+    args: [id],
+    chainId: sepolia.id,
+  });
+
+  const checkIfTokenOwned = async () => {
+    try {
+      // const owner = await TicketToken.methods.ownerOf(id).call();
+
+      if (owner === address && !error) setTokenOwned(true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    if (address) checkIfTokenOwned();
+  }, [address]);
+
+  const { config } = usePrepareContractWrite({
+    address: getConfig?.ticketContractAddress,
+    abi: ticketAbi,
+    functionName: "burn",
+    args: [id],
+    chainId: sepolia.id,
+    overrides: {
+      from: address,
+    },
+    // enabled: false,
+  });
+
+  const { data: burnData, write: burn } = useContractWrite(config);
+
+  console.log("BURN: ", burnData, burn);
+
+  const { isLoading, isSuccess, isError } = useWaitForTransaction({
+    hash: burnData?.hash,
+  });
+
+  useEffect(() => {
+    const run = async () => {
+      if (burnData?.hash) {
+        while (isLoading) {
+          const url = `${getConfig.apiBaseUrl}/qrcode`;
+          const tkt_data = {
+            walletAddress: address,
+            tokenID: id,
+            hash: burnData?.hash,
+          };
+          const res = await axios.post(url, tkt_data, {
+            headers: {
+              "Content-Type": "application/json",
+              validate: process.env.REACT_APP_VALIDATE_TOKEN,
+            },
+          });
+          console.log(res);
+        }
+        if (isSuccess || isError) setRedeeming(false);
+        if (isSuccess) navigate(`/tickets/${id}/qrcode`);
+      }
+    };
+    run();
+  }, [burnData, isSuccess, isError, id, navigate]);
+
+  const onBurn = async (e) => {
+    e.preventDefault();
+    setRedeeming(true);
+    await saveData();
+    try {
+      console.log("Burning the ticket");
+
+      burn();
+      console.log("burning2..");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const saveData = async () => {
+    const url = `${getConfig.apiBaseUrl}/users`;
+    const post_data = {
+      name: user.fullName,
+      optionalName: user.displayName ? user.displayName : user.fullName,
+      email: user.email,
+      walletAddress: address,
+      tokenId: id,
+      ticketId: id,
+    };
+
+    const { data } = await axios.get(url + `/${id}`, {
+      headers: {
+        validate: process.env.REACT_APP_VALIDATE_TOKEN,
+      },
+    });
+
+    console.log(data?.user);
+
+    if (!user?.displayName)
+      setUser({ ...user, displayName: data?.user?.optionalName });
+
+    if (data.user?.tokenId) {
+      await axios.patch(url + `/${id}`, post_data, {
+        headers: {
+          validate: process.env.REACT_APP_VALIDATE_TOKEN,
+        },
+      });
+    } else {
+      await axios.post(url, post_data, {
+        headers: {
+          "Content-Type": "application/json",
+          validate: process.env.REACT_APP_VALIDATE_TOKEN,
+        },
+      });
+    }
+
+    console.log("user data posted successfully...");
+  };
+
+  return (
+    <>
+      {tokenOwned ? (
+        <div>
+          <Container>
+            <Navbar>
+              <a href="/">
+                <img src={Logo} />
+              </a>
+              <YY>
+                <TT>
+                  <WalletConnect></WalletConnect>
+                </TT>
+                <ProfileContainer>
+                  <a href="/">
+                    <img src={OrangeSmile} alt="" className="smile" />
+                  </a>
+                </ProfileContainer>
+              </YY>
+            </Navbar>
+            <RedeemContainer>
+              <FooterDescriptionTitleBold>
+                Redeem NFTicket
+              </FooterDescriptionTitleBold>
+              <FooterDescription>
+                Redeem your NFTicket to get a QR code to
+                <br /> enter the event
+              </FooterDescription>
+              <TicketImageWrapper>
+                <img src={TicketPlaceholder} alt="" />
+                <FooterDescription>#{id}</FooterDescription>
+              </TicketImageWrapper>
+
+              <form onSubmit={onBurn}>
+                <Title>Full Name</Title>
+                <Input
+                  type="text"
+                  required
+                  placeholder="Enter your name"
+                  name="name"
+                  id="name"
+                  value={user?.fullName}
+                  onChange={(e) =>
+                    setUser({ ...user, fullName: e.target.value })
+                  }
+                />
+                <Title>Email</Title>
+                <Input
+                  type="text"
+                  required
+                  placeholder="Enter your email"
+                  name="name"
+                  id="name"
+                  value={user?.email}
+                  onChange={(e) => setUser({ ...user, email: e.target.value })}
+                />
+                <Title>Display Name</Title>
+                <Input
+                  type="text"
+                  placeholder="Enter your display name"
+                  name="name"
+                  id="name"
+                  value={user?.displayName}
+                  onChange={(e) =>
+                    setUser({ ...user, displayName: e.target.value })
+                  }
+                />
+
+                <MintButton>
+                  {isLoading ? (
+                    <span>Burning..</span>
+                  ) : redeeming ? (
+                    <span>Redeeming...</span>
+                  ) : (
+                    <span>Redeem Now</span>
+                  )}
+                </MintButton>
+              </form>
+            </RedeemContainer>
+          </Container>
+        </div>
+      ) : (
+        <ErrorPage text={"You do not own this token id"} />
+      )}
+    </>
   );
 };
 

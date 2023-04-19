@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Profile from "./pages/profile";
 import "./App.css";
 import Mint from "./pages/mint";
@@ -16,6 +21,7 @@ import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { getConfig } from "./config/config";
+import QR from "./pages/qrcode";
 
 const { chains, provider } = configureChains(
   [getConfig.network],
@@ -54,7 +60,10 @@ function App() {
             <Routes>
               <Route exact path="/" element={<Profile />} />
               <Route exact path="/mint" element={<Mint />} />
-              <Route exact path="/redeem" element={<Redeem />} />
+              <Route exact path="/redeem/:id" element={<Redeem />} />
+              <Route exact path="/tickets/:id/qrcode" element={<QR />} />
+
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </RainbowKitProvider>
         </WagmiConfig>
