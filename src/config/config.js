@@ -5,7 +5,8 @@ import optimismTicketAbi from "../ethereum/build/optimism/TicketAbi.json";
 const waveNum = {
   mainnet: 3,
   optimism: 0,
-  testnet: 0,
+  sepolia: 0,
+  opGoerli: 0,
 };
 
 const usdcAddress = {
@@ -21,6 +22,9 @@ export const getConfig =
         env: "mainnet",
         networks: [mainnet, optimism],
         alchemyKey: process.env.REACT_APP_ALCHEMY_API_KEY,
+        apiBaseUrl: "http://localhost:3456",
+        mainApiBaseUrl: "https://eth-bcn-2023.herokuapp.com",
+        appBaseUrl: "http://localhost:3000",
         // waveNum: waveNum.mainnet,
         /*mainnet*/ 1: {
           network: mainnet,
@@ -56,10 +60,13 @@ export const getConfig =
         env: "testnet",
         networks: [sepolia, optimismGoerli],
         alchemyKey: process.env.REACT_APP_ALCHEMY_API_KEY,
+        apiBaseUrl: "http://localhost:3456",
+        mainApiBaseUrl: "https://eth-bcn-2023.herokuapp.com",
+        appBaseUrl: "http://localhost:3000",
         // waveNum: waveNum.testnet,
         /*sepolia*/ 11155111 /*chainId*/: {
           network: sepolia,
-          waveNum: waveNum.testnet,
+          waveNum: waveNum.sepolia,
           alchemyUrl: `https://eth-sepolia.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
           ticketContractAddress: "0x7f45a4812BeC3Ce048196c87c71Ea54196DD41DF",
           usdc: {
@@ -73,7 +80,7 @@ export const getConfig =
         },
         /*optimismGoerli*/ 420: {
           network: optimismGoerli,
-          waveNum: waveNum.testnet,
+          waveNum: waveNum.opGoerli,
           alchemyUrl: `https://opt-goerli.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
           ticketContractAddress: "0xA335c7498D1EF9430b9805c5399051159531F424",
           usdc: {
