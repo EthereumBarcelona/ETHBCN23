@@ -7,7 +7,7 @@ const WalletConnect = () => {
   return (
     <div>
       <ConnectButton
-        chainStatus="none"
+        chainStatus="icon"
         showBalance={{
           smallScreen: false,
           largeScreen: false,

@@ -104,16 +104,19 @@ export const YY = styled.div`
 export const TT = styled.div`
   border: 1px solid #bc563c;
   border-radius: 100px;
-  width: 200px;
+  width: auto; // 200px;
+
   height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0px 15px;
 
   @media screen and (max-width: 768px) {
     width: 00px;
     height: 00px;
     margin: 0 90px 15px 90px;
+    border: none;
   }
 `;
 
@@ -142,11 +145,11 @@ const Profile = () => {
           </a>
           <YY>
             <TT>
-              <WalletConnect></WalletConnect>
+              <WalletConnect />
             </TT>
             <ProfileContainer>
-            <a href="/">
-              <img src={OrangeSmile} className="smile" />
+              <a href="/">
+                <img src={OrangeSmile} className="smile" />
               </a>
             </ProfileContainer>
           </YY>
