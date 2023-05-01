@@ -37,7 +37,7 @@ export const TicketDisplayContainer = styled.div`
 `;
 
 export const Footer = styled.div`
-  margin-top: auto;
+  margin-top: 25vh;
   text-align: left;
 `;
 export const ProfileContainer = styled.div`
@@ -57,9 +57,9 @@ export const ProfileContainer = styled.div`
   }
 
   @media screen and (max-width: 768px) {
-    width: 60px;
-    height: 60px;
-    margin: 0 0 0 0px;
+    width: 50px;
+    height: 50px;
+    margin: 0 0 00px 0px;
   }
 `;
 
@@ -140,8 +140,8 @@ const Profile = () => {
     <div>
       <Container>
         <Navbar>
-          <a href="/">
-            <img src={Logo} />
+          <a href="https://ethbarcelona.com/">
+            <img src={Logo}  className="logo"/>
           </a>
           <YY>
             <TT>
