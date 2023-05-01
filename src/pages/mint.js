@@ -110,6 +110,10 @@ export const MintContainer = styled.div`
 
 export const TicketVideoWrapper = styled.div`
 margin: 0 50px;
+
+@media screen and (max-width: 767px) {
+margin: 0;
+}
 `;
 export const TicketInfoWrapper = styled.div`
   display: flex;
@@ -333,7 +337,7 @@ const Mint = () => {
         <Navbar>
           <a href="/https://ethbarcelona.com/">
             {" "}
-            <img src={Logo} />
+            <img src={Logo} className="logo" />
           </a>
           <YY>
             <TT>
