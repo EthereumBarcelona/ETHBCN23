@@ -75,6 +75,7 @@ export const FooterDescriptionTitle = styled.div`
   line-height: 48px;
   text-align: left;
   color: #424242;
+  width:100%;
 
   @media screen and (max-width: 768px) {
     font-size: 40px;
@@ -88,6 +89,8 @@ export const FooterDescription = styled.div`
   font-size: 16px;
   line-height: 17px;
   color: #424242;
+  text-align: left;
+  width:100%;
   margin-bottom: 8px;
 
   @media screen and (max-width: 768px) {
@@ -98,6 +101,7 @@ export const MintContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin: 0;
   @media screen and (max-width: 767px) {
     flex-direction: column;
     align-items: center;
@@ -105,7 +109,13 @@ export const MintContainer = styled.div`
   }
 `;
 
-export const TicketVideoWrapper = styled.div``;
+export const TicketVideoWrapper = styled.div`
+margin: 0 50px;
+
+@media screen and (max-width: 767px) {
+margin: 0;
+}
+`;
 export const TicketInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -140,7 +150,7 @@ const FiatText = styled.div`
   text-align: left;
   color: #424242;
   position: absolute;
-  bottom: 0;
+  margin: 20px 0 0 10px;
 
   :hover {
     cursor: pointer;
@@ -156,8 +166,8 @@ const FiatText = styled.div`
 
 const TicketInfoContainer = styled.div`
   margin: 50px 0 20px 0;
-  align-items: left;
-  text-align: left;
+  align-items: center;
+  text-align:left;
 
   @media screen and (max-width: 767px) {
     margin: 20px 0;
@@ -326,9 +336,9 @@ const Mint = () => {
     <div>
       <Container>
         <Navbar>
-          <a href="/">
+          <a href="/https://ethbarcelona.com/">
             {" "}
-            <img src={Logo} />
+            <img src={Logo} className="logo" />
           </a>
           <YY>
             <TT>
@@ -354,7 +364,7 @@ const Mint = () => {
             </FooterDescriptionTitle>
             <TicketInfoContainer>
               <HeadingSmall>
-                Price <HeadingSmallOrange>-50 %</HeadingSmallOrange>
+                Price <HeadingSmallOrange>-20 %</HeadingSmallOrange>
               </HeadingSmall>
 
               <HeadingSmall>
@@ -363,7 +373,7 @@ const Mint = () => {
 
               <br />
               <TicketPrice>
-                $ 500
+                $ 499
                 <TicketPriceOrange>
                   {/* $ 399  */}${ethers.utils.formatEther(waveRead?.price)}
                 </TicketPriceOrange>
