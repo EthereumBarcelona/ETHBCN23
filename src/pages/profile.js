@@ -9,7 +9,8 @@ import "./style.css";
 import { useAccount, useContractReads } from "wagmi";
 import { getConfig } from "../config/config";
 import ticketAbi from "../ethereum/build/TicketAbi.json";
-import { sepolia } from "wagmi/chains";
+
+const { network } = getConfig;
 
 export const Container = styled.div`
   display: flex;
@@ -129,7 +130,7 @@ const Profile = () => {
         abi: ticketAbi,
         functionName: "walletQuery",
         args: [address],
-        chainId: sepolia.id,
+        chainId: network.id,
       },
     ],
   });

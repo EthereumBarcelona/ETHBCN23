@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import {
-  sepolia,
   useAccount,
   useContractWrite,
   usePrepareContractWrite,
@@ -10,6 +9,8 @@ import {
 import { getConfig } from "../config/config";
 import { ethers } from "ethers";
 import ticketAbi from "../ethereum/build/TicketAbi.json";
+
+const { network } = getConfig;
 
 const MintButton = styled.button`
   border: 1px solid #bc563c;
@@ -67,7 +68,7 @@ const MintTicket = ({ lowBalance, numberOfTokens }) => {
       //   gasLimit: "1000000",
       // },
     ], // wave num = 0
-    chainId: sepolia.id,
+    chainId: network.id,
     // enabled: false, // parseInt(numberOfTokens) > 0,
     overrides: {
       from: address,

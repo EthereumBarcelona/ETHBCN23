@@ -16,8 +16,9 @@ import { erc20ABI, useAccount, useContractRead, useContractReads } from "wagmi";
 import { ethers } from "ethers";
 import ApproveUsdc from "../components/ApproveUsdc";
 import MintTicket from "../components/MintTicket";
-import { sepolia } from "wagmi/chains";
 import ticketAbi from "../ethereum/build/TicketAbi.json";
+
+const { network } = getConfig;
 
 export const Container = styled.div`
   display: flex;
@@ -236,7 +237,7 @@ const Counter = ({ numberOfTokens, setNumberOfTokens }) => {
   };
 
   const decrementCount = () => {
-    setNumberOfTokens(numberOfTokens - 1 > 0 ? numberOfTokens - 1 : 0);
+    setNumberOfTokens(numberOfTokens - 1 > 1 ? numberOfTokens - 1 : 1);
   };
 
   return (
@@ -267,14 +268,14 @@ const Mint = () => {
   //       abi: ticketAbi,
   //       functionName: "waves",
   //       args: [ethers.BigNumber.from("0")],
-  //       chainId: sepolia.id,
+  //       chainId: network.id,
   //     },
   //     {
   //       address: getConfig.usdcAddress,
   //       abi: erc20ABI,
   //       functionName: "allowance",
   //       args: [address, getConfig.ticketContractAddress],
-  //       chainId: sepolia.id,
+  //       chainId: network.id,
   //     },
   //   ],
   // });
@@ -284,7 +285,7 @@ const Mint = () => {
     abi: erc20ABI,
     functionName: "balanceOf",
     args: [address],
-    chainId: sepolia.id,
+    chainId: network.id,
   });
 
   const { data: waveRead = { price: bignumber } } = useContractRead({
@@ -292,7 +293,7 @@ const Mint = () => {
     abi: ticketAbi,
     functionName: "waves",
     args: [ethers.BigNumber.from("0")],
-    chainId: sepolia.id,
+    chainId: network.id,
   });
 
   const { data: allowance = bignumber } = useContractRead({
@@ -300,7 +301,7 @@ const Mint = () => {
     abi: erc20ABI,
     functionName: "allowance",
     args: [address, getConfig.ticketContractAddress],
-    chainId: sepolia.id,
+    chainId: network.id,
   });
 
   // waveRead = waveRead1 ? waveRead1 : waveRead;

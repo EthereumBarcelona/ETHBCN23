@@ -13,13 +13,12 @@ import {
   Theme,
 } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { optimismGoerli, sepolia } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { getConfig } from "./config/config";
 
 const { chains, provider } = configureChains(
-  [sepolia, optimismGoerli],
+  [getConfig.network],
   [alchemyProvider({ apiKey: getConfig.alchemyKey }), publicProvider()]
 );
 
