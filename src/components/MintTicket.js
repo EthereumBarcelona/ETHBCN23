@@ -62,7 +62,7 @@ const MintTicket = ({ lowBalance, numberOfTokens }) => {
     abi: ticketAbi,
     functionName: "mintTicket",
     args: [
-      0,
+      getConfig.waveNum,
       parseInt(numberOfTokens),
       // {
       //   gasLimit: "1000000",

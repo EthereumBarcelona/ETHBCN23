@@ -75,7 +75,7 @@ export const FooterDescriptionTitle = styled.div`
   line-height: 48px;
   text-align: left;
   color: #424242;
-  width:100%;
+  width: 100%;
 
   @media screen and (max-width: 768px) {
     font-size: 40px;
@@ -90,7 +90,7 @@ export const FooterDescription = styled.div`
   line-height: 17px;
   color: #424242;
   text-align: left;
-  width:100%;
+  width: 100%;
   margin-bottom: 8px;
 
   @media screen and (max-width: 768px) {
@@ -110,11 +110,11 @@ export const MintContainer = styled.div`
 `;
 
 export const TicketVideoWrapper = styled.div`
-margin: 0 50px;
+  margin: 0 50px;
 
-@media screen and (max-width: 767px) {
-margin: 0;
-}
+  @media screen and (max-width: 767px) {
+    margin: 0;
+  }
 `;
 export const TicketInfoWrapper = styled.div`
   display: flex;
@@ -167,7 +167,7 @@ const FiatText = styled.div`
 const TicketInfoContainer = styled.div`
   margin: 50px 0 20px 0;
   align-items: center;
-  text-align:left;
+  text-align: left;
 
   @media screen and (max-width: 767px) {
     margin: 20px 0;
@@ -302,7 +302,7 @@ const Mint = () => {
     address: getConfig.ticketContractAddress,
     abi: ticketAbi,
     functionName: "waves",
-    args: [ethers.BigNumber.from("0")],
+    args: [ethers.BigNumber.from(getConfig.waveNum.toString())],
     chainId: network.id,
   });
 
@@ -319,16 +319,21 @@ const Mint = () => {
 
   // console.log(" contract read: ", contractRead);
 
-  console.log("wave read: ", waveRead);
+  console.log("wave read: ", waveRead?.price?.mul(numberOfTokens)?.toString());
+  console.log(
+    "low bal: ",
+    usdcBalance.lt(waveRead?.price?.mul(numberOfTokens))
+  );
+  console.log("number of tokens: ", numberOfTokens);
   console.log("allowance: ", allowance);
-  console.log(`USDC balance of ${address}: `, usdcBalance);
+  console.log(`USDC balance of ${address}: `, usdcBalance.toString());
 
   // const data = [allowance, waveRead];
 
   // const data = [bignumber, { price: bignumber }];
 
   useEffect(() => {
-    setLowBalance(usdcBalance < waveRead?.price?.mul(numberOfTokens));
+    setLowBalance(usdcBalance.lt(waveRead?.price?.mul(numberOfTokens)));
     setApproved(allowance >= waveRead?.price?.mul(numberOfTokens));
   }, [waveRead, allowance, numberOfTokens, isConnected, address]);
 
