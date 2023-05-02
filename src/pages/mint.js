@@ -239,7 +239,7 @@ export const CounterWrapper = styled.div`
   display: inline-block;
   color: #424242;
   text-align: left;
-  margin-left:-40px;
+  margin-left: -40px;
 `;
 
 const Counter = ({ numberOfTokens, setNumberOfTokens }) => {
@@ -362,8 +362,11 @@ const Mint = () => {
         <MintContainer>
           <TicketVideoWrapper>
             {/* <img src={Ticket} className="mintTicket" /> */}
-            <video src="https://firebasestorage.googleapis.com/v0/b/eth-bcn-2023.appspot.com/o/Ticket%20Animation.mp4?alt=media&token=bee93d8d-7d38-4083-8d16-cd25ef959332" controls className="mintTicket"></video>
-
+            <video
+              src="https://firebasestorage.googleapis.com/v0/b/eth-bcn-2023.appspot.com/o/Ticket%20Animation.mp4?alt=media&token=bee93d8d-7d38-4083-8d16-cd25ef959332"
+              controls
+              className="mintTicket"
+            ></video>
           </TicketVideoWrapper>
           <TicketInfoWrapper>
             <FooterDescription>ETHBarcelona</FooterDescription>
@@ -412,7 +415,10 @@ const Mint = () => {
             </TicketInfoContainer>
 
             {!isConnected ? (
-              <WalletConnect label={"Mint"} />
+              <div className="mintHomePage">
+                {" "}
+                <WalletConnect label={"Mint"} />
+              </div>
             ) : lowBalance ? (
               <div>balance is low</div>
             ) : !approved ? (
