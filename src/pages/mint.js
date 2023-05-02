@@ -409,7 +409,7 @@ const Mint = () => {
             </TicketInfoContainer>
 
             {!isConnected ? (
-              <WalletConnect />
+              <WalletConnect label={"Mint"} />
             ) : lowBalance ? (
               <div>balance is low</div>
             ) : !approved ? (

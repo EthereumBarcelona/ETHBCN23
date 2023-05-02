@@ -3,10 +3,11 @@ import "@rainbow-me/rainbowkit/styles.css";
 import "./WalletConnect.css";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
-const WalletConnect = () => {
+const WalletConnect = ({ label = "Connect Wallet" }) => {
   return (
     <div>
       <ConnectButton
+        label={label}
         chainStatus="icon"
         showBalance={{
           smallScreen: false,
