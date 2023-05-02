@@ -13,7 +13,7 @@ import Plus from "../assets/Plus.png";
 import { TT, Navbar, ProfileContainer, YY } from "./profile";
 import { getConfig } from "../config/config";
 import { erc20ABI, useAccount, useContractRead, useContractReads } from "wagmi";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import ApproveUsdc from "../components/ApproveUsdc";
 import MintTicket from "../components/MintTicket";
 import ticketAbi from "../ethereum/build/TicketAbi.json";
@@ -386,7 +386,7 @@ const Mint = () => {
               <TicketPrice>
                 $ 499
                 <TicketPriceOrange>
-                  {/* $ 399  */}${ethers.utils.formatEther(waveRead?.price)}
+                  {/* $ 399  */}${waveRead?.price / 10 ** 18}
                 </TicketPriceOrange>
               </TicketPrice>
 
@@ -399,10 +399,7 @@ const Mint = () => {
               <TicketPriceBlack>
                 Total cost:
                 <TicketPriceOrange>
-                  $
-                  {ethers.utils.formatEther(
-                    waveRead?.price?.mul(numberOfTokens)
-                  )}
+                  ${waveRead?.price?.mul(numberOfTokens) / 10 ** 18}
                 </TicketPriceOrange>{" "}
               </TicketPriceBlack>
 
