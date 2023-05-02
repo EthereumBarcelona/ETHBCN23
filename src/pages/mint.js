@@ -150,7 +150,7 @@ const FiatText = styled.div`
   text-align: left;
   color: #424242;
   position: absolute;
-  margin: 20px 0 0 10px;
+  margin: 20px 0 0 220px;
 
   :hover {
     cursor: pointer;
@@ -239,6 +239,7 @@ export const CounterWrapper = styled.div`
   display: inline-block;
   color: #424242;
   text-align: left;
+  margin-left:-40px;
 `;
 
 const Counter = ({ numberOfTokens, setNumberOfTokens }) => {
@@ -400,12 +401,12 @@ const Mint = () => {
                 </TicketPriceOrange>{" "}
               </TicketPriceBlack>
 
-              <TicketPriceBlack>
+              {/* <TicketPriceBlack>
                 USDC balance:
                 <TicketPriceOrange>
                   ${ethers.utils.formatEther(usdcBalance)}
                 </TicketPriceOrange>{" "}
-              </TicketPriceBlack>
+              </TicketPriceBlack> */}
             </TicketInfoContainer>
 
             {!isConnected ? (
