@@ -110,8 +110,7 @@ export const MintContainer = styled.div`
 `;
 
 export const TicketVideoWrapper = styled.div`
-  margin: 0 50px;
-
+  margin: 0 200px;
   @media screen and (max-width: 767px) {
     margin: 0;
   }
@@ -119,14 +118,16 @@ export const TicketVideoWrapper = styled.div`
 export const TicketInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
+  margin-left: -125px;
   align-items: flex-start;
-  width: 50%;
   padding: 16px;
   position: relative; /* added this */
 
   @media screen and (max-width: 767px) {
     width: 100%;
     padding: 20px 0 20px 0;
+    margin: 0;
   }
 `;
 
@@ -136,7 +137,7 @@ const Line = styled.div`
   margin-top: 40px;
 
   @media screen and (max-width: 767px) {
-    width: 300px;
+    width: 100%;
     margin: 20px auto;
   }
 `;
@@ -384,9 +385,9 @@ const Mint = () => {
 
               <br />
               <TicketPrice>
-                $ 499
+          $ 499
                 <TicketPriceOrange>
-                  {/* $ 399  */}${waveRead?.price / 10 ** 18}
+                  {/* $ 399  */}&nbsp;$&nbsp;{waveRead?.price / 10 ** 18}
                 </TicketPriceOrange>
               </TicketPrice>
 
@@ -397,7 +398,7 @@ const Mint = () => {
                 />
               </CounterWrapper>
               <TicketPriceBlack>
-                Total cost:
+                Total cost:&nbsp;
                 <TicketPriceOrange>
                   ${waveRead?.price?.mul(numberOfTokens) / 10 ** 18}
                 </TicketPriceOrange>{" "}
