@@ -81,11 +81,11 @@ const MintTicket = ({ lowBalance, numberOfTokens }) => {
     // },
   });
 
-  console.log(config);
+  // console.log(config);
 
   const { data, write } = useContractWrite(config);
 
-  console.log(data, write);
+  // console.log(data, write);
 
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
@@ -98,7 +98,7 @@ const MintTicket = ({ lowBalance, numberOfTokens }) => {
           lowBalance || !write || parseInt(numberOfTokens) <= 0 || isLoading
         }
         onClick={() => {
-          console.log(`Minting ${numberOfTokens} tickets for ${address}`);
+          // console.log(`Minting ${numberOfTokens} tickets for ${address}`);
           write?.();
         }}
       >

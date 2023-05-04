@@ -40,6 +40,8 @@ export const TicketDisplayContainer = styled.div`
 export const Footer = styled.div`
   margin-top: 25vh;
   text-align: left;
+  display: flex;
+  justify-content: space-between;
 `;
 export const ProfileContainer = styled.div`
   width: 80px;
@@ -85,6 +87,19 @@ export const FooterDescriptionTitleBold = styled.div`
   color: #bc563c;
 `;
 
+export const FooterDescriptionTitleBold2 = styled.div`
+  font-family: "Dahlia-Bold";
+  font-style: normal;
+  font-weight: 400;
+  display: inline-block;
+  font-size: 40px;
+  line-height: 48px;
+  color: #bc563c;
+  :hover {
+    cursor: pointer;
+  }
+`;
+
 export const FooterDescription = styled.div`
   font-family: "Montserrat";
   font-style: normal;
@@ -121,6 +136,8 @@ export const TT = styled.div`
   }
 `;
 
+const Left = styled.div``;
+const Right = styled.div``;
 const Profile = () => {
   const { address } = useAccount();
   const { data, isError, isLoading } = useContractReads({
@@ -135,14 +152,14 @@ const Profile = () => {
     ],
   });
 
-  console.log("Wallet query: ", data);
+  // console.log("Wallet query: ", data);
 
   return (
     <div>
       <Container>
         <Navbar>
           <a href="https://ethbarcelona.com/">
-            <img src={Logo}  className="logo"/>
+            <img src={Logo} className="logo" />
           </a>
           <YY>
             <TT>
@@ -169,18 +186,30 @@ const Profile = () => {
           <img src={TicketPlaceholder} className="ticket" /> */}
         </TicketDisplayContainer>
         <Footer>
-          <FooterDescriptionTitle>Redeem your NFTicket</FooterDescriptionTitle>
-          <FooterDescriptionTitleBold>
-            to get a QR <br />
-            {/* code to enter the event */}
-          </FooterDescriptionTitleBold>
-          <br />
-          <FooterDescriptionTitleBold>
-            code to enter the event
-          </FooterDescriptionTitleBold>
-          <FooterDescription>
-            You’ll be able to redeem 2 weeks before the event!
-          </FooterDescription>
+          <Left>
+            <FooterDescriptionTitle>
+              Redeem your NFTicket
+            </FooterDescriptionTitle>
+            <FooterDescriptionTitleBold>
+              to get a QR <br />
+              {/* code to enter the event */}
+            </FooterDescriptionTitleBold>
+            <br />
+            <FooterDescriptionTitleBold>
+              code to enter the event
+            </FooterDescriptionTitleBold>
+            <FooterDescription>
+              You’ll be able to redeem 2 weeks before the event!
+            </FooterDescription>
+          </Left>
+
+          <Right>
+            <a href="/mint">
+              <FooterDescriptionTitleBold2 href="/mint">
+                Buy Tickets
+              </FooterDescriptionTitleBold2>
+            </a>
+          </Right>
         </Footer>
       </Container>
     </div>

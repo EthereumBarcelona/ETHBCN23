@@ -19,7 +19,7 @@
 }
 
 .mintTicket {
-  height: 700px;
+  height: 800px;
 }
 
 @media only screen and (max-width: 768px) {
@@ -47,7 +47,6 @@
   text-align: center;
   display: flex;
   align-items: center;
-  font-size:200px;
   justify-content: center;
 
 }

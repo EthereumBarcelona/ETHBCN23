@@ -71,7 +71,7 @@ const ApproveUsdc = ({
     // },
   });
   const { data, write } = useContractWrite(config);
-  console.log("approval write: ", write);
+  // console.log("approval write: ", write);
 
   const { isLoading, isSuccess, isError } = useWaitForTransaction({
     hash: data?.hash,
@@ -85,7 +85,7 @@ const ApproveUsdc = ({
     <Button
       disabled={!write || isLoading || isSuccess || lowBalance}
       onClick={() => {
-        console.log("approving..");
+        // console.log("approving..");
         write?.();
       }}
     >
