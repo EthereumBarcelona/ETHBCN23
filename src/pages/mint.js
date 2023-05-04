@@ -386,7 +386,7 @@ const Mint = () => {
               <TicketPrice>
                 $ 499
                 <TicketPriceOrange>
-                  {/* $ 399  */}${waveRead?.price / 10 ** 18}
+                  {/* $ 399  */}${waveRead?.price / 10 ** 6}
                 </TicketPriceOrange>
               </TicketPrice>
 
@@ -399,7 +399,7 @@ const Mint = () => {
               <TicketPriceBlack>
                 Total cost:
                 <TicketPriceOrange>
-                  ${waveRead?.price?.mul(numberOfTokens) / 10 ** 18}
+                  ${waveRead?.price?.mul(numberOfTokens) / 10 ** 6}
                 </TicketPriceOrange>{" "}
               </TicketPriceBlack>
 
