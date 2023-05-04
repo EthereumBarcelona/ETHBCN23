@@ -239,7 +239,7 @@ export const CounterWrapper = styled.div`
   display: inline-block;
   color: #424242;
   text-align: left;
-  margin-left: -40px;
+  margin-left: 0px;
 `;
 
 const Counter = ({ numberOfTokens, setNumberOfTokens }) => {
