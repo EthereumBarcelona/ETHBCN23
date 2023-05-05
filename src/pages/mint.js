@@ -362,12 +362,12 @@ const Mint = () => {
 
         <MintContainer>
           <TicketVideoWrapper>
-            {/* <img src={Ticket} className="mintTicket" /> */}
-            <video
+            <img src={Ticket} className="mintTicket" />
+            {/* <video
               src="https://firebasestorage.googleapis.com/v0/b/eth-bcn-2023.appspot.com/o/Ticket%20Animation.mp4?alt=media&token=bee93d8d-7d38-4083-8d16-cd25ef959332"
               controls
               className="mintTicket"
-            ></video>
+            ></video> */}
           </TicketVideoWrapper>
           <TicketInfoWrapper>
             <FooterDescription>ETHBarcelona</FooterDescription>
