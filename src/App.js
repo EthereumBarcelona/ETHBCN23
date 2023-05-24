@@ -18,7 +18,7 @@ import { publicProvider } from "wagmi/providers/public";
 import { getConfig } from "./config/config";
 
 const { chains, provider } = configureChains(
-  [getConfig.network],
+  [...getConfig.networks],
   [alchemyProvider({ apiKey: getConfig.alchemyKey }), publicProvider()]
 );
 

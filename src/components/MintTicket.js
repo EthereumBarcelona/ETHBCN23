@@ -3,14 +3,13 @@ import styled from "styled-components";
 import {
   useAccount,
   useContractWrite,
+  useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
 import { getConfig } from "../config/config";
 import { ethers } from "ethers";
 import ticketAbi from "../ethereum/build/TicketAbi.json";
-
-const { network } = getConfig;
 
 const MintButton = styled.button`
   border: 1px solid #bc563c;
@@ -57,18 +56,24 @@ export const TicketPriceBlack2 = styled.div`
 
 const MintTicket = ({ lowBalance, numberOfTokens }) => {
   const { address } = useAccount();
+  const { chain } = useNetwork();
+
+  console.log({ chain });
+
+  const tokenToPay = "usdc"; // || dai // use state for choosing
+
   const { config } = usePrepareContractWrite({
-    address: getConfig.ticketContractAddress,
+    address: getConfig[chain.id].ticketContractAddress,
     abi: ticketAbi,
     functionName: "mintTicket",
     args: [
-      getConfig.waveNum,
+      ...getConfig[chain.id].mintArgs[tokenToPay],
       parseInt(numberOfTokens),
       // {
       //   gasLimit: "1000000",
       // },
-    ], // wave num = 0
-    chainId: network.id,
+    ],
+    chainId: getConfig[chain.id].network.id,
     // enabled: false, // parseInt(numberOfTokens) > 0,
     overrides: {
       from: address,
@@ -110,7 +115,7 @@ const MintTicket = ({ lowBalance, numberOfTokens }) => {
       </MintButton>
 
       <a
-        href={`${getConfig.explorerUrl}/tx/${data?.hash}`}
+        href={`${getConfig[chain.id].explorerUrl}/tx/${data?.hash}`}
         target={"_blank"}
         rel="noreferrer"
       >

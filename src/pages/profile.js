@@ -6,11 +6,9 @@ import TicketPlaceholder from "../assets/Ticket.png";
 import OrangeSmile from "../assets/orangeSmile.svg";
 import whiteSmile from "../assets/whiteSmile.svg";
 import "./style.css";
-import { useAccount, useContractReads } from "wagmi";
+import { useAccount, useContractReads, useNetwork } from "wagmi";
 import { getConfig } from "../config/config";
 import ticketAbi from "../ethereum/build/TicketAbi.json";
-
-const { network } = getConfig;
 
 export const Container = styled.div`
   display: flex;
@@ -138,16 +136,19 @@ export const TT = styled.div`
 
 const Left = styled.div``;
 const Right = styled.div``;
+
 const Profile = () => {
   const { address } = useAccount();
+  const { chain } = useNetwork();
+
   const { data, isError, isLoading } = useContractReads({
     contracts: [
       {
-        address: getConfig.ticketContractAddress,
+        address: getConfig[chain.id].ticketContractAddress,
         abi: ticketAbi,
         functionName: "walletQuery",
         args: [address],
-        chainId: network.id,
+        chainId: chain.id,
       },
     ],
   });

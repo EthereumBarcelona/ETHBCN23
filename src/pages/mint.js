@@ -12,13 +12,19 @@ import Minus from "../assets/Minus.png";
 import Plus from "../assets/Plus.png";
 import { TT, Navbar, ProfileContainer, YY } from "./profile";
 import { getConfig } from "../config/config";
-import { erc20ABI, useAccount, useContractRead, useContractReads } from "wagmi";
+import {
+  erc20ABI,
+  useAccount,
+  useContractRead,
+  useContractReads,
+  useNetwork,
+} from "wagmi";
 import { BigNumber, ethers } from "ethers";
 import ApproveUsdc from "../components/ApproveUsdc";
 import MintTicket from "../components/MintTicket";
 import ticketAbi from "../ethereum/build/TicketAbi.json";
 
-const { network } = getConfig;
+// const { network } = getConfig;
 
 export const Container = styled.div`
   display: flex;
@@ -266,6 +272,7 @@ const Mint = () => {
   const [numberOfTokens, setNumberOfTokens] = useState(1);
   const [approved, setApproved] = useState();
   const [lowBalance, setLowBalance] = useState(false);
+  const { chain } = useNetwork();
 
   let bignumber = ethers.BigNumber.from(0);
 
@@ -293,27 +300,29 @@ const Mint = () => {
   // });
 
   const { data: usdcBalance = bignumber } = useContractRead({
-    address: getConfig.usdcAddress,
+    address: getConfig[chain.id].usdcAddress,
     abi: erc20ABI,
     functionName: "balanceOf",
     args: [address],
-    chainId: network.id,
+    chainId: getConfig[chain.id].network.id,
   });
 
   const { data: waveRead = { price: bignumber } } = useContractRead({
-    address: getConfig.ticketContractAddress,
+    address: getConfig[chain.id].ticketContractAddress,
     abi: ticketAbi,
     functionName: "waves",
     args: [ethers.BigNumber.from(getConfig.waveNum.toString())],
-    chainId: network.id,
+    chainId: getConfig[chain.id].network.id,
   });
 
+  console.log({ waveRead });
+
   const { data: allowance = bignumber } = useContractRead({
-    address: getConfig.usdcAddress,
+    address: getConfig[chain.id].usdcAddress,
     abi: erc20ABI,
     functionName: "allowance",
-    args: [address, getConfig.ticketContractAddress],
-    chainId: network.id,
+    args: [address, getConfig[chain.id].ticketContractAddress],
+    chainId: getConfig[chain.id].network.id,
   });
 
   // waveRead = waveRead1 ? waveRead1 : waveRead;

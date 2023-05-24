@@ -3,6 +3,7 @@ import {
   erc20ABI,
   useAccount,
   useContractWrite,
+  useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
@@ -43,6 +44,7 @@ const ApproveUsdc = ({
   setApproved,
 }) => {
   const { address } = useAccount();
+  const { chain } = useNetwork();
 
   // console.log(
   //   "tokens to approve: ",
@@ -50,11 +52,11 @@ const ApproveUsdc = ({
   // );
 
   const { config } = usePrepareContractWrite({
-    address: getConfig.usdcAddress,
+    address: getConfig[chain.id].usdcAddress,
     abi: erc20ABI,
     functionName: "approve",
     args: [
-      getConfig.ticketContractAddress,
+      getConfig[chain.id].ticketContractAddress,
       // "10000000000000000000",
       ticketPrice?.mul(numberOfTokens),
     ],
