@@ -46,17 +46,19 @@ const ApproveUsdc = ({
   const { address } = useAccount();
   const { chain } = useNetwork();
 
+  const tokenToPay = "usdc";
+
   // console.log(
   //   "tokens to approve: ",
   //   ticketPrice.mul(numberOfTokens).toString()
   // );
 
   const { config } = usePrepareContractWrite({
-    address: getConfig[chain.id].usdcAddress,
+    address: getConfig[chain?.id]?.[tokenToPay]?.address,
     abi: erc20ABI,
     functionName: "approve",
     args: [
-      getConfig[chain.id].ticketContractAddress,
+      getConfig[chain?.id]?.ticketContractAddress,
       // "10000000000000000000",
       ticketPrice?.mul(numberOfTokens),
     ],

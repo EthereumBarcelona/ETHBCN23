@@ -144,11 +144,11 @@ const Profile = () => {
   const { data, isError, isLoading } = useContractReads({
     contracts: [
       {
-        address: getConfig[chain.id].ticketContractAddress,
-        abi: ticketAbi,
+        address: getConfig[chain?.id]?.ticketContractAddress,
+        abi: getConfig[chain?.id]?.ticketAbi,
         functionName: "walletQuery",
         args: [address],
-        chainId: chain.id,
+        chainId: chain?.id,
       },
     ],
   });

@@ -63,17 +63,17 @@ const MintTicket = ({ lowBalance, numberOfTokens }) => {
   const tokenToPay = "usdc"; // || dai // use state for choosing
 
   const { config } = usePrepareContractWrite({
-    address: getConfig[chain.id].ticketContractAddress,
-    abi: ticketAbi,
+    address: getConfig[chain?.id]?.ticketContractAddress,
+    abi: getConfig[chain?.id]?.ticketAbi,
     functionName: "mintTicket",
     args: [
-      ...getConfig[chain.id].mintArgs[tokenToPay],
+      ...getConfig[chain?.id]?.mintArgs[tokenToPay],
       parseInt(numberOfTokens),
       // {
       //   gasLimit: "1000000",
       // },
     ],
-    chainId: getConfig[chain.id].network.id,
+    chainId: getConfig[chain?.id]?.network?.id,
     // enabled: false, // parseInt(numberOfTokens) > 0,
     overrides: {
       from: address,

@@ -274,6 +274,8 @@ const Mint = () => {
   const [lowBalance, setLowBalance] = useState(false);
   const { chain } = useNetwork();
 
+  const tokenToPay = "usdc";
+
   let bignumber = ethers.BigNumber.from(0);
 
   // let waveRead = { price: bignumber }; //contractRead?.[0]; //
@@ -300,29 +302,29 @@ const Mint = () => {
   // });
 
   const { data: usdcBalance = bignumber } = useContractRead({
-    address: getConfig[chain.id].usdcAddress,
+    address: getConfig[chain?.id]?.[tokenToPay]?.address,
     abi: erc20ABI,
     functionName: "balanceOf",
     args: [address],
-    chainId: getConfig[chain.id].network.id,
+    chainId: getConfig[chain?.id]?.network?.id,
   });
 
   const { data: waveRead = { price: bignumber } } = useContractRead({
-    address: getConfig[chain.id].ticketContractAddress,
-    abi: ticketAbi,
+    address: getConfig[chain?.id]?.ticketContractAddress,
+    abi: getConfig[chain?.id]?.ticketAbi,
     functionName: "waves",
     args: [ethers.BigNumber.from(getConfig.waveNum.toString())],
-    chainId: getConfig[chain.id].network.id,
+    chainId: getConfig[chain?.id]?.network?.id,
   });
 
   console.log({ waveRead });
 
   const { data: allowance = bignumber } = useContractRead({
-    address: getConfig[chain.id].usdcAddress,
+    address: getConfig[chain?.id]?.[tokenToPay]?.address, //.usdcAddress,
     abi: erc20ABI,
     functionName: "allowance",
-    args: [address, getConfig[chain.id].ticketContractAddress],
-    chainId: getConfig[chain.id].network.id,
+    args: [address, getConfig[chain?.id]?.ticketContractAddress],
+    chainId: getConfig[chain?.id]?.network?.id,
   });
 
   // waveRead = waveRead1 ? waveRead1 : waveRead;
@@ -396,7 +398,9 @@ const Mint = () => {
               <TicketPrice>
                 $ 499
                 <TicketPriceOrange>
-                  {/* $ 399  */}&nbsp;$&nbsp;{waveRead?.price / 10 ** 6}
+                  {/* $ 399  */}&nbsp;$&nbsp;
+                  {waveRead?.price /
+                    (getConfig.env === "mainnet" ? 10 ** 6 : 10 ** 18)}
                 </TicketPriceOrange>
               </TicketPrice>
 
@@ -409,7 +413,9 @@ const Mint = () => {
               <TicketPriceBlack>
                 Total cost:&nbsp;
                 <TicketPriceOrange>
-                  ${waveRead?.price?.mul(numberOfTokens) / 10 ** 6}
+                  $
+                  {waveRead?.price?.mul(numberOfTokens) /
+                    (getConfig.env === "mainnet" ? 10 ** 6 : 10 ** 18)}
                 </TicketPriceOrange>{" "}
               </TicketPriceBlack>
 
