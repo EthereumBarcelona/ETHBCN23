@@ -14,6 +14,8 @@ import { TT, Navbar, ProfileContainer, YY } from "./profile";
 import { getConfig } from "../config/config";
 import {
   erc20ABI,
+  mainnet,
+  sepolia,
   useAccount,
   useContractRead,
   useContractReads,
@@ -274,6 +276,13 @@ const Mint = () => {
   const [lowBalance, setLowBalance] = useState(false);
   const { chain } = useNetwork();
 
+  const useChain =
+    chain?.id in getConfig
+      ? chain
+      : getConfig.env === "testnet"
+      ? sepolia
+      : mainnet;
+
   const tokenToPay = "usdc";
 
   let bignumber = ethers.BigNumber.from(0);
@@ -302,29 +311,29 @@ const Mint = () => {
   // });
 
   const { data: usdcBalance = bignumber } = useContractRead({
-    address: getConfig[chain?.id]?.[tokenToPay]?.address,
+    address: getConfig?.[useChain?.id]?.[tokenToPay]?.address,
     abi: erc20ABI,
     functionName: "balanceOf",
     args: [address],
-    chainId: getConfig[chain?.id]?.network?.id,
+    chainId: getConfig?.[useChain?.id]?.network?.id,
   });
 
   const { data: waveRead = { price: bignumber } } = useContractRead({
-    address: getConfig[chain?.id]?.ticketContractAddress,
-    abi: getConfig[chain?.id]?.ticketAbi,
+    address: getConfig?.[useChain?.id]?.ticketContractAddress,
+    abi: getConfig?.[useChain?.id]?.ticketAbi,
     functionName: "waves",
     args: [ethers.BigNumber.from(getConfig.waveNum.toString())],
-    chainId: getConfig[chain?.id]?.network?.id,
+    chainId: getConfig?.[useChain?.id]?.network?.id,
   });
 
   console.log({ waveRead });
 
   const { data: allowance = bignumber } = useContractRead({
-    address: getConfig[chain?.id]?.[tokenToPay]?.address, //.usdcAddress,
+    address: getConfig?.[useChain?.id]?.[tokenToPay]?.address, //.usdcAddress,
     abi: erc20ABI,
     functionName: "allowance",
-    args: [address, getConfig[chain?.id]?.ticketContractAddress],
-    chainId: getConfig[chain?.id]?.network?.id,
+    args: [address, getConfig?.[useChain?.id]?.ticketContractAddress],
+    chainId: getConfig?.[useChain?.id]?.network?.id,
   });
 
   // waveRead = waveRead1 ? waveRead1 : waveRead;

@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import {
   erc20ABI,
+  mainnet,
+  sepolia,
   useAccount,
   useContractWrite,
   useNetwork,
@@ -46,6 +48,13 @@ const ApproveUsdc = ({
   const { address } = useAccount();
   const { chain } = useNetwork();
 
+  const useChain =
+    chain?.id in getConfig
+      ? chain
+      : getConfig.env === "testnet"
+      ? sepolia
+      : mainnet;
+
   const tokenToPay = "usdc";
 
   // console.log(
@@ -54,11 +63,11 @@ const ApproveUsdc = ({
   // );
 
   const { config } = usePrepareContractWrite({
-    address: getConfig[chain?.id]?.[tokenToPay]?.address,
+    address: getConfig?.[useChain?.id]?.[tokenToPay]?.address,
     abi: erc20ABI,
     functionName: "approve",
     args: [
-      getConfig[chain?.id]?.ticketContractAddress,
+      getConfig?.[useChain?.id]?.ticketContractAddress,
       // "10000000000000000000",
       ticketPrice?.mul(numberOfTokens),
     ],

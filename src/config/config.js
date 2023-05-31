@@ -30,7 +30,9 @@ export const getConfig =
           network: mainnet,
           alchemyUrl: `https://eth-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
           ticketContractAddress: "0x6052ed5C646574D12c27E8D219C49C3394598b00",
-          usdcAddress: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          usdc: {
+            address: usdcAddress.mainnet,
+          },
           explorerUrl: "https://etherscan.io",
           ticketAbi: ethTicketAbi,
           mintArgs: {
@@ -41,8 +43,12 @@ export const getConfig =
           network: optimism,
           alchemyUrl: `https://eth-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
           ticketContractAddress: "",
-          usdcAddress: "",
-          daiAddress: "",
+          usdc: {
+            address: usdcAddress.optimism,
+          },
+          dai: {
+            address: daiAddress.optimism,
+          },
           explorerUrl: "https://etherscan.io",
           ticketAbi: optimismTicketAbi,
           mintArgs: {
@@ -60,7 +66,9 @@ export const getConfig =
           network: sepolia,
           alchemyUrl: `https://eth-sepolia.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
           ticketContractAddress: "0x7f45a4812BeC3Ce048196c87c71Ea54196DD41DF",
-          usdcAddress: "0xBe473174D3913A13Ce80C157e685b994ad1c17C8",
+          usdc: {
+            address: usdcAddress.sepolia,
+          },
           explorerUrl: "https://sepolia.etherscan.io",
           ticketAbi: ethTicketAbi,
           mintArgs: {
@@ -72,13 +80,11 @@ export const getConfig =
           alchemyUrl: `https://opt-goerli.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
           ticketContractAddress: "0x900ef56a34af973C39f476b76656dA258Dd811F9",
           usdc: {
-            address: "0x93e36D6e7897C332bBe1402a5A34acb234b3af5F",
+            address: usdcAddress.optimismGoerli,
           },
           dai: {
-            address: "0x4D64AA556b26fcAe24F49B075e676F120401aC29",
+            address: daiAddress.optimismGoerli,
           },
-          usdcAddress: "0x93e36D6e7897C332bBe1402a5A34acb234b3af5F",
-          daiAddress: "0x4D64AA556b26fcAe24F49B075e676F120401aC29",
           explorerUrl: "https://goerli-optimism.etherscan.io",
           ticketAbi: optimismTicketAbi,
           mintArgs: {

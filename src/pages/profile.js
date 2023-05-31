@@ -6,7 +6,13 @@ import TicketPlaceholder from "../assets/Ticket.png";
 import OrangeSmile from "../assets/orangeSmile.svg";
 import whiteSmile from "../assets/whiteSmile.svg";
 import "./style.css";
-import { useAccount, useContractReads, useNetwork } from "wagmi";
+import {
+  mainnet,
+  sepolia,
+  useAccount,
+  useContractReads,
+  useNetwork,
+} from "wagmi";
 import { getConfig } from "../config/config";
 import ticketAbi from "../ethereum/build/TicketAbi.json";
 
@@ -141,14 +147,21 @@ const Profile = () => {
   const { address } = useAccount();
   const { chain } = useNetwork();
 
+  const useChain =
+    chain?.id in getConfig
+      ? chain
+      : getConfig.env === "testnet"
+      ? sepolia
+      : mainnet;
+
   const { data, isError, isLoading } = useContractReads({
     contracts: [
       {
-        address: getConfig[chain?.id]?.ticketContractAddress,
-        abi: getConfig[chain?.id]?.ticketAbi,
+        address: getConfig?.[useChain?.id]?.ticketContractAddress,
+        abi: getConfig?.[useChain?.id]?.ticketAbi,
         functionName: "walletQuery",
         args: [address],
-        chainId: chain?.id,
+        chainId: useChain?.id,
       },
     ],
   });

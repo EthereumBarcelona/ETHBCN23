@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import {
+  mainnet,
+  sepolia,
   useAccount,
   useContractWrite,
   useNetwork,
@@ -58,22 +60,29 @@ const MintTicket = ({ lowBalance, numberOfTokens }) => {
   const { address } = useAccount();
   const { chain } = useNetwork();
 
-  console.log({ chain });
+  // console.log({ chain });
+
+  const useChain =
+    chain?.id in getConfig
+      ? chain
+      : getConfig.env === "testnet"
+      ? sepolia
+      : mainnet;
 
   const tokenToPay = "usdc"; // || dai // use state for choosing
 
   const { config } = usePrepareContractWrite({
-    address: getConfig[chain?.id]?.ticketContractAddress,
-    abi: getConfig[chain?.id]?.ticketAbi,
+    address: getConfig?.[useChain?.id]?.ticketContractAddress,
+    abi: getConfig?.[useChain?.id]?.ticketAbi,
     functionName: "mintTicket",
     args: [
-      ...getConfig[chain?.id]?.mintArgs[tokenToPay],
+      ...getConfig?.[useChain?.id]?.mintArgs[tokenToPay],
       parseInt(numberOfTokens),
       // {
       //   gasLimit: "1000000",
       // },
     ],
-    chainId: getConfig[chain?.id]?.network?.id,
+    chainId: getConfig?.[useChain?.id]?.network?.id,
     // enabled: false, // parseInt(numberOfTokens) > 0,
     overrides: {
       from: address,
@@ -115,7 +124,7 @@ const MintTicket = ({ lowBalance, numberOfTokens }) => {
       </MintButton>
 
       <a
-        href={`${getConfig[chain.id].explorerUrl}/tx/${data?.hash}`}
+        href={`${getConfig?.[useChain?.id].explorerUrl}/tx/${data?.hash}`}
         target={"_blank"}
         rel="noreferrer"
       >

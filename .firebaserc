@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "eth-bcn-2023"
-  }
+    "default": "eth-bcn-2023",
+    "staging": "eth-bcn-test-23"
+  },
+  "targets": {},
+  "etags": {}
 }
