@@ -9,7 +9,7 @@ export const getConfig =
         ticketContractAddress: "0x6052ed5C646574D12c27E8D219C49C3394598b00",
         usdcAddress: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
         explorerUrl: "https://etherscan.io",
-        waveNum: 2,
+        waveNum: 4,
       }
     : {
         network: sepolia,
