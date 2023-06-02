@@ -322,7 +322,9 @@ const Mint = () => {
     address: getConfig?.[useChain?.id]?.ticketContractAddress,
     abi: getConfig?.[useChain?.id]?.ticketAbi,
     functionName: "waves",
-    args: [ethers.BigNumber.from(getConfig.waveNum.toString())],
+    args: [
+      ethers.BigNumber.from(getConfig?.[useChain?.id]?.waveNum.toString()),
+    ],
     chainId: getConfig?.[useChain?.id]?.network?.id,
   });
 

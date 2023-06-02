@@ -13,11 +13,6 @@
       },
       {
         "internalType": "address",
-        "name": "_daiAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
         "name": "_qfWallet",
         "type": "address"
       },
@@ -132,9 +127,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "_account",
-        "type": "address"
+        "internalType": "address[]",
+        "name": "_accounts",
+        "type": "address[]"
       },
       {
         "internalType": "uint256",
@@ -259,11 +254,6 @@
         "internalType": "uint256",
         "name": "_waveNum",
         "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "tokenAddressToPayWith",
-        "type": "address"
       },
       {
         "internalType": "uint256",
@@ -691,7 +681,7 @@
   },
   {
     "inputs": [],
-    "name": "withdrawAll",
+    "name": "withdrawUSDC",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

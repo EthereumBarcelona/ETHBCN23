@@ -69,14 +69,15 @@ const MintTicket = ({ lowBalance, numberOfTokens }) => {
       ? sepolia
       : mainnet;
 
-  const tokenToPay = "usdc"; // || dai // use state for choosing
+  const tokenToPay = "usdc";
 
   const { config } = usePrepareContractWrite({
     address: getConfig?.[useChain?.id]?.ticketContractAddress,
     abi: getConfig?.[useChain?.id]?.ticketAbi,
     functionName: "mintTicket",
     args: [
-      ...getConfig?.[useChain?.id]?.mintArgs[tokenToPay],
+      // ...getConfig?.[useChain?.id]?.mintArgs[tokenToPay],
+      getConfig?.[useChain?.id]?.waveNum,
       parseInt(numberOfTokens),
       // {
       //   gasLimit: "1000000",
