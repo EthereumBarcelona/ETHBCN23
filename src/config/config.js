@@ -3,7 +3,7 @@ import ethTicketAbi from "../ethereum/build/TicketAbi.json";
 import optimismTicketAbi from "../ethereum/build/optimism/TicketAbi.json";
 
 const waveNum = {
-  mainnet: 3,
+  mainnet: 4,
   optimism: 0,
   testnet: 0,
 };

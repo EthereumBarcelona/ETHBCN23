@@ -158,8 +158,9 @@ const FiatText = styled.div`
   font-size: 20px;
   text-align: left;
   color: #424242;
-  position: absolute;
-  margin: 20px 0 0 220px;
+  display:inline-block;
+  
+  margin: 10px 70px 0 0 ;
 
   :hover {
     cursor: pointer;
@@ -173,8 +174,10 @@ const FiatText = styled.div`
   }
 `;
 
+
+
 const TicketInfoContainer = styled.div`
-  margin: 50px 0 20px 0;
+  margin: 50px 0 10px 0;
   align-items: center;
   text-align: left;
 
@@ -190,7 +193,7 @@ const HeadingSmall = styled.div`
   font-size: 12px;
   color: #424242;
   display: inline;
-  margin: 0 100px 0 0;
+  margin: 0 80px 0 0;
 
   @media screen and (max-width: 767px) {
     margin: 0 50px 0 0;
@@ -239,6 +242,9 @@ export const TicketPriceBlack = styled.div`
   }
 `;
 
+export const BuyWithContainer = styled.div`
+display:inline;
+`
 export const CounterWrapper = styled.div`
   font-family: "Dahlia-Bold";
   font-style: normal;
@@ -248,7 +254,7 @@ export const CounterWrapper = styled.div`
   display: inline-block;
   color: #424242;
   text-align: left;
-  margin-left: 0px;
+  margin-left:-100px;
 `;
 
 const Counter = ({ numberOfTokens, setNumberOfTokens }) => {
@@ -394,11 +400,11 @@ const Mint = () => {
           <TicketInfoWrapper>
             <FooterDescription>ETHBarcelona</FooterDescription>
             <FooterDescriptionTitle>
-              Early-Bird <br /> Ticket
+              General  <br /> Attendee Ticket
             </FooterDescriptionTitle>
             <TicketInfoContainer>
               <HeadingSmall>
-                Price <HeadingSmallOrange>-20 %</HeadingSmallOrange>
+                Price <HeadingSmallOrange>-12%</HeadingSmallOrange>
               </HeadingSmall>
 
               <HeadingSmall>
@@ -407,11 +413,11 @@ const Mint = () => {
 
               <br />
               <TicketPrice>
-                $ 499
+                $ 499 USDC
                 <TicketPriceOrange>
                   {/* $ 399  */}&nbsp;$&nbsp;
                   {waveRead?.price /
-                    (getConfig.env === "mainnet" ? 10 ** 6 : 10 ** 18)}
+                    (getConfig.env === "mainnet" ? 10 ** 6 : 10 ** 18)} 
                 </TicketPriceOrange>
               </TicketPrice>
 
@@ -426,7 +432,7 @@ const Mint = () => {
                 <TicketPriceOrange>
                   $
                   {waveRead?.price?.mul(numberOfTokens) /
-                    (getConfig.env === "mainnet" ? 10 ** 6 : 10 ** 18)}
+                    (getConfig.env === "mainnet" ? 10 ** 6 : 10 ** 18)} USDC
                 </TicketPriceOrange>{" "}
               </TicketPriceBlack>
 
@@ -459,12 +465,17 @@ const Mint = () => {
               />
             )}
             <Line></Line>
+            <BuyWithContainer>
             <a href="https://ethbarcelona.myshopify.com/">
               <FiatText>
                 Buy with <img src={Arrow} className="arrow" /> <br /> Credit
                 Card
               </FiatText>
+              <FiatText>
+                Buy on <img src={Arrow} className="arrow" /> <br /> Optimism
+              </FiatText>
             </a>
+            </BuyWithContainer>
           </TicketInfoWrapper>
         </MintContainer>
       </Container>
