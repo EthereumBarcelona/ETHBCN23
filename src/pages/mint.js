@@ -478,7 +478,7 @@ const Mint = () => {
                 </FiatText>
               </a>
 
-              {chain.id === 1 ? (
+              {chain?.id === 1 ? (
                 <FiatText onClick={() => switchNetwork?.(optimism.id)}>
                   Buy on <img src={Arrow} className="arrow" /> <br /> Optimism
                 </FiatText>
