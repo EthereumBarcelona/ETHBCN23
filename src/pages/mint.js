@@ -31,7 +31,7 @@ import ticketAbi from "../ethereum/build/TicketAbi.json";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 2vw 10vw;
+  padding: 2vw ;
   min-height: 100vh;
   background: #e5dcd0;
 
