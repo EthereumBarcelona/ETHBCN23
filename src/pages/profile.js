@@ -2,19 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import WalletConnect from "../components/walletConnect";
 import Logo from "../assets/logo.svg";
-import TicketPlaceholder from "../assets/ethereum.png";
+import TicketOnEth from "../assets/ethereum.png";
+import TicketOnOpt from "../assets/optimism.png";
 import OrangeSmile from "../assets/orangeSmile.svg";
 import whiteSmile from "../assets/whiteSmile.svg";
 import "./style.css";
-import {
-  mainnet,
-  sepolia,
-  useAccount,
-  useContractReads,
-  useNetwork,
-} from "wagmi";
+import { useAccount, useContractReads, useNetwork } from "wagmi";
+import { mainnet, sepolia, optimism, optimismGoerli } from "wagmi/chains";
 import { getConfig } from "../config/config";
-import ticketAbi from "../ethereum/build/TicketAbi.json";
 import { Link } from "react-router-dom";
 
 export const Container = styled.div`
@@ -142,19 +137,19 @@ export const TT = styled.div`
 `;
 
 export const TikcetId = styled.div`
-text-decoration:none;
-font-family: "Montserrat";
-font-style: normal;
-font-weight: 500;
-font-size: 18px;
-color: #bc563c;
-text-underline:none;
-
-a {
   text-decoration: none;
-  color: inherit;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  color: #bc563c;
   text-underline: none;
-}
+
+  a {
+    text-decoration: none;
+    color: inherit;
+    text-underline: none;
+  }
 `;
 
 export const TicketBox = styled.div`
@@ -170,7 +165,7 @@ export const TicketBox = styled.div`
   }
 
   &:hover::after {
-    content: 'Redeem Now';
+    content: "Redeem Now";
     position: absolute;
     top: 25px;
     left: 50%;
@@ -208,16 +203,23 @@ const Profile = () => {
   const { data, isError, isLoading } = useContractReads({
     contracts: [
       {
-        address: getConfig?.[useChain?.id]?.ticketContractAddress,
-        abi: getConfig?.[useChain?.id]?.ticketAbi,
+        address: getConfig?.[sepolia?.id]?.ticketContractAddress,
+        abi: getConfig?.[sepolia?.id]?.ticketAbi,
         functionName: "walletQuery",
         args: [address],
-        chainId: useChain?.id,
+        chainId: sepolia?.id,
+      },
+      {
+        address: getConfig?.[optimismGoerli.id]?.ticketContractAddress,
+        abi: getConfig?.[optimismGoerli?.id]?.ticketAbi,
+        functionName: "walletQuery",
+        args: [address],
+        chainId: optimismGoerli?.id,
       },
     ],
   });
 
-  // console.log("Wallet query: ", data);
+  console.log("Wallet query: ", data);
 
   return (
     <div>
@@ -241,10 +243,23 @@ const Profile = () => {
           {data?.[0]?.map((tokenId) => {
             return (
               <TicketBox>
-              <Link to={`/redeem/${tokenId}`} key={tokenId}>
-                <img src={TicketPlaceholder} className="ticket" />
-                <TikcetId>#{tokenId.toString()}</TikcetId>
-              </Link>
+                <Link to={`/redeem/eth/${sepolia.id}/${tokenId}`} key={tokenId}>
+                  <img src={TicketOnEth} className="ticket" />
+                  <TikcetId>#{tokenId.toString()}</TikcetId>
+                </Link>
+              </TicketBox>
+            );
+          })}
+          {data?.[1]?.map((tokenId) => {
+            return (
+              <TicketBox>
+                <Link
+                  to={`/redeem/op/${optimismGoerli.id}/${tokenId}`}
+                  key={tokenId}
+                >
+                  <img src={TicketOnOpt} className="ticket" />
+                  <TikcetId>#{tokenId.add(750).toString()}</TikcetId>
+                </Link>
               </TicketBox>
             );
           })}

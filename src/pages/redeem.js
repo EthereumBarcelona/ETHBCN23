@@ -115,7 +115,7 @@ const Redeem = () => {
   const [tokenOwned, setTokenOwned] = useState(false);
   const [redeeming, setRedeeming] = useState(false);
 
-  const { id } = useParams();
+  const { chainId, tokenId } = useParams();
   const navigate = useNavigate();
 
   const useChain =
@@ -126,12 +126,14 @@ const Redeem = () => {
       : mainnet;
 
   const { data: owner, error } = useContractRead({
-    address: getConfig?.[useChain?.id]?.ticketContractAddress,
-    abi: getConfig?.[useChain?.id]?.ticketAbi,
+    address: getConfig?.[chainId]?.ticketContractAddress,
+    abi: getConfig?.[chainId]?.ticketAbi,
     functionName: "ownerOf",
-    args: [id],
-    chainId: useChain?.id,
+    args: [tokenId],
+    chainId, //useChain?.id,
   });
+
+  console.log({ owner });
 
   const checkIfTokenOwned = async () => {
     try {
@@ -151,7 +153,7 @@ const Redeem = () => {
     address: getConfig?.[useChain?.id]?.ticketContractAddress,
     abi: getConfig?.[useChain?.id]?.ticketAbi,
     functionName: "burn",
-    args: [id],
+    args: [tokenId],
     chainId: useChain?.id,
     overrides: {
       from: address,
@@ -174,7 +176,7 @@ const Redeem = () => {
           const url = `${getConfig.apiBaseUrl}/qrcode`;
           const tkt_data = {
             walletAddress: address,
-            tokenID: id,
+            tokenID: tokenId,
             hash: burnData?.hash,
           };
           const res = await axios.post(url, tkt_data, {
@@ -186,11 +188,11 @@ const Redeem = () => {
           console.log(res);
         }
         if (isSuccess || isError) setRedeeming(false);
-        if (isSuccess) navigate(`/tickets/${id}/qrcode`);
+        if (isSuccess) navigate(`/tickets/${tokenId}/qrcode`);
       }
     };
     run();
-  }, [burnData, isSuccess, isError, id, navigate, isLoading, address]);
+  }, [burnData, isSuccess, isError, tokenId, navigate, isLoading, address]);
 
   const onBurn = async (e) => {
     e.preventDefault();
@@ -213,11 +215,11 @@ const Redeem = () => {
       optionalName: user.displayName ? user.displayName : user.fullName,
       email: user.email,
       walletAddress: address,
-      tokenId: id,
-      ticketId: id,
+      tokenId: tokenId,
+      ticketId: tokenId,
     };
 
-    const { data } = await axios.get(url + `/${id}`, {
+    const { data } = await axios.get(url + `/${tokenId}`, {
       headers: {
         validate: process.env.REACT_APP_VALIDATE_TOKEN,
       },
@@ -229,7 +231,7 @@ const Redeem = () => {
       setUser({ ...user, displayName: data?.user?.optionalName });
 
     if (data.user?.tokenId) {
-      await axios.patch(url + `/${id}`, post_data, {
+      await axios.patch(url + `/${tokenId}`, post_data, {
         headers: {
           validate: process.env.REACT_APP_VALIDATE_TOKEN,
         },
@@ -276,7 +278,7 @@ const Redeem = () => {
               </FooterDescription>
               <TicketImageWrapper>
                 <img src={TicketPlaceholder} alt="" />
-                <FooterDescription>#{id}</FooterDescription>
+                <FooterDescription>#{tokenId}</FooterDescription>
               </TicketImageWrapper>
 
               <form onSubmit={onBurn}>
