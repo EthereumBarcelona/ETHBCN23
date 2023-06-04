@@ -178,10 +178,13 @@ const QrCode = () => {
   };
 
   const onDownload = async () => {
+    console.log("download..");
     try {
       const url = `${
         getConfig.mainApiBaseUrl
       }/createDownload?encrypted=${encodeURIComponent(encryptedHash)}`;
+
+      console.log({ encryptedHash });
       var { data } = await axios.get(url, options);
       console.log(data);
 
@@ -273,7 +276,7 @@ const QrCode = () => {
               </Code>
             )}
 
-            {/* <div>
+            <div>
               <div
                 style={{
                   cursor: "pointer",
@@ -285,7 +288,7 @@ const QrCode = () => {
                 <img alt=""></img>
                 Download
               </div>
-            </div> */}
+            </div>
           </Container>
         </Background>
       ) : (
