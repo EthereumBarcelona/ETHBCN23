@@ -52,8 +52,8 @@ export const getConfig =
         env: "testnet",
         networks: [sepolia, optimismGoerli],
         alchemyKey: process.env.REACT_APP_ALCHEMY_API_KEY,
-        apiBaseUrl: "http://localhost:3456",
-        mainApiBaseUrl: "https://eth-bcn-2023.herokuapp.com",
+        apiBaseUrl: "http://52.20.253.53", //"http://localhost:3456",
+        mainApiBaseUrl: "http://52.20.253.53", //"https://eth-bcn-2023.herokuapp.com",
         appBaseUrl: "http://localhost:3000", // "https://eth-bcn-2023.web.app"
         /*sepolia*/ 11155111 /*chainId*/: {
           network: sepolia,
