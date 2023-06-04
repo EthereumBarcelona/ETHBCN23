@@ -5,7 +5,7 @@ import ErrorPage from "../components/ErrorPage";
 import { Link, useParams, useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
 import { getConfig } from "../config/config";
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 // import Poap from "../../../assets/poap.jpeg";
 
 const Background = styled.div`
@@ -97,10 +97,10 @@ const QrCode = () => {
 
   const { id } = useParams();
   const navigate = useNavigate();
-
+  const { chain } = useNetwork()
   const getIfTokenScanned = async () => {
     try {
-      const url = `${getConfig.apiBaseUrl}/event/${id}`;
+      const url = `${getConfig.apiBaseUrl}/event?tokenId=${id}&chainId=${chain.id}`;
       const res = await axios.get(url, {
         headers: {
           validate: process.env.REACT_APP_VALIDATE_TOKEN,
@@ -122,7 +122,7 @@ const QrCode = () => {
 
   const getTokenRedeemData = async () => {
     try {
-      const url = `${getConfig.apiBaseUrl}/users/${id}`;
+      const url = `${getConfig.apiBaseUrl}/users?tokenId=${id}&chainId=${chain.id}`;
       const { data } = await axios.get(url, {
         headers: {
           validate: process.env.REACT_APP_VALIDATE_TOKEN,
@@ -144,7 +144,7 @@ const QrCode = () => {
 
   useEffect(() => {
     const run = async () => {
-      const url = `${getConfig.apiBaseUrl}/qrcode/${id}`;
+      const url = `${getConfig.apiBaseUrl}/qrcode?tokenId=${id}&chainId=${chain.id}`;
 
       let hashFound = false;
       while (!hashFound) {
@@ -180,9 +180,8 @@ const QrCode = () => {
   const onDownload = async () => {
     console.log("download..");
     try {
-      const url = `${
-        getConfig.mainApiBaseUrl
-      }/createDownload?encrypted=${encodeURIComponent(encryptedHash)}`;
+      const url = `${getConfig.mainApiBaseUrl
+        }/createDownload?encrypted=${encodeURIComponent(encryptedHash)}`;
 
       console.log({ encryptedHash });
       var { data } = await axios.get(url, options);

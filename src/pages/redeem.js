@@ -121,8 +121,8 @@ const Redeem = () => {
     chain?.id in getConfig
       ? chain
       : getConfig.env === "testnet"
-      ? sepolia
-      : mainnet;
+        ? sepolia
+        : mainnet;
 
   const { data: owner, error } = useContractRead({
     address: getConfig?.[useChain?.id]?.ticketContractAddress,
@@ -173,7 +173,8 @@ const Redeem = () => {
           const url = `${getConfig.apiBaseUrl}/qrcode`;
           const tkt_data = {
             walletAddress: address,
-            tokenID: id,
+            tokenId: id,
+            chainId: chain.id.toString(),
             hash: burnData?.hash,
           };
           const res = await axios.post(url, tkt_data, {
@@ -213,10 +214,10 @@ const Redeem = () => {
       email: user.email,
       walletAddress: address,
       tokenId: id,
-      ticketId: id,
+      chainId: chain.id.toString(),
     };
 
-    const { data } = await axios.get(url + `/${id}`, {
+    const { data } = await axios.get(url + `?tokenId=${id}&chainId=${chain.id}`, {
       headers: {
         validate: process.env.REACT_APP_VALIDATE_TOKEN,
       },
@@ -228,7 +229,7 @@ const Redeem = () => {
       setUser({ ...user, displayName: data?.user?.optionalName });
 
     if (data.user?.tokenId) {
-      await axios.patch(url + `/${id}`, post_data, {
+      await axios.patch(url + `?tokenId=${id}&chainId=${chain.id}`, post_data, {
         headers: {
           validate: process.env.REACT_APP_VALIDATE_TOKEN,
         },
