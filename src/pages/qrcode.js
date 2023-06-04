@@ -12,20 +12,11 @@ import { getConfig } from "../config/config";
 import { useAccount } from "wagmi";
 // import Poap from "../../../assets/poap.jpeg";
 
-const Background = styled.div`
-  background: #151515;
-  padding-bottom: 12%;
-  padding-top: 2%;
-  display: grid;
-  align-items: center;
-  justify-content: center;
-`;
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 2vw 10vw;
-  min-height: 100vh;
   background: #e5dcd0;
 
   @media screen and (max-width: 768px) {
@@ -47,7 +38,7 @@ export const TicketDisplayContainer = styled.div`
 `;
 
 export const Footer = styled.div`
-  margin-top: 25vh;
+margin-top:50px;
   text-align: left;
   display: flex;
   justify-content: space-between;
@@ -201,12 +192,11 @@ const Box = styled.div`
   align-items: center;
   width: 530px;
   height: 536px;
-  left: calc(50% - 530px / 2);
-  background: white;
-  border: 1px solid black;
+  padding: 0 50px;
+ border: 1px solid #bc563c;
   border-radius: 4px;
-  margin: auto;
-
+  margin: 40px auto;
+  
   @media (max-width: 800px) {
     width: 400px;
     margin: 20px 20px 20px 50px;
@@ -214,7 +204,8 @@ const Box = styled.div`
     padding: 20px 20px 20px 20px;
   }
 `;
-
+const Left = styled.div``;
+const Right = styled.div``;
 const Title = styled.div`
   font-family: "KnockOut";
   font-style: normal;
@@ -236,20 +227,14 @@ const Title = styled.div`
 `;
 
 const DetailsBox = styled.div`
-  /* Body Text M */
-  padding: 0 15%;
+margin: 20px 0;
   font-family: "Poppins";
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 20px;
-  /* or 125% */
-
   text-align: center;
-
-  /* Green Leaf */
-
-  color: #354b37;
+  color: #bc563c;
 `;
 
 const Code = styled.div`
@@ -257,8 +242,6 @@ const Code = styled.div`
   margin-left: auto;
   margin-right: auto;
   display: block;
-  margin-top: 7.5%;
-  margin-bottom: 10%;
   justify-content: center;
 `;
 
@@ -429,24 +412,24 @@ const QrCode = () => {
             </YY>
           </Navbar>
           <Box style={{ position: "relative" }}>
-            <div
+            <FooterDescription
               onClick={() => navigate(-1)}
             >
               Back
-            </div>
-            <Title>Hurray! You redeemed it successfully 🙋‍♂️</Title>
+            </FooterDescription>
+            <FooterDescriptionTitleBold>Hurray! <br /> You redeemed it successfully </FooterDescriptionTitleBold>
 
-            <p>
+            <FooterDescription>
               You are going to ETH BCN! This QR code is your access to the
               event. You could download it or access here with your wallet to
               use it.
-            </p>
+            </FooterDescription>
 
             <DetailsBox>
-              <div>Name: {redeemData.name}</div>
-              <div>Email: {redeemData.email} </div>
+              <FooterDescription>Name: {redeemData.name}</FooterDescription>
+              <FooterDescription>Email: {redeemData.email} </FooterDescription>
               {/* <div>Phone Number: {redeemData.optionalName}</div> */}
-              <div>NFT Ticket : {id} </div>
+              <FooterDescription>NFTTicket ID: {id} </FooterDescription>
             </DetailsBox>
 
             {encryptedHash ? (
@@ -464,7 +447,7 @@ const QrCode = () => {
             )}
 
             <div>
-              <div
+              <FooterDescription
                 style={{
                   cursor: "pointer",
                 }}
@@ -474,9 +457,33 @@ const QrCode = () => {
               >
                 <img alt=""></img>
                 Download
-              </div>
+              </FooterDescription>
             </div>
           </Box>
+          <Footer>
+          <Left>
+            <FooterDescriptionTitle>
+              Redeem your NFTicket
+            </FooterDescriptionTitle>
+            <FooterDescriptionTitleBold>
+              to get a QR <br />
+              {/* code to enter the event */}
+            </FooterDescriptionTitleBold>
+            <br />
+            <FooterDescriptionTitleBold>
+              code to enter the event
+            </FooterDescriptionTitleBold>
+
+          </Left>
+
+          <Right>
+            <a href="/mint">
+              <FooterDescriptionTitleBold2 href="/mint">
+                Buy Tickets
+              </FooterDescriptionTitleBold2>
+            </a>
+          </Right>
+        </Footer>
           </Container>
       ) : (
         <ErrorPage text={""} />
