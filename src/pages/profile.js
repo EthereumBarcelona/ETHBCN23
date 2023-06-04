@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import WalletConnect from "../components/walletConnect";
 import Logo from "../assets/logo.svg";
-import TicketPlaceholder from "../assets/Ticket.png";
+import TicketPlaceholder from "../assets/ethereum.png";
 import OrangeSmile from "../assets/orangeSmile.svg";
 import whiteSmile from "../assets/whiteSmile.svg";
 import "./style.css";
@@ -141,6 +141,56 @@ export const TT = styled.div`
   }
 `;
 
+export const TikcetId = styled.div`
+text-decoration:none;
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+color: #bc563c;
+text-underline:none;
+
+a {
+  text-decoration: none;
+  color: inherit;
+  text-underline: none;
+}
+`;
+
+export const TicketBox = styled.div`
+  margin: 10px;
+  border: 2px solid #bc563c;
+  padding-bottom: 5px;
+  transition: filter 0.3s;
+
+  &:hover {
+    filter: brightness(0.8);
+    cursor: pointer;
+    position: relative;
+  }
+
+  &:hover::after {
+    content: 'Redeem Now';
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #bc563c;
+    color: #fff;
+    padding: 5px;
+    font-family: "Montserrat";
+    font-weight: 500;
+    font-size: 14px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+`;
+
 const Left = styled.div``;
 const Right = styled.div``;
 
@@ -190,10 +240,12 @@ const Profile = () => {
         <TicketDisplayContainer>
           {data?.[0]?.map((tokenId) => {
             return (
+              <TicketBox>
               <Link to={`/redeem/${tokenId}`} key={tokenId}>
                 <img src={TicketPlaceholder} className="ticket" />
-                <div>#{tokenId.toString()}</div>
+                <TikcetId>#{tokenId.toString()}</TikcetId>
               </Link>
+              </TicketBox>
             );
           })}
           {/* <img src={TicketPlaceholder} className="ticket" />

@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import styled from "styled-components";
 import ErrorPage from "../components/ErrorPage";
+import whiteSmile from "../assets/whiteSmile.svg";
+import OrangeSmile from "../assets/orangeSmile.svg";
+import WalletConnect from "../components/walletConnect";
+import Logo from "../assets/logo.svg";
 import { Link, useParams, useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
 import { getConfig } from "../config/config";
@@ -17,7 +21,181 @@ const Background = styled.div`
   justify-content: center;
 `;
 
-const Container = styled.div`
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 2vw 10vw;
+  min-height: 100vh;
+  background: #e5dcd0;
+
+  @media screen and (max-width: 768px) {
+    padding: 0 20px 50px 20px;
+  }
+`;
+
+export const Navbar = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  @media screen and (max-width: 768px) {
+    padding: 20px 0;
+  }
+`;
+export const TicketDisplayContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+export const Footer = styled.div`
+  margin-top: 25vh;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+`;
+export const ProfileContainer = styled.div`
+  width: 80px;
+  margin: 0 50px;
+  height: 80px;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #bc563c;
+  :hover {
+    background: #bc563c;
+    .smile {
+      content: url(${whiteSmile});
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 50px;
+    height: 50px;
+    margin: 0 0 00px 0px;
+  }
+`;
+
+export const FooterDescriptionTitle = styled.div`
+  font-family: "Dahlia-RC";
+  font-style: normal;
+  font-weight: 400;
+  margin-right: 10px;
+  font-size: 40px;
+  line-height: 48px;
+  display: inline-block;
+  color: #bc563c;
+`;
+
+export const FooterDescriptionTitleBold = styled.div`
+  font-family: "Dahlia-Bold";
+  font-style: normal;
+  font-weight: 400;
+  display: inline-block;
+  font-size: 40px;
+  line-height: 48px;
+  color: #bc563c;
+`;
+
+export const FooterDescriptionTitleBold2 = styled.div`
+  font-family: "Dahlia-Bold";
+  font-style: normal;
+  font-weight: 400;
+  display: inline-block;
+  font-size: 40px;
+  line-height: 48px;
+  color: #bc563c;
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+export const FooterDescription = styled.div`
+  font-family: "Montserrat";
+  font-style: normal;
+  margin-top: 16px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 17px;
+  color: #bc563c;
+`;
+
+export const YY = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const TT = styled.div`
+  border: 1px solid #bc563c;
+  border-radius: 100px;
+  width: auto; // 200px;
+
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 15px;
+
+  @media screen and (max-width: 768px) {
+    width: 00px;
+    height: 00px;
+    margin: 0 90px 15px 90px;
+    border: none;
+  }
+`;
+
+export const TikcetId = styled.div`
+text-decoration:none;
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+color: #bc563c;
+text-underline:none;
+
+a {
+  text-decoration: none;
+  color: inherit;
+  text-underline: none;
+}
+`;
+
+export const TicketBox = styled.div`
+  margin: 10px;
+  border: 2px solid #bc563c;
+  padding-bottom: 5px;
+  transition: filter 0.3s;
+
+  &:hover {
+    filter: brightness(0.8);
+    cursor: pointer;
+    position: relative;
+  }
+
+  &:hover::after {
+    content: 'Redeem Now';
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #bc563c;
+    color: #fff;
+    padding: 5px;
+    font-family: "Montserrat";
+    font-weight: 500;
+    font-size: 14px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+`;
+
+const Box = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -232,17 +410,26 @@ const QrCode = () => {
   return (
     <>
       {tokenOwned ? (
-        <Background>
-          <Container style={{ position: "relative" }}>
+          <Container>
+          <Navbar>
+            <a href="/https://ethbarcelona.com/">
+              {" "}
+              <img src={Logo} className="logo" />
+            </a>
+            <YY>
+              <TT>
+                <WalletConnect></WalletConnect>
+              </TT>
+              <ProfileContainer>
+                {" "}
+                <a href="/">
+                  <img src={OrangeSmile} className="smile" />
+                </a>
+              </ProfileContainer>
+            </YY>
+          </Navbar>
+          <Box style={{ position: "relative" }}>
             <div
-              style={{
-                textDecoration: "underline",
-                cursor: "pointer",
-                position: "absolute",
-                top: 10,
-                left: "50%",
-                alignItems: "center",
-              }}
               onClick={() => navigate(-1)}
             >
               Back
@@ -258,7 +445,7 @@ const QrCode = () => {
             <DetailsBox>
               <div>Name: {redeemData.name}</div>
               <div>Email: {redeemData.email} </div>
-              <div>Phone Number: {redeemData.optionalName}</div>
+              {/* <div>Phone Number: {redeemData.optionalName}</div> */}
               <div>NFT Ticket : {id} </div>
             </DetailsBox>
 
@@ -289,8 +476,8 @@ const QrCode = () => {
                 Download
               </div>
             </div>
+          </Box>
           </Container>
-        </Background>
       ) : (
         <ErrorPage text={""} />
       )}
