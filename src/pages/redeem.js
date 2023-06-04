@@ -9,10 +9,12 @@ import Logo from "../assets/logo.svg";
 import OrangeSmile from "../assets/orangeSmile.svg";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  mainnet,
   sepolia,
   useAccount,
   useContractRead,
   useContractWrite,
+  useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
@@ -102,6 +104,7 @@ const MintButton = styled.button`
 
 const Redeem = () => {
   const { address } = useAccount();
+  const { chain } = useNetwork();
   const [user, setUser] = useState({
     fullName: "",
     displayName: "",
@@ -114,12 +117,19 @@ const Redeem = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const useChain =
+    chain?.id in getConfig
+      ? chain
+      : getConfig.env === "testnet"
+      ? sepolia
+      : mainnet;
+
   const { data: owner, error } = useContractRead({
-    address: getConfig.ticketContractAddress,
-    abi: ticketAbi,
+    address: getConfig?.[useChain?.id]?.ticketContractAddress,
+    abi: getConfig?.[useChain?.id]?.ticketAbi,
     functionName: "ownerOf",
     args: [id],
-    chainId: sepolia.id,
+    chainId: useChain?.id,
   });
 
   const checkIfTokenOwned = async () => {
@@ -137,11 +147,11 @@ const Redeem = () => {
   }, [owner, error, address]);
 
   const { config } = usePrepareContractWrite({
-    address: getConfig?.ticketContractAddress,
-    abi: ticketAbi,
+    address: getConfig?.[useChain?.id]?.ticketContractAddress,
+    abi: getConfig?.[useChain?.id]?.ticketAbi,
     functionName: "burn",
     args: [id],
-    chainId: sepolia.id,
+    chainId: useChain?.id,
     overrides: {
       from: address,
     },
