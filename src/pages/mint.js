@@ -20,18 +20,20 @@ import {
   useContractRead,
   useContractReads,
   useNetwork,
+  useSwitchNetwork,
 } from "wagmi";
 import { BigNumber, ethers } from "ethers";
 import ApproveUsdc from "../components/ApproveUsdc";
 import MintTicket from "../components/MintTicket";
 import ticketAbi from "../ethereum/build/TicketAbi.json";
+import { optimism } from "wagmi/chains";
 
 // const { network } = getConfig;
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 2vw ;
+  padding: 2vw;
   min-height: 100vh;
   background: #e5dcd0;
 
@@ -282,6 +284,7 @@ const Mint = () => {
   const [approved, setApproved] = useState();
   const [lowBalance, setLowBalance] = useState(false);
   const { chain } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork();
 
   const useChain =
     chain?.id in getConfig
@@ -473,10 +476,17 @@ const Mint = () => {
                   Buy with <img src={Arrow} className="arrow" /> <br /> Credit
                   Card
                 </FiatText>
-                <FiatText>
+              </a>
+
+              {chain.id === 1 ? (
+                <FiatText onClick={() => switchNetwork?.(optimism.id)}>
                   Buy on <img src={Arrow} className="arrow" /> <br /> Optimism
                 </FiatText>
-              </a>
+              ) : (
+                <FiatText onClick={() => switchNetwork?.(mainnet.id)}>
+                  Buy on <img src={Arrow} className="arrow" /> <br /> Ethereum
+                </FiatText>
+              )}
             </BuyWithContainer>
           </TicketInfoWrapper>
         </MintContainer>
