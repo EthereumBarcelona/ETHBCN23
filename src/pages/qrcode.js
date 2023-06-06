@@ -9,9 +9,8 @@ import Logo from "../assets/logo.svg";
 import { Link, useParams, useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
 import { getConfig } from "../config/config";
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 // import Poap from "../../../assets/poap.jpeg";
-
 
 export const Container = styled.div`
   display: flex;
@@ -38,7 +37,7 @@ export const TicketDisplayContainer = styled.div`
 `;
 
 export const Footer = styled.div`
-margin-top:50px;
+  margin-top: 50px;
   text-align: left;
   display: flex;
   justify-content: space-between;
@@ -137,19 +136,19 @@ export const TT = styled.div`
 `;
 
 export const TikcetId = styled.div`
-text-decoration:none;
-font-family: "Montserrat";
-font-style: normal;
-font-weight: 500;
-font-size: 18px;
-color: #bc563c;
-text-underline:none;
-
-a {
   text-decoration: none;
-  color: inherit;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  color: #bc563c;
   text-underline: none;
-}
+
+  a {
+    text-decoration: none;
+    color: inherit;
+    text-underline: none;
+  }
 `;
 
 export const TicketBox = styled.div`
@@ -165,7 +164,7 @@ export const TicketBox = styled.div`
   }
 
   &:hover::after {
-    content: 'Redeem Now';
+    content: "Redeem Now";
     position: absolute;
     top: 25px;
     left: 50%;
@@ -193,10 +192,10 @@ const Box = styled.div`
   width: 530px;
   height: 536px;
   padding: 0 50px;
- border: 1px solid #bc563c;
+  border: 1px solid #bc563c;
   border-radius: 4px;
   margin: 40px auto;
-  
+
   @media (max-width: 800px) {
     width: 400px;
     margin: 20px 20px 20px 50px;
@@ -227,7 +226,7 @@ const Title = styled.div`
 `;
 
 const DetailsBox = styled.div`
-margin: 20px 0;
+  margin: 20px 0;
   font-family: "Poppins";
   font-style: normal;
   font-weight: 400;
@@ -259,9 +258,11 @@ const QrCode = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const { chain } = useNetwork();
+
   const getIfTokenScanned = async () => {
     try {
-      const url = `${getConfig.apiBaseUrl}/event/${id}`;
+      const url = `${getConfig.apiBaseUrl}/event?tokenId=${id}&chainId=${chain?.id}`;
       const res = await axios.get(url, {
         headers: {
           validate: process.env.REACT_APP_VALIDATE_TOKEN,
@@ -283,7 +284,7 @@ const QrCode = () => {
 
   const getTokenRedeemData = async () => {
     try {
-      const url = `${getConfig.apiBaseUrl}/users/${id}`;
+      const url = `${getConfig.apiBaseUrl}/users?tokenId=${id}&chainId=${chain?.id}`;
       const { data } = await axios.get(url, {
         headers: {
           validate: process.env.REACT_APP_VALIDATE_TOKEN,
@@ -305,7 +306,7 @@ const QrCode = () => {
 
   useEffect(() => {
     const run = async () => {
-      const url = `${getConfig.apiBaseUrl}/qrcode/${id}`;
+      const url = `${getConfig.apiBaseUrl}/qrcode?tokenId=${id}&chainId=${chain?.id}`;
 
       let hashFound = false;
       while (!hashFound) {
@@ -393,7 +394,7 @@ const QrCode = () => {
   return (
     <>
       {tokenOwned ? (
-          <Container>
+        <Container>
           <Navbar>
             <a href="/https://ethbarcelona.com/">
               {" "}
@@ -412,12 +413,12 @@ const QrCode = () => {
             </YY>
           </Navbar>
           <Box style={{ position: "relative" }}>
-            <FooterDescription
-              onClick={() => navigate(-1)}
-            >
+            <FooterDescription onClick={() => navigate(-1)}>
               Back
             </FooterDescription>
-            <FooterDescriptionTitleBold>Hurray! <br /> You redeemed it successfully </FooterDescriptionTitleBold>
+            <FooterDescriptionTitleBold>
+              Hurray! <br /> You redeemed it successfully{" "}
+            </FooterDescriptionTitleBold>
 
             <FooterDescription>
               You are going to ETH BCN! This QR code is your access to the
@@ -461,30 +462,29 @@ const QrCode = () => {
             </div>
           </Box>
           <Footer>
-          <Left>
-            <FooterDescriptionTitle>
-              Redeem your NFTicket
-            </FooterDescriptionTitle>
-            <FooterDescriptionTitleBold>
-              to get a QR <br />
-              {/* code to enter the event */}
-            </FooterDescriptionTitleBold>
-            <br />
-            <FooterDescriptionTitleBold>
-              code to enter the event
-            </FooterDescriptionTitleBold>
+            <Left>
+              <FooterDescriptionTitle>
+                Redeem your NFTicket
+              </FooterDescriptionTitle>
+              <FooterDescriptionTitleBold>
+                to get a QR <br />
+                {/* code to enter the event */}
+              </FooterDescriptionTitleBold>
+              <br />
+              <FooterDescriptionTitleBold>
+                code to enter the event
+              </FooterDescriptionTitleBold>
+            </Left>
 
-          </Left>
-
-          <Right>
-            <a href="/mint">
-              <FooterDescriptionTitleBold2 href="/mint">
-                Buy Tickets
-              </FooterDescriptionTitleBold2>
-            </a>
-          </Right>
-        </Footer>
-          </Container>
+            <Right>
+              <a href="/mint">
+                <FooterDescriptionTitleBold2 href="/mint">
+                  Buy Tickets
+                </FooterDescriptionTitleBold2>
+              </a>
+            </Right>
+          </Footer>
+        </Container>
       ) : (
         <ErrorPage text={""} />
       )}

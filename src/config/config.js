@@ -13,7 +13,7 @@ const usdcAddress = {
   mainnet: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
   optimism: "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
   sepolia: "0xBe473174D3913A13Ce80C157e685b994ad1c17C8",
-  optimismGoerli: "0x6B77712429DEebB0B2551668cD9314B5d52ECdD2",
+  optimismGoerli: "0x3d8A919062Ea2Ad81189e906669f4890edf3A0c6",
 };
 
 export const getConfig =
@@ -70,7 +70,7 @@ export const getConfig =
           network: optimismGoerli,
           waveNum: waveNum.opGoerli,
           alchemyUrl: `https://opt-goerli.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
-          ticketContractAddress: "0xA335c7498D1EF9430b9805c5399051159531F424",
+          ticketContractAddress: "0x66E1DFa5685546a559596Fc2295c82B95f3fDF02",
           usdc: {
             address: usdcAddress.optimismGoerli,
           },

@@ -17,6 +17,7 @@ import {
   useContractWrite,
   useNetwork,
   usePrepareContractWrite,
+  useSwitchNetwork,
   useWaitForTransaction,
 } from "wagmi";
 import { getConfig } from "../config/config";
@@ -106,6 +107,8 @@ const MintButton = styled.button`
 const Redeem = () => {
   const { address } = useAccount();
   const { chain } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork();
+
   const [user, setUser] = useState({
     fullName: "",
     displayName: "",
@@ -117,6 +120,8 @@ const Redeem = () => {
 
   const { chainId, tokenId } = useParams();
   const navigate = useNavigate();
+
+  console.log({ chainId, tokenId });
 
   const useChain =
     chain?.id in getConfig
@@ -130,10 +135,10 @@ const Redeem = () => {
     abi: getConfig?.[chainId]?.ticketAbi,
     functionName: "ownerOf",
     args: [tokenId],
-    chainId, //useChain?.id,
+    chainId: parseInt(chainId), //useChain?.id,
   });
 
-  console.log({ owner });
+  console.log({ owner, error });
 
   const checkIfTokenOwned = async () => {
     try {
@@ -149,12 +154,18 @@ const Redeem = () => {
     if (address) checkIfTokenOwned();
   }, [owner, error, address]);
 
+  // switch network
+  useEffect(() => {
+    console.log(`switch to ${chainId}`);
+    if (chain?.id !== parseInt(chainId)) switchNetwork?.(parseInt(chainId));
+  }, [chain?.id, chainId, switchNetwork]);
+
   const { config } = usePrepareContractWrite({
-    address: getConfig?.[useChain?.id]?.ticketContractAddress,
-    abi: getConfig?.[useChain?.id]?.ticketAbi,
+    address: getConfig?.[chainId]?.ticketContractAddress,
+    abi: getConfig?.[chainId]?.ticketAbi,
     functionName: "burn",
     args: [tokenId],
-    chainId: useChain?.id,
+    chainId: parseInt(chainId),
     overrides: {
       from: address,
     },
@@ -176,7 +187,9 @@ const Redeem = () => {
           const url = `${getConfig.apiBaseUrl}/qrcode`;
           const tkt_data = {
             walletAddress: address,
-            tokenID: tokenId,
+            // tokenID: tokenId,
+            tokenId,
+            chainId: chainId,
             hash: burnData?.hash,
           };
           const res = await axios.post(url, tkt_data, {
@@ -215,15 +228,19 @@ const Redeem = () => {
       optionalName: user.displayName ? user.displayName : user.fullName,
       email: user.email,
       walletAddress: address,
-      tokenId: tokenId,
-      ticketId: tokenId,
+      tokenId,
+      // ticketId: tokenId,
+      chainId: chainId,
     };
 
-    const { data } = await axios.get(url + `/${tokenId}`, {
-      headers: {
-        validate: process.env.REACT_APP_VALIDATE_TOKEN,
-      },
-    });
+    const { data } = await axios.get(
+      url + `?tokenId=${tokenId}&chainId=${chainId}`,
+      {
+        headers: {
+          validate: process.env.REACT_APP_VALIDATE_TOKEN,
+        },
+      }
+    );
 
     console.log(data?.user);
 
@@ -231,11 +248,15 @@ const Redeem = () => {
       setUser({ ...user, displayName: data?.user?.optionalName });
 
     if (data.user?.tokenId) {
-      await axios.patch(url + `/${tokenId}`, post_data, {
-        headers: {
-          validate: process.env.REACT_APP_VALIDATE_TOKEN,
-        },
-      });
+      await axios.patch(
+        url + `?tokenId=${tokenId}&chainId=${chainId}`,
+        post_data,
+        {
+          headers: {
+            validate: process.env.REACT_APP_VALIDATE_TOKEN,
+          },
+        }
+      );
     } else {
       await axios.post(url, post_data, {
         headers: {
