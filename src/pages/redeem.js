@@ -252,7 +252,7 @@ const Redeem = () => {
       if (!user?.displayName)
         setUser({ ...user, displayName: data?.user?.optionalName });
 
-      if (data.user?.tokenId) {
+      if (data.user?.ticketId) {
         await axios.patch(
           url + `?tokenId=${tokenId}&chainId=${chainId}`,
           post_data,
