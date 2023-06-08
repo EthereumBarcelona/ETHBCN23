@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Container } from "./mint";
 import { FooterDescriptionTitleBold, FooterDescription } from "./profile";
 import styled from "styled-components";
-import TicketPlaceholder from "../assets/ethereum.png";
+// import TicketPlaceholder from "../assets/ethereum.png";
+
+import TicketOnEth from "../assets/ethereum.png";
+import TicketOnOpt from "../assets/optimism.png";
+
 import whiteSmile from "../assets/whiteSmile.svg";
 import { Navbar, YY, TT, ProfileContainer } from "./profile";
 import WalletConnect from "../components/walletConnect";
@@ -118,7 +122,7 @@ const Redeem = () => {
   const [tokenOwned, setTokenOwned] = useState(false);
   const [redeeming, setRedeeming] = useState(false);
 
-  const { chainId, tokenId } = useParams();
+  const { chainName, chainId, tokenId } = useParams();
   const navigate = useNavigate();
 
   console.log({ chainId, tokenId });
@@ -222,51 +226,56 @@ const Redeem = () => {
   };
 
   const saveData = async () => {
-    const url = `${getConfig.apiBaseUrl}/users`;
-    const post_data = {
-      name: user.fullName,
-      optionalName: user.displayName ? user.displayName : user.fullName,
-      email: user.email,
-      walletAddress: address,
-      tokenId,
-      // ticketId: tokenId,
-      chainId: chainId,
-    };
+    try {
+      const url = `${getConfig.apiBaseUrl}/users`;
+      const post_data = {
+        name: user.fullName,
+        optionalName: user.displayName ? user.displayName : user.fullName,
+        email: user.email,
+        walletAddress: address,
+        tokenId,
+        // ticketId: tokenId,
+        chainId: chainId,
+      };
 
-    const { data } = await axios.get(
-      url + `?tokenId=${tokenId}&chainId=${chainId}`,
-      {
-        headers: {
-          validate: process.env.REACT_APP_VALIDATE_TOKEN,
-        },
-      }
-    );
-
-    console.log(data?.user);
-
-    if (!user?.displayName)
-      setUser({ ...user, displayName: data?.user?.optionalName });
-
-    if (data.user?.tokenId) {
-      await axios.patch(
+      const { data } = await axios.get(
         url + `?tokenId=${tokenId}&chainId=${chainId}`,
-        post_data,
         {
           headers: {
             validate: process.env.REACT_APP_VALIDATE_TOKEN,
           },
         }
       );
-    } else {
-      await axios.post(url, post_data, {
-        headers: {
-          "Content-Type": "application/json",
-          validate: process.env.REACT_APP_VALIDATE_TOKEN,
-        },
-      });
-    }
 
-    console.log("user data posted successfully...");
+      console.log(data?.user);
+
+      if (!user?.displayName)
+        setUser({ ...user, displayName: data?.user?.optionalName });
+
+      if (data.user?.tokenId) {
+        await axios.patch(
+          url + `?tokenId=${tokenId}&chainId=${chainId}`,
+          post_data,
+          {
+            headers: {
+              validate: process.env.REACT_APP_VALIDATE_TOKEN,
+            },
+          }
+        );
+      } else {
+        await axios.post(url, post_data, {
+          headers: {
+            "Content-Type": "application/json",
+            validate: process.env.REACT_APP_VALIDATE_TOKEN,
+          },
+        });
+      }
+
+      console.log("user data posted successfully...");
+    } catch (err) {
+      setRedeeming(false);
+      throw err;
+    }
   };
 
   return (
@@ -298,8 +307,19 @@ const Redeem = () => {
                 <br /> enter the event
               </FooterDescription>
               <TicketImageWrapper>
-                <img src={TicketPlaceholder} alt="" />
-                <FooterDescription>#{tokenId}</FooterDescription>
+                {chainName == "op" ? (
+                  <>
+                    <img src={TicketOnOpt} alt="" />
+                    <FooterDescription>
+                      #{parseInt(tokenId) + 750}
+                    </FooterDescription>
+                  </>
+                ) : (
+                  <>
+                    <img src={TicketOnEth} alt="" />
+                    <FooterDescription>#{parseInt(tokenId)}</FooterDescription>
+                  </>
+                )}
               </TicketImageWrapper>
 
               <form onSubmit={onBurn}>
