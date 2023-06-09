@@ -3,7 +3,8 @@
     "default": "eth-bcn-2023",
     "staging": "eth-bcn-test-23",
     "optimism": "eth-bcn-23-opt-main",
-    "wert": "eth-bcn-wert"
+    "wert": "eth-bcn-wert",
+    "wert-main": "eth-bcn-wert-main"
   },
   "targets": {},
   "etags": {}
