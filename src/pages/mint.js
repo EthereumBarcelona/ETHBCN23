@@ -28,6 +28,13 @@ import MintTicket from "../components/MintTicket";
 import ticketAbi from "../ethereum/build/TicketAbi.json";
 import { optimism } from "wagmi/chains";
 
+import { wertDetails as wert } from "../config/utils";
+import WertWidget from "@wert-io/widget-initializer";
+import { signSmartContractData } from "@wert-io/widget-sc-signer";
+import { v4 as uuidv4 } from "uuid";
+
+import Web3 from "web3";
+
 // const { network } = getConfig;
 
 export const Container = styled.div`
@@ -338,7 +345,7 @@ const Mint = () => {
     chainId: getConfig?.[useChain?.id]?.network?.id,
   });
 
-  console.log({ waveRead });
+  // console.log({ waveRead });
 
   const { data: allowance = bignumber } = useContractRead({
     address: getConfig?.[useChain?.id]?.[tokenToPay]?.address, //.usdcAddress,
@@ -370,6 +377,62 @@ const Mint = () => {
     setLowBalance(usdcBalance.lt(waveRead?.price?.mul(numberOfTokens)));
     setApproved(allowance >= waveRead?.price?.mul(numberOfTokens));
   }, [waveRead, allowance, numberOfTokens, isConnected, address]);
+
+  const openWertWidget = () => {
+    console.log("opening wert widget...");
+    // Get user address
+    const web3 = new Web3();
+    const userAddress = address;
+
+    console.log({ userAddress });
+
+    let mint_nft = wert.mintAbi;
+    let mint_args = [0, userAddress, 1];
+
+    // Encode the call to mintNFT(address = userAddress, numberOfTokens = 1)
+    const scInputData = web3.eth.abi.encodeFunctionCall(mint_nft, mint_args);
+    console.log({ scInputData });
+    const privateKey = wert.privateKey;
+
+    console.log({ wert });
+    // Create signed SC data for wert-widget
+    // Please do this on backend
+    const signedData = signSmartContractData(
+      {
+        address: userAddress, // user's address
+        commodity: wert.commodity,
+        commodity_amount: wert.ticketPrice, // the crypto amount that should be sent to the contract method
+        network: wert.network,
+        sc_address: wert.contractAddress, //"0x6af35a72b2490a44c0e88ae635b9b38516544db1", // your SC address
+        sc_input_data: scInputData,
+      },
+      privateKey
+    );
+    const otherWidgetOptions = {
+      partner_id: wert.partnerId, // your partner id
+      click_id: uuidv4(), // unique id of purhase in your system
+      origin: wert.origin, // this option needed only in sandbox
+    };
+    const nftOptions = {
+      extra: {
+        item_info: {
+          author: "ETH Barcelona",
+          image_url:
+            "https://tickets.ethbarcelona.com/static/media/TicketMint.5a295194b77a5635019e46708d84e06e.svg", // "./Ticket.png",
+          name: "ETH Barcelona Tickets",
+          seller: "ETH BCN",
+        },
+      },
+    };
+
+    const wertWidget = new WertWidget({
+      ...signedData,
+      ...otherWidgetOptions,
+      ...nftOptions,
+    });
+
+    wertWidget.mount();
+  };
 
   return (
     <div>
@@ -488,6 +551,11 @@ const Mint = () => {
                 </FiatText>
               )}
             </BuyWithContainer>
+
+            <br />
+            <FiatText onClick={() => openWertWidget()}>
+              Buy with <img src={Arrow} className="arrow" /> <br /> Wert
+            </FiatText>
           </TicketInfoWrapper>
         </MintContainer>
       </Container>
