@@ -391,10 +391,8 @@ const Mint = () => {
 
     // Encode the call to mintNFT(address = userAddress, numberOfTokens = 1)
     const scInputData = web3.eth.abi.encodeFunctionCall(mint_nft, mint_args);
-    console.log({ scInputData });
     const privateKey = wert.privateKey;
 
-    console.log({ wert });
     // Create signed SC data for wert-widget
     // Please do this on backend
     const signedData = signSmartContractData(
