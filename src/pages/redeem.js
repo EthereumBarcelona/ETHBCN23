@@ -205,7 +205,7 @@ const Redeem = () => {
           console.log(res);
         }
         if (isSuccess || isError) setRedeeming(false);
-        if (isSuccess) navigate(`/tickets/${tokenId}/qrcode`);
+        if (isSuccess) navigate(`/tickets/${tokenId}/${chainId}/qrcode`);
       }
     };
     run();

@@ -65,7 +65,11 @@ function App() {
                 path="/redeem/:chainName/:chainId/:tokenId"
                 element={<Redeem />}
               />
-              <Route exact path="/tickets/:id/qrcode" element={<QR />} />
+              <Route
+                exact
+                path="/tickets/:chainId/:tokenId/qrcode"
+                element={<QR />}
+              />
 
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

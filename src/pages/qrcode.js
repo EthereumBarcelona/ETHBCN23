@@ -255,14 +255,12 @@ const QrCode = () => {
   const [tokenOwned, setTokenOwned] = useState(false);
   const [tokenScanned, setTokenScanned] = useState(false);
 
-  const { id } = useParams();
+  const { tokenId: id, chainId } = useParams();
   const navigate = useNavigate();
-
-  const { chain } = useNetwork();
 
   const getIfTokenScanned = async () => {
     try {
-      const url = `${getConfig.apiBaseUrl}/event?tokenId=${id}&chainId=${chain?.id}`;
+      const url = `${getConfig.apiBaseUrl}/event?tokenId=${id}&chainId=${chainId}`;
       const res = await axios.get(url, {
         headers: {
           validate: process.env.REACT_APP_VALIDATE_TOKEN,
@@ -284,7 +282,7 @@ const QrCode = () => {
 
   const getTokenRedeemData = async () => {
     try {
-      const url = `${getConfig.apiBaseUrl}/users?tokenId=${id}&chainId=${chain?.id}`;
+      const url = `${getConfig.apiBaseUrl}/users?tokenId=${id}&chainId=${chainId}`;
       const { data } = await axios.get(url, {
         headers: {
           validate: process.env.REACT_APP_VALIDATE_TOKEN,
@@ -306,7 +304,7 @@ const QrCode = () => {
 
   useEffect(() => {
     const run = async () => {
-      const url = `${getConfig.apiBaseUrl}/qrcode?tokenId=${id}&chainId=${chain?.id}`;
+      const url = `${getConfig.apiBaseUrl}/qrcode?tokenId=${id}&chainId=${chainId}`;
 
       let hashFound = false;
       while (!hashFound) {

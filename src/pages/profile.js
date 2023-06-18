@@ -295,7 +295,10 @@ const Profile = () => {
           {redeemedTokens?.map(({ ticketId, tokenId, chainId }) => {
             return (
               <RedeemedTicketBox>
-                <Link to={`/tickets/${tokenId}/qrcode`} key={ticketId}>
+                <Link
+                  to={`/tickets/${chainId}/${tokenId}/qrcode`}
+                  key={ticketId}
+                >
                   <img src={viewQR} className="ticket" alt="" />
                   <TikcetId>#{ticketId.toString()}</TikcetId>
                 </Link>
