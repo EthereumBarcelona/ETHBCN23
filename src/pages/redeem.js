@@ -204,8 +204,12 @@ const Redeem = () => {
           });
           console.log(res);
         }
+        const ticketId =
+          chainName === "op" ? parseInt(tokenId) + 750 : parseInt(tokenId);
+
         if (isSuccess || isError) setRedeeming(false);
-        if (isSuccess) navigate(`/tickets/${tokenId}/${chainId}/qrcode`);
+        if (isSuccess)
+          navigate(`/tickets/${tokenId}/${chainId}/${ticketId}/qrcode`);
       }
     };
     run();

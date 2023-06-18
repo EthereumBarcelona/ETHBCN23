@@ -255,7 +255,7 @@ const QrCode = () => {
   const [tokenOwned, setTokenOwned] = useState(false);
   const [tokenScanned, setTokenScanned] = useState(false);
 
-  const { tokenId: id, chainId } = useParams();
+  const { tokenId: id, chainId, ticketId } = useParams();
   const navigate = useNavigate();
 
   const getIfTokenScanned = async () => {
@@ -428,13 +428,13 @@ const QrCode = () => {
               <FooterDescription>Name: {redeemData.name}</FooterDescription>
               <FooterDescription>Email: {redeemData.email} </FooterDescription>
               {/* <div>Phone Number: {redeemData.optionalName}</div> */}
-              <FooterDescription>NFTTicket ID: {id} </FooterDescription>
+              <FooterDescription>NFTTicket ID: {ticketId} </FooterDescription>
             </DetailsBox>
 
             {encryptedHash ? (
               <Code>
                 <QRCodeSVG
-                  value={`${getConfig.appBaseUrl}/organizer?tid=${id}&owner=${address}&name=${redeemData.name}&hash=${encryptedHash}`}
+                  value={`${getConfig.appBaseUrl}/organizer?tid=${ticketId}&owner=${address}&name=${redeemData.name}&hash=${encryptedHash}`}
                 ></QRCodeSVG>
               </Code>
             ) : (

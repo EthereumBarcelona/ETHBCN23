@@ -67,7 +67,7 @@ function App() {
               />
               <Route
                 exact
-                path="/tickets/:chainId/:tokenId/qrcode"
+                path="/tickets/:chainId/:tokenId/:ticketId/qrcode"
                 element={<QR />}
               />
 

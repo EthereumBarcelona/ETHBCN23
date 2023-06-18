@@ -296,7 +296,7 @@ const Profile = () => {
             return (
               <RedeemedTicketBox>
                 <Link
-                  to={`/tickets/${chainId}/${tokenId}/qrcode`}
+                  to={`/tickets/${chainId}/${tokenId}/${ticketId}/qrcode`}
                   key={ticketId}
                 >
                   <img src={viewQR} className="ticket" alt="" />
