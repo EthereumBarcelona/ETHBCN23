@@ -22,8 +22,8 @@ export const getConfig =
         env: "mainnet",
         networks: [mainnet, optimism],
         alchemyKey: process.env.REACT_APP_ALCHEMY_API_KEY,
-        apiBaseUrl: "https://ethbcn-backend.herokuapp.com/",
-        mainApiBaseUrl: "https://ethbcn-backend.herokuapp.com/",
+        apiBaseUrl: "https://ethbcn-backend.herokuapp.com",
+        mainApiBaseUrl: "https://ethbcn-backend.herokuapp.com",
         appBaseUrl: "http://localhost:3000",
         /*mainnet*/ 1: {
           network: mainnet,

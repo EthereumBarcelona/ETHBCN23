@@ -371,7 +371,7 @@ const Redeem = () => {
           </Container>
         </div>
       ) : (
-        <ErrorPage text={"You do not own this token id"} />
+        <ErrorPage text={""} /> // "Loading" or "You do not own this token id"
       )}
     </>
   );

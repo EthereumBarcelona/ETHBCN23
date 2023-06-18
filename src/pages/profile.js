@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import WalletConnect from "../components/walletConnect";
 import Logo from "../assets/logo.svg";
 import TicketOnEth from "../assets/ethereum.png";
 import TicketOnOpt from "../assets/optimism.png";
+import viewQR from "../assets/viewqr.png";
 import OrangeSmile from "../assets/orangeSmile.svg";
 import whiteSmile from "../assets/whiteSmile.svg";
 import "./style.css";
@@ -11,6 +12,7 @@ import { useAccount, useContractReads, useNetwork } from "wagmi";
 import { mainnet, sepolia, optimism, optimismGoerli } from "wagmi/chains";
 import { getConfig } from "../config/config";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export const Container = styled.div`
   display: flex;
@@ -186,12 +188,21 @@ export const TicketBox = styled.div`
   }
 `;
 
+export const RedeemedTicketBox = styled(TicketBox)`
+  &:hover::after {
+    content: "";
+    padding: 0px;
+  }
+`;
+
 const Left = styled.div``;
 const Right = styled.div``;
 
 const Profile = () => {
   const { address } = useAccount();
   const { chain } = useNetwork();
+
+  const [redeemedTokens, setRedeemedTokens] = useState([]);
 
   const useChain =
     chain?.id in getConfig
@@ -220,6 +231,23 @@ const Profile = () => {
   });
 
   console.log("Wallet query: ", data);
+
+  const getRedeemedTokens = async () => {
+    try {
+      const url = `${getConfig.apiBaseUrl}/getRedeemedTokens/${address}`;
+      const { data } = await axios.get(url, {
+        headers: {
+          validate: process.env.REACT_APP_VALIDATE_TOKEN,
+        },
+      });
+      console.log({ address, redeemedTokens: data });
+      setRedeemedTokens(data);
+    } catch (err) {}
+  };
+
+  useEffect(() => {
+    getRedeemedTokens();
+  }, [address]);
 
   return (
     <div>
@@ -261,6 +289,17 @@ const Profile = () => {
                   <TikcetId>#{tokenId.add(750).toString()}</TikcetId>
                 </Link>
               </TicketBox>
+            );
+          })}
+
+          {redeemedTokens?.map(({ ticketId, tokenId, chainId }) => {
+            return (
+              <RedeemedTicketBox>
+                <Link to={`/tickets/${tokenId}/qrcode`} key={ticketId}>
+                  <img src={viewQR} className="ticket" alt="" />
+                  <TikcetId>#{ticketId.toString()}</TikcetId>
+                </Link>
+              </RedeemedTicketBox>
             );
           })}
           {/* <img src={TicketPlaceholder} className="ticket" />
