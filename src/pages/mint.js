@@ -387,7 +387,7 @@ const Mint = () => {
     console.log({ userAddress });
 
     let mint_nft = wert.mintAbi;
-    let mint_args = [0, userAddress, 1];
+    let mint_args = [wert.waveNum, userAddress, 1];
 
     // Encode the call to mintNFT(address = userAddress, numberOfTokens = 1)
     const scInputData = web3.eth.abi.encodeFunctionCall(mint_nft, mint_args);

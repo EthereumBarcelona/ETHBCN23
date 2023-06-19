@@ -31,7 +31,8 @@ export const wertDetails =
         contractAddress: "0x6052ed5C646574D12c27E8D219C49C3394598b00",
         network: "polygon",
         commodity: "USDC",
-        ticketPrice: 444, //usdc on polygon
+        waveNum: 1, // 0
+        ticketPrice: 469, //444, //usdc on polygon
         mintAbi,
       }
     : {
@@ -41,6 +42,7 @@ export const wertDetails =
         contractAddress: "0x25e302dF0d301AF5874Fd3C7B461d46be60473dF",
         network: "goerli",
         commodity: "ETH",
+        waveNum: 0,
         ticketPrice: 0.001, //usdc on polygon
         mintAbi,
       };
