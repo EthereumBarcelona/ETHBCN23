@@ -1,12 +1,22 @@
-import { sepolia, mainnet, optimism, optimismGoerli } from "wagmi/chains";
+import {
+  sepolia,
+  mainnet,
+  optimism,
+  optimismGoerli,
+  goerli,
+  polygon,
+} from "wagmi/chains";
 import ethTicketAbi from "../ethereum/build/TicketAbi.json";
 import optimismTicketAbi from "../ethereum/build/optimism/TicketAbi.json";
+import polyTicketAbi from "../ethereum/build/polygon/TicketAbi.json";
 
 const waveNum = {
-  mainnet: 5, // 4
-  optimism: 2, // 0
+  mainnet: 5,
+  optimism: 2,
+  polygon: 0,
   sepolia: 0,
   opGoerli: 0,
+  goerli: 0,
 };
 
 const usdcAddress = {
@@ -20,7 +30,7 @@ export const getConfig =
   process.env.REACT_APP_NETWORK === "mainnet"
     ? {
         env: "mainnet",
-        networks: [mainnet, optimism],
+        networks: [mainnet, optimism, polygon],
         alchemyKey: process.env.REACT_APP_ALCHEMY_API_KEY,
         apiBaseUrl: "https://ethbcn-backend.herokuapp.com",
         mainApiBaseUrl: "https://ethbcn-backend.herokuapp.com",
@@ -47,10 +57,25 @@ export const getConfig =
           explorerUrl: "https://optimism.etherscan.io",
           ticketAbi: optimismTicketAbi,
         },
+        /*polygon-for-wert*/ 137: {
+          network: polygon,
+          waveNum: waveNum.polygon,
+          alchemyUrl: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
+          ticketContractAddress: "0x6052ed5C646574D12c27E8D219C49C3394598b00",
+          // usdc: {
+          //   address: usdcAddress.optimismGoerli,
+          // },
+          // explorerUrl: "https://goerli-optimism.etherscan.io",
+          ticketAbi: polyTicketAbi,
+          // mintArgs: {
+          //   usdc: [waveNum.testnet, usdcAddress.optimismGoerli],
+          //   dai: [waveNum.testnet, daiAddress.optimismGoerli],
+          // },
+        },
       }
     : {
         env: "testnet",
-        networks: [sepolia, optimismGoerli],
+        networks: [sepolia, optimismGoerli, goerli],
         alchemyKey: process.env.REACT_APP_ALCHEMY_API_KEY,
         apiBaseUrl: "https://ethbcn-backend.herokuapp.com", //"http://52.20.253.53", //"http://localhost:3456",
         mainApiBaseUrl: "https://ethbcn-backend.herokuapp.com", //"http://52.20.253.53", //"https://eth-bcn-2023.herokuapp.com",
@@ -76,5 +101,17 @@ export const getConfig =
           },
           explorerUrl: "https://goerli-optimism.etherscan.io",
           ticketAbi: optimismTicketAbi,
+        },
+        /*goerli-for-wert*/ 5: {
+          network: goerli,
+          waveNum: waveNum.goerli,
+          alchemyUrl: `https://eth-goerli.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
+          ticketContractAddress: "0x25e302dF0d301AF5874Fd3C7B461d46be60473dF",
+          // ticketContractAddress: "0x6052ed5C646574D12c27E8D219C49C3394598b00",
+          // usdc: {
+          //   address: usdcAddress.optimismGoerli,
+          // },
+          // explorerUrl: "https://goerli.etherscan.io",
+          ticketAbi: polyTicketAbi,
         },
       };

@@ -4,12 +4,20 @@ import WalletConnect from "../components/walletConnect";
 import Logo from "../assets/logo.svg";
 import TicketOnEth from "../assets/ethereum.png";
 import TicketOnOpt from "../assets/optimism.png";
+import TicketOnPolygon from "../assets/polygon.png";
 import viewQR from "../assets/viewqr.png";
 import OrangeSmile from "../assets/orangeSmile.svg";
 import whiteSmile from "../assets/whiteSmile.svg";
 import "./style.css";
 import { useAccount, useContractReads, useNetwork } from "wagmi";
-import { mainnet, sepolia, optimism, optimismGoerli } from "wagmi/chains";
+import {
+  mainnet,
+  sepolia,
+  optimism,
+  optimismGoerli,
+  goerli,
+  polygon,
+} from "wagmi/chains";
 import { getConfig } from "../config/config";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -37,6 +45,7 @@ export const Navbar = styled.div`
 export const TicketDisplayContainer = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 `;
 
 export const Footer = styled.div`
@@ -211,26 +220,37 @@ const Profile = () => {
       ? sepolia
       : mainnet;
 
-  const { data, isError, isLoading } = useContractReads({
+  const {
+    data: tokensData,
+    isError,
+    isLoading,
+  } = useContractReads({
     contracts: [
       {
-        address: getConfig?.[sepolia?.id]?.ticketContractAddress,
-        abi: getConfig?.[sepolia?.id]?.ticketAbi,
+        address: getConfig?.[sepolia.id]?.ticketContractAddress,
+        abi: getConfig?.[sepolia.id]?.ticketAbi,
         functionName: "walletQuery",
         args: [address],
-        chainId: sepolia?.id,
+        chainId: sepolia.id,
       },
       {
         address: getConfig?.[optimismGoerli.id]?.ticketContractAddress,
-        abi: getConfig?.[optimismGoerli?.id]?.ticketAbi,
+        abi: getConfig?.[optimismGoerli.id]?.ticketAbi,
         functionName: "walletQuery",
         args: [address],
-        chainId: optimismGoerli?.id,
+        chainId: optimismGoerli.id,
+      },
+      {
+        address: getConfig?.[goerli.id]?.ticketContractAddress,
+        abi: getConfig?.[goerli.id]?.ticketAbi,
+        functionName: "walletQuery",
+        args: [address],
+        chainId: goerli.id,
       },
     ],
   });
 
-  console.log("Wallet query: ", data);
+  console.log("Wallet query: ", { address, tokensData });
 
   const getRedeemedTokens = async () => {
     try {
@@ -268,24 +288,44 @@ const Profile = () => {
           </YY>
         </Navbar>
         <TicketDisplayContainer>
-          {data?.[0]?.map((tokenId) => {
+          {tokensData?.[0]?.map((tokenId) => {
             return (
               <TicketBox>
-                <Link to={`/redeem/eth/${sepolia.id}/${tokenId}`} key={tokenId}>
-                  <img src={TicketOnEth} className="ticket" />
+                <Link
+                  to={`/redeem/ethereum/${sepolia.id}/${tokenId}/${tokenId}`}
+                  key={tokenId}
+                >
+                  <img src={TicketOnEth} alt="" className="ticket" />
                   <TikcetId>#{tokenId.toString()}</TikcetId>
                 </Link>
               </TicketBox>
             );
           })}
-          {data?.[1]?.map((tokenId) => {
+          {tokensData?.[2]?.map((tokenId) => {
             return (
               <TicketBox>
                 <Link
-                  to={`/redeem/op/${optimismGoerli.id}/${tokenId}`}
+                  to={`/redeem/polygon/${goerli.id}/${tokenId}/${tokenId.add(
+                    500
+                  )}`}
                   key={tokenId}
                 >
-                  <img src={TicketOnOpt} className="ticket" />
+                  <img src={TicketOnPolygon} alt="" className="ticket" />
+                  <TikcetId>#{tokenId.add(500).toString()}</TikcetId>
+                </Link>
+              </TicketBox>
+            );
+          })}
+          {tokensData?.[1]?.map((tokenId) => {
+            return (
+              <TicketBox>
+                <Link
+                  to={`/redeem/optimism/${
+                    optimismGoerli.id
+                  }/${tokenId}/${tokenId.add(750)}`}
+                  key={tokenId}
+                >
+                  <img src={TicketOnOpt} alt="" className="ticket" />
                   <TikcetId>#{tokenId.add(750).toString()}</TikcetId>
                 </Link>
               </TicketBox>

@@ -62,7 +62,7 @@ function App() {
               <Route exact path="/mint" element={<Mint />} />
               <Route
                 exact
-                path="/redeem/:chainName/:chainId/:tokenId"
+                path="/redeem/:chainName/:chainId/:tokenId/:ticketId"
                 element={<Redeem />}
               />
               <Route

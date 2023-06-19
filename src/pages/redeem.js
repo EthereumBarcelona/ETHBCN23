@@ -6,6 +6,7 @@ import styled from "styled-components";
 
 import TicketOnEth from "../assets/ethereum.png";
 import TicketOnOpt from "../assets/optimism.png";
+import TicketOnPolygon from "../assets/polygon.png";
 
 import whiteSmile from "../assets/whiteSmile.svg";
 import { Navbar, YY, TT, ProfileContainer } from "./profile";
@@ -122,7 +123,7 @@ const Redeem = () => {
   const [tokenOwned, setTokenOwned] = useState(false);
   const [redeeming, setRedeeming] = useState(false);
 
-  const { chainName, chainId, tokenId } = useParams();
+  const { chainName, chainId, tokenId, ticketId } = useParams();
   const navigate = useNavigate();
 
   console.log({ chainId, tokenId });
@@ -204,12 +205,16 @@ const Redeem = () => {
           });
           console.log(res);
         }
-        const ticketId =
-          chainName === "op" ? parseInt(tokenId) + 750 : parseInt(tokenId);
+        // const ticketId =
+        //   chainName === "optimism"
+        //     ? parseInt(tokenId) + 750
+        //     : chainName === "polygon"
+        //     ? parseInt(tokenId) + 500
+        //     : parseInt(tokenId);
 
         if (isSuccess || isError) setRedeeming(false);
         if (isSuccess)
-          navigate(`/tickets/${tokenId}/${chainId}/${ticketId}/qrcode`);
+          navigate(`/tickets/${chainId}/${tokenId}/${ticketId}/qrcode`);
       }
     };
     run();
@@ -311,17 +316,20 @@ const Redeem = () => {
                 <br /> enter the event
               </FooterDescription>
               <TicketImageWrapper>
-                {chainName == "op" ? (
+                {chainName === "optimism" ? (
                   <>
                     <img src={TicketOnOpt} alt="" />
-                    <FooterDescription>
-                      #{parseInt(tokenId) + 750}
-                    </FooterDescription>
+                    <FooterDescription>#{ticketId}</FooterDescription>
+                  </>
+                ) : chainName === "polygon" ? (
+                  <>
+                    <img src={TicketOnPolygon} alt="" />
+                    <FooterDescription>#{ticketId}</FooterDescription>
                   </>
                 ) : (
                   <>
                     <img src={TicketOnEth} alt="" />
-                    <FooterDescription>#{parseInt(tokenId)}</FooterDescription>
+                    <FooterDescription>#{ticketId}</FooterDescription>
                   </>
                 )}
               </TicketImageWrapper>
