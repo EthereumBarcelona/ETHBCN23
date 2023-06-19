@@ -469,7 +469,7 @@ const Mint = () => {
             </FooterDescriptionTitle>
             <TicketInfoContainer>
               <HeadingSmall>
-                Price <HeadingSmallOrange>-12%</HeadingSmallOrange>
+                Price <HeadingSmallOrange>-6%</HeadingSmallOrange>
               </HeadingSmall>
 
               <HeadingSmall>
@@ -534,8 +534,7 @@ const Mint = () => {
             <BuyWithContainer>
               <a href="https://ethbarcelona.myshopify.com/">
                 <FiatText>
-                  Buy with <img src={Arrow} className="arrow" /> <br /> Credit
-                  Card
+                  Buy with <img src={Arrow} className="arrow" /> <br /> Shopify
                 </FiatText>
               </a>
 
