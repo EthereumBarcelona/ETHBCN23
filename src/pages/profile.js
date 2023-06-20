@@ -211,7 +211,7 @@ const Profile = () => {
   const { address } = useAccount();
   const { chain } = useNetwork();
 
-  const [redeemedTokens, setRedeemedTokens] = useState([]);
+  // const [redeemedTokens, setRedeemedTokens] = useState([]);
 
   const useChain =
     chain?.id in getConfig
@@ -227,47 +227,47 @@ const Profile = () => {
   } = useContractReads({
     contracts: [
       {
-        address: getConfig?.[sepolia.id]?.ticketContractAddress,
-        abi: getConfig?.[sepolia.id]?.ticketAbi,
+        address: getConfig?.[mainnet.id]?.ticketContractAddress,
+        abi: getConfig?.[mainnet.id]?.ticketAbi,
         functionName: "walletQuery",
         args: [address],
-        chainId: sepolia.id,
+        chainId: mainnet.id,
       },
       {
-        address: getConfig?.[optimismGoerli.id]?.ticketContractAddress,
-        abi: getConfig?.[optimismGoerli.id]?.ticketAbi,
+        address: getConfig?.[optimism.id]?.ticketContractAddress,
+        abi: getConfig?.[optimism.id]?.ticketAbi,
         functionName: "walletQuery",
         args: [address],
-        chainId: optimismGoerli.id,
+        chainId: optimism.id,
       },
       {
-        address: getConfig?.[goerli.id]?.ticketContractAddress,
-        abi: getConfig?.[goerli.id]?.ticketAbi,
+        address: getConfig?.[polygon.id]?.ticketContractAddress,
+        abi: getConfig?.[polygon.id]?.ticketAbi,
         functionName: "walletQuery",
         args: [address],
-        chainId: goerli.id,
+        chainId: polygon.id,
       },
     ],
   });
 
   console.log("Wallet query: ", { address, tokensData });
 
-  const getRedeemedTokens = async () => {
-    try {
-      const url = `${getConfig.apiBaseUrl}/getRedeemedTokens/${address}`;
-      const { data } = await axios.get(url, {
-        headers: {
-          validate: process.env.REACT_APP_VALIDATE_TOKEN,
-        },
-      });
-      console.log({ address, redeemedTokens: data });
-      setRedeemedTokens(data);
-    } catch (err) {}
-  };
+  // const getRedeemedTokens = async () => {
+  //   try {
+  //     const url = `${getConfig.apiBaseUrl}/getRedeemedTokens/${address}`;
+  //     const { data } = await axios.get(url, {
+  //       headers: {
+  //         validate: process.env.REACT_APP_VALIDATE_TOKEN,
+  //       },
+  //     });
+  //     console.log({ address, redeemedTokens: data });
+  //     setRedeemedTokens(data);
+  //   } catch (err) {}
+  // };
 
-  useEffect(() => {
-    getRedeemedTokens();
-  }, [address]);
+  // useEffect(() => {
+  //   getRedeemedTokens();
+  // }, [address]);
 
   return (
     <div>
