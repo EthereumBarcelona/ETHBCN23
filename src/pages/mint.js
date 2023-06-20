@@ -551,7 +551,7 @@ const Mint = () => {
 
             <br />
             <FiatText onClick={() => openWertWidget()}>
-              Buy with <img src={Arrow} className="arrow" /> <br /> Wert
+              Buy with <img src={Arrow} className="arrow" /> <br /> Card
             </FiatText>
           </TicketInfoWrapper>
         </MintContainer>
