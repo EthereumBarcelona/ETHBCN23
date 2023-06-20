@@ -60,7 +60,7 @@ function App() {
             <Routes>
               <Route exact path="/" element={<Profile />} />
               <Route exact path="/mint" element={<Mint />} />
-              <Route
+              {/* <Route
                 exact
                 path="/redeem/:chainName/:chainId/:tokenId/:ticketId"
                 element={<Redeem />}
@@ -69,7 +69,7 @@ function App() {
                 exact
                 path="/tickets/:chainId/:tokenId/:ticketId/qrcode"
                 element={<QR />}
-              />
+              /> */}
 
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
