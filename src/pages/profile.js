@@ -227,25 +227,36 @@ const Profile = () => {
   } = useContractReads({
     contracts: [
       {
-        address: getConfig?.[mainnet.id]?.ticketContractAddress,
-        abi: getConfig?.[mainnet.id]?.ticketAbi,
+        address:
+          getConfig?.[getConfig.env === "mainnet" ? mainnet.id : sepolia.id]
+            ?.ticketContractAddress,
+        abi: getConfig?.[getConfig.env === "mainnet" ? mainnet.id : sepolia.id]
+          ?.ticketAbi,
         functionName: "walletQuery",
         args: [address],
-        chainId: mainnet.id,
+        chainId: getConfig.env === "mainnet" ? mainnet.id : sepolia.id,
       },
       {
-        address: getConfig?.[optimism.id]?.ticketContractAddress,
-        abi: getConfig?.[optimism.id]?.ticketAbi,
+        address:
+          getConfig?.[
+            getConfig.env === "mainnet" ? optimism.id : optimismGoerli.id
+          ]?.ticketContractAddress,
+        abi: getConfig?.[
+          getConfig.env === "mainnet" ? optimism.id : optimismGoerli.id
+        ]?.ticketAbi,
         functionName: "walletQuery",
         args: [address],
-        chainId: optimism.id,
+        chainId: getConfig.env === "mainnet" ? optimism.id : optimismGoerli.id,
       },
       {
-        address: getConfig?.[polygon.id]?.ticketContractAddress,
-        abi: getConfig?.[polygon.id]?.ticketAbi,
+        address:
+          getConfig?.[getConfig.env === "mainnet" ? polygon.id : goerli.id]
+            ?.ticketContractAddress,
+        abi: getConfig?.[getConfig.env === "mainnet" ? polygon.id : goerli.id]
+          ?.ticketAbi,
         functionName: "walletQuery",
         args: [address],
-        chainId: polygon.id,
+        chainId: getConfig.env === "mainnet" ? polygon.id : goerli.id,
       },
     ],
   });
