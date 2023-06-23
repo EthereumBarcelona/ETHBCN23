@@ -377,9 +377,7 @@ const Profile = () => {
             <FooterDescriptionTitleBold>
               code to enter the event
             </FooterDescriptionTitleBold>
-            <FooterDescription>
-              You’ll be able to redeem 2 weeks before the event!
-            </FooterDescription>
+            <FooterDescription>Redeem is Live Now</FooterDescription>
           </Left>
 
           <Right>

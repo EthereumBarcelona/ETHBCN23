@@ -472,6 +472,7 @@ const QrCode = () => {
               <FooterDescriptionTitleBold>
                 code to enter the event
               </FooterDescriptionTitleBold>
+              <FooterDescription>Redeem is Live Now</FooterDescription>
             </Left>
 
             <Right>
