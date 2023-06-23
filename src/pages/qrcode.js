@@ -197,10 +197,10 @@ const Box = styled.div`
   margin: 40px auto;
 
   @media (max-width: 800px) {
-    width: 400px;
-    margin: 20px 20px 20px 50px;
+    width: auto;
+    margin: 10px;
     height: 600px;
-    padding: 20px 20px 20px 20px;
+    padding: 10px;
   }
 `;
 const Left = styled.div``;
@@ -425,7 +425,7 @@ const QrCode = () => {
             </FooterDescription>
 
             <DetailsBox>
-              <FooterDescription>Name: {redeemData.name}</FooterDescription>
+              <FooterDescription>Name: {redeemData.optionalName}</FooterDescription>
               <FooterDescription>Email: {redeemData.email} </FooterDescription>
               {/* <div>Phone Number: {redeemData.optionalName}</div> */}
               <FooterDescription>NFTTicket ID: {ticketId} </FooterDescription>

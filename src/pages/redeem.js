@@ -349,7 +349,7 @@ const Redeem = () => {
                 />
                 <Title>Email</Title>
                 <Input
-                  type="text"
+                  type="email"
                   required
                   placeholder="Enter your email"
                   name="name"
