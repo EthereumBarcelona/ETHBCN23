@@ -211,7 +211,7 @@ const Profile = () => {
   const { address } = useAccount();
   const { chain } = useNetwork();
 
-  // const [redeemedTokens, setRedeemedTokens] = useState([]);
+  const [redeemedTokens, setRedeemedTokens] = useState([]);
 
   const useChain =
     chain?.id in getConfig
@@ -252,22 +252,22 @@ const Profile = () => {
 
   console.log("Wallet query: ", { address, tokensData });
 
-  // const getRedeemedTokens = async () => {
-  //   try {
-  //     const url = `${getConfig.apiBaseUrl}/getRedeemedTokens/${address}`;
-  //     const { data } = await axios.get(url, {
-  //       headers: {
-  //         validate: process.env.REACT_APP_VALIDATE_TOKEN,
-  //       },
-  //     });
-  //     console.log({ address, redeemedTokens: data });
-  //     setRedeemedTokens(data);
-  //   } catch (err) {}
-  // };
+  const getRedeemedTokens = async () => {
+    try {
+      const url = `${getConfig.apiBaseUrl}/getRedeemedTokens/${address}`;
+      const { data } = await axios.get(url, {
+        headers: {
+          validate: process.env.REACT_APP_VALIDATE_TOKEN,
+        },
+      });
+      console.log({ address, redeemedTokens: data });
+      setRedeemedTokens(data);
+    } catch (err) {}
+  };
 
-  // useEffect(() => {
-  //   getRedeemedTokens();
-  // }, [address]);
+  useEffect(() => {
+    getRedeemedTokens();
+  }, [address]);
 
   return (
     <div>
@@ -291,48 +291,48 @@ const Profile = () => {
           {tokensData?.[0]?.map((tokenId) => {
             return (
               <TicketBox>
-                {/* <Link
+                <Link
                   to={`/redeem/ethereum/${sepolia.id}/${tokenId}/${tokenId}`}
                   key={tokenId}
-                > */}
-                <img src={TicketOnEth} alt="" className="ticket" />
-                <TikcetId>#{tokenId.toString()}</TikcetId>
-                {/* </Link> */}
+                >
+                  <img src={TicketOnEth} alt="" className="ticket" />
+                  <TikcetId>#{tokenId.toString()}</TikcetId>
+                </Link>
               </TicketBox>
             );
           })}
           {tokensData?.[2]?.map((tokenId) => {
             return (
               <TicketBox>
-                {/* <Link
+                <Link
                   to={`/redeem/polygon/${goerli.id}/${tokenId}/${tokenId.add(
                     500
                   )}`}
                   key={tokenId}
-                > */}
-                <img src={TicketOnPolygon} alt="" className="ticket" />
-                <TikcetId>#{tokenId.add(500).toString()}</TikcetId>
-                {/* </Link> */}
+                >
+                  <img src={TicketOnPolygon} alt="" className="ticket" />
+                  <TikcetId>#{tokenId.add(500).toString()}</TikcetId>
+                </Link>
               </TicketBox>
             );
           })}
           {tokensData?.[1]?.map((tokenId) => {
             return (
               <TicketBox>
-                {/* <Link
+                <Link
                   to={`/redeem/optimism/${
                     optimismGoerli.id
                   }/${tokenId}/${tokenId.add(750)}`}
                   key={tokenId}
-                > */}
-                <img src={TicketOnOpt} alt="" className="ticket" />
-                <TikcetId>#{tokenId.add(750).toString()}</TikcetId>
-                {/* </Link> */}
+                >
+                  <img src={TicketOnOpt} alt="" className="ticket" />
+                  <TikcetId>#{tokenId.add(750).toString()}</TikcetId>
+                </Link>
               </TicketBox>
             );
           })}
 
-          {/* {redeemedTokens?.map(({ ticketId, tokenId, chainId }) => {
+          {redeemedTokens?.map(({ ticketId, tokenId, chainId }) => {
             return (
               <RedeemedTicketBox>
                 <Link
@@ -344,7 +344,7 @@ const Profile = () => {
                 </Link>
               </RedeemedTicketBox>
             );
-          })} */}
+          })}
           {/* <img src={TicketPlaceholder} className="ticket" />
           <img src={TicketPlaceholder} className="ticket" />
           <img src={TicketPlaceholder} className="ticket" /> */}
