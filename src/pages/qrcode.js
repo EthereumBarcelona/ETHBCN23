@@ -255,12 +255,12 @@ const QrCode = () => {
   const [tokenOwned, setTokenOwned] = useState(false);
   const [tokenScanned, setTokenScanned] = useState(false);
 
-  const { tokenId: id, chainId, ticketId } = useParams();
+  const { tokenId, chainId, ticketId } = useParams();
   const navigate = useNavigate();
 
   const getIfTokenScanned = async () => {
     try {
-      const url = `${getConfig.apiBaseUrl}/event?tokenId=${id}&chainId=${chainId}`;
+      const url = `${getConfig.apiBaseUrl}/event?tokenId=${tokenId}&chainId=${chainId}`;
       const res = await axios.get(url, {
         headers: {
           validate: process.env.REACT_APP_VALIDATE_TOKEN,
@@ -282,7 +282,7 @@ const QrCode = () => {
 
   const getTokenRedeemData = async () => {
     try {
-      const url = `${getConfig.apiBaseUrl}/users?tokenId=${id}&chainId=${chainId}`;
+      const url = `${getConfig.apiBaseUrl}/users?tokenId=${tokenId}&chainId=${chainId}`;
       const { data } = await axios.get(url, {
         headers: {
           validate: process.env.REACT_APP_VALIDATE_TOKEN,
@@ -304,7 +304,7 @@ const QrCode = () => {
 
   useEffect(() => {
     const run = async () => {
-      const url = `${getConfig.apiBaseUrl}/qrcode?tokenId=${id}&chainId=${chainId}`;
+      const url = `${getConfig.apiBaseUrl}/qrcode?tokenId=${tokenId}&chainId=${chainId}`;
 
       let hashFound = false;
       while (!hashFound) {
@@ -382,7 +382,7 @@ const QrCode = () => {
   if (tokenScanned) {
     return (
       // <Poap />
-      // <Navigate to={`/tickets/${id}/poap`} replace />
+      // <Navigate to={`/tickets/${tokenId}/poap`} replace />
       <div padding="10%">
         <img alt="POAP" width="100%" height=""></img>
       </div>
@@ -425,7 +425,9 @@ const QrCode = () => {
             </FooterDescription>
 
             <DetailsBox>
-              <FooterDescription>Name: {redeemData.optionalName}</FooterDescription>
+              <FooterDescription>
+                Name: {redeemData.optionalName}
+              </FooterDescription>
               <FooterDescription>Email: {redeemData.email} </FooterDescription>
               {/* <div>Phone Number: {redeemData.optionalName}</div> */}
               <FooterDescription>NFTTicket ID: {ticketId} </FooterDescription>
@@ -434,7 +436,7 @@ const QrCode = () => {
             {encryptedHash ? (
               <Code>
                 <QRCodeSVG
-                  value={`${getConfig.appBaseUrl}/organizer?tid=${ticketId}&owner=${address}&name=${redeemData.name}&hash=${encryptedHash}`}
+                  value={`${getConfig.appBaseUrl}/organizer?tid=${tokenId}&tkid=${ticketId}&owner=${address}&name=${redeemData.name}&hash=${encryptedHash}`}
                 ></QRCodeSVG>
               </Code>
             ) : (
