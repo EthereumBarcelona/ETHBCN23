@@ -303,7 +303,9 @@ const Profile = () => {
             return (
               <TicketBox>
                 <Link
-                  to={`/redeem/ethereum/${sepolia.id}/${tokenId}/${tokenId}`}
+                  to={`/redeem/ethereum/${
+                    getConfig.env === "mainnet" ? mainnet.id : sepolia.id
+                  }/${tokenId}/${tokenId}`}
                   key={tokenId}
                 >
                   <img src={TicketOnEth} alt="" className="ticket" />
@@ -316,9 +318,9 @@ const Profile = () => {
             return (
               <TicketBox>
                 <Link
-                  to={`/redeem/polygon/${goerli.id}/${tokenId}/${tokenId.add(
-                    500
-                  )}`}
+                  to={`/redeem/polygon/${
+                    getConfig.env === "mainnet" ? polygon.id : goerli.id
+                  }/${tokenId}/${tokenId.add(500)}`}
                   key={tokenId}
                 >
                   <img src={TicketOnPolygon} alt="" className="ticket" />
@@ -332,7 +334,9 @@ const Profile = () => {
               <TicketBox>
                 <Link
                   to={`/redeem/optimism/${
-                    optimismGoerli.id
+                    getConfig.env === "mainnet"
+                      ? optimism.id
+                      : optimismGoerli.id
                   }/${tokenId}/${tokenId.add(750)}`}
                   key={tokenId}
                 >
