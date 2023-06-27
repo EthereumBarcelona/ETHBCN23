@@ -9,6 +9,7 @@ import Profile from "./pages/profile";
 import "./App.css";
 import Mint from "./pages/mint";
 import Redeem from "./pages/redeem";
+import Scan from "./pages/scan";
 
 import {
   getDefaultWallets,
@@ -60,6 +61,7 @@ function App() {
             <Routes>
               <Route exact path="/" element={<Profile />} />
               <Route exact path="/mint" element={<Mint />} />
+              <Route exact path="/scan" element={<Scan />} />
               <Route
                 exact
                 path="/redeem/:chainName/:chainId/:tokenId/:ticketId"
