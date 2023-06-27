@@ -50,7 +50,7 @@ const DisplayInfo2 = styled.div`
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
-  line-height:24px;
+  line-height: 24px;
   color: #bc563c;
   background: white;
   border-radius: 20px;
@@ -104,6 +104,11 @@ const Scan = () => {
           <DisplayInfo>1786</DisplayInfo>
 
           <Confirm>Confirm</Confirm>
+
+          {/* <DisplayInfo2>
+            🎉 🎉 <br />
+            Thank you for Confirming{" "}
+          </DisplayInfo2> */}
 
           <DisplayInfo2>
             🚨 🚨 <br />
