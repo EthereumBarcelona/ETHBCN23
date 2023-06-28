@@ -34,7 +34,7 @@ export const getConfig =
         alchemyKey: process.env.REACT_APP_ALCHEMY_API_KEY,
         apiBaseUrl: "https://ethbcn-backend.herokuapp.com",
         mainApiBaseUrl: "https://ethbcn-backend.herokuapp.com",
-        appBaseUrl: "http://localhost:3000",
+        appBaseUrl: "https://tickets.ethbarcelona.com",
         /*mainnet*/ 1: {
           network: mainnet,
           waveNum: waveNum.mainnet,
@@ -79,7 +79,7 @@ export const getConfig =
         alchemyKey: process.env.REACT_APP_ALCHEMY_API_KEY,
         apiBaseUrl: "https://ethbcn-staging-9d6664ef21c5.herokuapp.com", //"http://52.20.253.53", //"http://localhost:3456",
         mainApiBaseUrl: "https://ethbcn-staging-9d6664ef21c5.herokuapp.com", //"http://52.20.253.53", //"https://eth-bcn-2023.herokuapp.com",
-        appBaseUrl: "http://localhost:3000", // "https://eth-bcn-2023.web.app"
+        appBaseUrl: "https://eth-bcn-test-23.web.app", //"http://localhost:3000", // "https://eth-bcn-2023.web.app"
         /*sepolia*/ 11155111 /*chainId*/: {
           network: sepolia,
           waveNum: waveNum.sepolia,
