@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Logo from "../assets/logo.svg";
 import TicketPlaceholder from "../assets/Ticket.png";
@@ -10,6 +10,9 @@ import {
   ProfileContainer,
   FooterDescriptionTitle,
 } from "./profile";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { getConfig } from "../config/config";
 
 const Box = styled.div`
   border: 1px solid #bc563c;
@@ -75,10 +78,93 @@ const Confirm = styled.button`
   :hover {
     background: white;
     color: #bc563c;
+    cursor: pointer;
   }
 `;
 
-const Scan = () => {
+const Scan = ({ account, orgId }) => {
+  const [confirmed, setConfirmed] = React.useState(false);
+  const [confirming, setConfirming] = useState(false);
+  const [error, setError] = React.useState(false);
+  const [scannedMessage, setScannedMessage] = useState("");
+  const [tokenScanned, setTokenScanned] = useState(false);
+  const [scanInfo, setScanInfo] = useState({
+    orgId: "",
+    orgName: "",
+    timeOfScan: "",
+  });
+
+  // A custom hook that builds on useLocation to parse
+  // the query string for you.
+  function useQuery() {
+    const { search } = useLocation();
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+  }
+
+  let query = useQuery();
+
+  const getIfTokenScanned = async () => {
+    try {
+      const url = `${getConfig.apiBaseUrl}/event/?ticketId=${query.get(
+        "tkid"
+      )}`;
+      const res = await axios.get(url, {
+        headers: {
+          validate: process.env.REACT_APP_VALIDATE_TOKEN,
+        },
+      });
+      // console.log(res.data?.data);
+      if (res.data?.data?.timeOfScan) {
+        const { orgId, orgName, timeOfScan } = res.data.data;
+        setTokenScanned(true);
+        setScanInfo({
+          orgId,
+          orgName,
+          timeOfScan,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getIfTokenScanned();
+  }, []);
+
+  const confirmScan = async () => {
+    setConfirming(true);
+    console.log("scanning...");
+    try {
+      const url = `${getConfig.apiBaseUrl}/event`;
+      const scan_data = {
+        organiserID: orgId,
+        orgName: "test",
+        organizerAddress: account,
+        ticketOwnerAddress: query.get("owner"),
+        ticketTokenId: query.get("tkid"),
+        encrypted: query.get("hash"),
+      };
+
+      // console.log("scan data: ", scan_data);
+
+      const res = await axios.post(url, scan_data, {
+        headers: {
+          validate: process.env.REACT_APP_VALIDATE_TOKEN,
+        },
+      });
+      // console.log(res);
+      setScannedMessage(res.data.message);
+      // console.log("scanned token succesfully added");
+      setConfirming(false);
+      setConfirmed(true);
+    } catch (err) {
+      console.error(err);
+      setConfirming(false);
+      setError(true);
+    }
+  };
+
   return (
     <div>
       <Container>
@@ -98,22 +184,48 @@ const Scan = () => {
         </Navbar>
         <Box>
           <Heading>Name</Heading>
-          <DisplayInfo>Kraznik</DisplayInfo>
+          <DisplayInfo>{query.get("name")}</DisplayInfo>
 
           <Heading>NFTicket ID</Heading>
-          <DisplayInfo>1786</DisplayInfo>
+          <DisplayInfo>{query.get("tkid")}</DisplayInfo>
 
-          <Confirm>Confirm</Confirm>
+          {!tokenScanned ? (
+            confirmed || error ? (
+              confirmed ? (
+                <DisplayInfo2>
+                  🎉 🎉 <br />
+                  Thank you for Confirming <br />
+                  {scannedMessage}!!
+                </DisplayInfo2>
+              ) : (
+                <DisplayInfo>
+                  🚨 🚨 <br />
+                  Error!!
+                  <br />
+                  {scannedMessage}!!
+                </DisplayInfo>
+              )
+            ) : (
+              <Confirm onClick={confirmScan}>Confirm</Confirm>
+            )
+          ) : (
+            <DisplayInfo>
+              NFTicket has already been scanned at {scanInfo.timeOfScan} by
+              Device 1
+            </DisplayInfo>
+          )}
+
+          {/* <Confirm>Confirm</Confirm> */}
 
           {/* <DisplayInfo2>
             🎉 🎉 <br />
             Thank you for Confirming{" "}
           </DisplayInfo2> */}
 
-          <DisplayInfo2>
+          {/* <DisplayInfo2>
             🚨 🚨 <br />
             NFTicket has already been scanned at 11:59 by Device 1
-          </DisplayInfo2>
+          </DisplayInfo2> */}
         </Box>
       </Container>
     </div>

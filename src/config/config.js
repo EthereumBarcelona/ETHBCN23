@@ -77,8 +77,8 @@ export const getConfig =
         env: "testnet",
         networks: [sepolia, optimismGoerli, goerli],
         alchemyKey: process.env.REACT_APP_ALCHEMY_API_KEY,
-        apiBaseUrl: "https://ethbcn-backend.herokuapp.com", //"http://52.20.253.53", //"http://localhost:3456",
-        mainApiBaseUrl: "https://ethbcn-backend.herokuapp.com", //"http://52.20.253.53", //"https://eth-bcn-2023.herokuapp.com",
+        apiBaseUrl: "https://ethbcn-staging-9d6664ef21c5.herokuapp.com", //"http://52.20.253.53", //"http://localhost:3456",
+        mainApiBaseUrl: "https://ethbcn-staging-9d6664ef21c5.herokuapp.com", //"http://52.20.253.53", //"https://eth-bcn-2023.herokuapp.com",
         appBaseUrl: "http://localhost:3000", // "https://eth-bcn-2023.web.app"
         /*sepolia*/ 11155111 /*chainId*/: {
           network: sepolia,

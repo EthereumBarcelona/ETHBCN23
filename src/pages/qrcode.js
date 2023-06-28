@@ -436,7 +436,7 @@ const QrCode = () => {
             {encryptedHash ? (
               <Code>
                 <QRCodeSVG
-                  value={`${getConfig.appBaseUrl}/organizer?tid=${tokenId}&tkid=${ticketId}&owner=${address}&name=${redeemData.name}&hash=${encryptedHash}`}
+                  value={`${getConfig.appBaseUrl}/scan?tkid=${ticketId}&owner=${address}&name=${redeemData.name}&hash=${encryptedHash}`}
                 ></QRCodeSVG>
               </Code>
             ) : (
