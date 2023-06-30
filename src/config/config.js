@@ -11,9 +11,9 @@ import optimismTicketAbi from "../ethereum/build/optimism/TicketAbi.json";
 import polyTicketAbi from "../ethereum/build/polygon/TicketAbi.json";
 
 const waveNum = {
-  mainnet: 5,
-  optimism: 2,
-  polygon: 0,
+  mainnet: 6, // 5,
+  optimism: 4, //2,
+  polygon: 2, //1,
   sepolia: 0,
   opGoerli: 0,
   goerli: 0,
