@@ -56,7 +56,7 @@ function App() {
         method: "GET",
         url: `${getConfig.apiBaseUrl}/checkOrganizer/${address}`,
       });
-      console.log(isOrganizer);
+      // console.log(isOrganizer);
       setIsOrganizer(isOrganizer);
     };
     checkIfOrganizer();

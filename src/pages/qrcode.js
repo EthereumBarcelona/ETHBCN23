@@ -260,13 +260,13 @@ const QrCode = () => {
 
   const getIfTokenScanned = async () => {
     try {
-      const url = `${getConfig.apiBaseUrl}/event?tokenId=${tokenId}&chainId=${chainId}`;
+      const url = `${getConfig.apiBaseUrl}/event?ticketId=${ticketId}`;
       const res = await axios.get(url, {
         headers: {
           validate: process.env.REACT_APP_VALIDATE_TOKEN,
         },
       });
-      console.log(res.data?.data);
+      // console.log(res.data);
 
       if (res.data?.data?.timeOfScan) {
         setTokenScanned(true);
@@ -288,7 +288,7 @@ const QrCode = () => {
           validate: process.env.REACT_APP_VALIDATE_TOKEN,
         },
       });
-      console.log(data);
+      // console.log(data);
       if (data?.user?.name) setTokenOwned(true);
       // wallet address is not lowercased here
       if (data?.user?.walletAddress === address) setTokenOwned(true);
@@ -344,7 +344,7 @@ const QrCode = () => {
         getConfig.mainApiBaseUrl
       }/createDownload?encrypted=${encodeURIComponent(encryptedHash)}`;
 
-      console.log({ encryptedHash });
+      // console.log({ encryptedHash });
       var { data } = await axios.get(url, options);
       console.log(data);
 
@@ -384,7 +384,8 @@ const QrCode = () => {
       // <Poap />
       // <Navigate to={`/tickets/${tokenId}/poap`} replace />
       <div padding="10%">
-        <img alt="POAP" width="100%" height=""></img>
+        {/* <img alt="POAP" width="100%" height=""></img> */}
+        Congratulations!! you attended ETH BCN!!
       </div>
     );
   }
@@ -426,9 +427,9 @@ const QrCode = () => {
 
             <DetailsBox>
               <FooterDescription>
-                Name: {redeemData.optionalName}
+                Name: {redeemData?.optionalName}
               </FooterDescription>
-              <FooterDescription>Email: {redeemData.email} </FooterDescription>
+              {/* <FooterDescription>Email: {redeemData.email} </FooterDescription> */}
               {/* <div>Phone Number: {redeemData.optionalName}</div> */}
               <FooterDescription>NFTTicket ID: {ticketId} </FooterDescription>
             </DetailsBox>

@@ -261,7 +261,7 @@ const Profile = () => {
     ],
   });
 
-  console.log("Wallet query: ", { address, tokensData });
+  // console.log("Wallet query: ", { address, tokensData });
 
   const getRedeemedTokens = async () => {
     try {
@@ -271,7 +271,7 @@ const Profile = () => {
           validate: process.env.REACT_APP_VALIDATE_TOKEN,
         },
       });
-      console.log({ address, redeemedTokens: data });
+      // console.log({ address, redeemedTokens: data });
       setRedeemedTokens(data);
     } catch (err) {}
   };

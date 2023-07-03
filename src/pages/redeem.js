@@ -126,7 +126,7 @@ const Redeem = () => {
   const { chainName, chainId, tokenId, ticketId } = useParams();
   const navigate = useNavigate();
 
-  console.log({ chainId, tokenId });
+  // console.log({ chainId, tokenId });
 
   const useChain =
     chain?.id in getConfig
@@ -143,7 +143,7 @@ const Redeem = () => {
     chainId: parseInt(chainId), //useChain?.id,
   });
 
-  console.log({ owner, error });
+  // console.log({ owner, error });
 
   const checkIfTokenOwned = async () => {
     try {
@@ -203,7 +203,7 @@ const Redeem = () => {
               validate: process.env.REACT_APP_VALIDATE_TOKEN,
             },
           });
-          console.log(res);
+          // console.log(res);
         }
         // const ticketId =
         //   chainName === "optimism"
@@ -225,10 +225,10 @@ const Redeem = () => {
     setRedeeming(true);
     await saveData();
     try {
-      console.log("Burning the ticket");
+      // console.log("Burning the ticket");
 
       burn();
-      console.log("burning2..");
+      // console.log("burning2..");
     } catch (err) {
       console.error(err);
     }
@@ -256,7 +256,7 @@ const Redeem = () => {
         }
       );
 
-      console.log(data?.user);
+      // console.log(data?.user);
 
       if (!user?.displayName)
         setUser({ ...user, displayName: data?.user?.optionalName });
@@ -280,7 +280,7 @@ const Redeem = () => {
         });
       }
 
-      console.log("user data posted successfully...");
+      // console.log("user data posted successfully...");
     } catch (err) {
       setRedeeming(false);
       throw err;
