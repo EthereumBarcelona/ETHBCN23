@@ -94,6 +94,15 @@ function App() {
               />
               <Route
                 exact
+                path="/organizer"
+                element={
+                  <ProtectedRoute permit={isOrganizer}>
+                    <Scan account={address} orgId={"testing"} />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                exact
                 path="/redeem/:chainName/:chainId/:tokenId/:ticketId"
                 element={<Redeem />}
               />
