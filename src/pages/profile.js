@@ -21,6 +21,7 @@ import {
 import { getConfig } from "../config/config";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { messed_wallets } from "../data/messed_wallets";
 
 export const Container = styled.div`
   display: flex;
@@ -329,7 +330,24 @@ const Profile = () => {
               </TicketBox>
             );
           })}
-          {tokensData?.[1]?.map((tokenId) => {
+          {tokensData?.[1]?.map((tokenId, index) => {
+            // console.log({ index, tokenId });
+            if (
+              messed_wallets.includes(address) &&
+              parseInt(tokenId.toString()) > 3000
+            ) {
+              // console.log("extra airdropped ticket..");
+              if (redeemedTokens.length >= 2) {
+                // console.log(
+                //   "already redeemed speaker + 1 tickets, no more tickets available for redeem"
+                // );
+                return null;
+              }
+              if (redeemedTokens.length >= 1 && index >= 1) return null;
+              if (index >= 2) {
+                return null;
+              }
+            }
             return (
               <TicketBox>
                 <Link
@@ -345,9 +363,18 @@ const Profile = () => {
                 </Link>
               </TicketBox>
             );
+            // else return null;
           })}
 
-          {redeemedTokens?.map(({ ticketId, tokenId, chainId }) => {
+          {redeemedTokens?.map(({ ticketId, tokenId, chainId }, index) => {
+            if (
+              parseInt(tokenId.toString()) > 3000 &&
+              index >= 2 &&
+              messed_wallets.includes(address)
+            ) {
+              // console.log("redeemed extra tickets..");
+              return null;
+            }
             return (
               <RedeemedTicketBox>
                 <Link
